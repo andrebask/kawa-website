@@ -1,0 +1,1649 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Kawa: Characters and text</title>
+<link rel="stylesheet" title="Kawa (navbar: fixed, left)" href="style/kawa-l.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Kawa (navbar: fixed, right)" href="style/kawa-r.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Single column, top navigation" href="style/kawa-1col.css" type="text/css" media="handheld, screen, print, projection, tv">
+<script language="JavaScript" type="text/javascript" src="style/utils.js"></script><meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="toc.html" title="Kawa: The Kawa Scheme language">
+<link rel="up" href="Documentation.html" title="Kawa: Documentation">
+<link rel="prev" href="Numbers.html" title="Kawa: Quantities and Numbers">
+<link rel="next" href="Data-structures.html" title="Kawa: Data structures">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF" onload="javascript:onLoadHandler();" onunload="javascript:onUnloadHandler();">
+<div class="navcol">
+<div class="logo"><a href="index.html"><img src="style/kawa-logo.png"></a></div>
+<div class="navbar">
+<ul>
+<li><a href="toc.html">Table of Contents</a></li>
+<li><a href="tutorial/index.html">Tutorial</a></li>
+<li><a href="news.html">News: Recent changes</a></li>
+</ul>
+<div class="toc"><ul>
+<li><a href="index.html">The Kawa Scheme language</a></li>
+<li><a href="Installation.html">Getting and installing Kawa</a></li>
+<li><a href="Features.html">Features</a></li>
+<li>
+<a href="Documentation.html">Documentation</a><ul>
+<li><a href="Running.html">Usage Reference</a></li>
+<li><a href="Syntax.html">Syntax</a></li>
+<li><a href="Program-structure.html">Program structure</a></li>
+<li><a href="Multiple-values.html">Multiple values</a></li>
+<li><a href="Symbols-and-namespaces.html">Symbols and namespaces</a></li>
+<li><a href="Procedures.html">Procedures</a></li>
+<li><a href="Numbers.html">Numbers</a></li>
+<li>
+<b class="toc"><a href="Characters-and-text.html">Characters and text</a></b><ul>
+<li><b class="toc"><a href="Characters-and-text.html#Characters">Characters</a></b></li>
+<li><b class="toc"><a href="Characters-and-text.html#Character-sets">Character sets</a></b></li>
+<li><b class="toc"><a href="Characters-and-text.html#Strings">Strings</a></b></li>
+<li><b class="toc"><a href="Characters-and-text.html#String-literals">String literals</a></b></li>
+<li><b class="toc"><a href="Characters-and-text.html#Unicode">Unicode character classes and conversions</a></b></li>
+<li><b class="toc"><a href="Characters-and-text.html#Regular-expressions">Regular expressions</a></b></li>
+</ul>
+</li>
+<li><a href="Data-structures.html">Data structures</a></li>
+<li><a href="Eval-and-Environments.html">Eval and Environments</a></li>
+<li><a href="Debugging.html">Debugging</a></li>
+<li><a href="Input-Output.html">Input, output, files</a></li>
+<li><a href="Types.html">Types</a></li>
+<li><a href="Objects-Classes-and-Modules.html">Object, Classes and Modules</a></li>
+<li><a href="XML-tools.html">Working with XML and HTML</a></li>
+<li><a href="Miscellaneous.html">Miscellaneous topics</a></li>
+</ul>
+</li>
+<li><a href="Development.html">Development</a></li>
+<li><a href="Community.html">The Kawa Community</a></li>
+<li><a href="About.html">About</a></li>
+<li><a href="Overall-Index.html">Index</a></li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Characters-and-text"></a>Characters and text</h2></div></div></div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Characters"></a>Characters</h3></div></div></div>
+<p>Characters are objects that represent human-readable characters
+such as letters and digits.  More precisely, a character
+represents a <a class="ulink" href="http://www.unicode.org/glossary/#unicode_scalar_value" target="_top">Unicode scalar value</a>. Each character has an integer value
+in the range <code class="literal">0</code> to <code class="literal">#x10FFFF</code>
+(excluding the range <code class="literal">#xD800</code> to <code class="literal">#xDFFF</code>
+used for <a class="ulink" href="http://www.unicode.org/glossary/#surrogate_code_point" target="_top">Surrogate Code Points</a>).
+</p>
+<div class="blockquote"><blockquote class="blockquote">
+<p><span class="emphasis"><em>Note:</em></span>
+Unicode distinguishes
+between glyphs, which are printed for humans to read, and characters,
+which are abstract entities that map to glyphs (sometimes in a way
+that’s sensitive to surrounding characters). Furthermore, different
+sequences of scalar values sometimes correspond to the same
+character. The relationships among scalar, characters, and glyphs are
+subtle and complex.
+</p>
+<p>Despite this complexity, most things that a literate human would call
+a “character” can be represented by a single Unicode scalar value
+(although several sequences of Unicode scalar values may represent
+that same character). For example, Roman letters, Cyrillic letters,
+Hebrew consonants, and most Chinese characters fall into this
+category.
+</p>
+<p>Unicode scalar values exclude the range <code class="literal">#xD800</code> to <code class="literal">#xDFFF</code>,
+which are part of the range of Unicode <em class="firstterm">code points</em>.
+However, the Unicode code points in this range, the so-called
+<em class="firstterm">surrogates</em>, are an artifact of the UTF-16 encoding, and can only
+appear in specific Unicode encodings, and even then only in pairs that
+encode scalar values.  Consequently, all characters represent code
+points, but the surrogate code points do not have representations as
+characters.
+</p>
+</blockquote></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp44861104"></a><code class="function">character</code></p>
+<div class="blockquote"><blockquote class="blockquote"><p>A Unicode code point - normally a Unicode scalar value,
+but could be a surrogate.
+This is implemented using a 32-bit <code class="literal">int</code>.
+When an object is needed (i.e. the <em class="firstterm">boxed</em> representation),
+it is implemented an instance of <code class="literal">gnu.text.Char</code>.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp44866304"></a><code class="function">character-or-eof</code></p>
+<div class="blockquote"><blockquote class="blockquote"><p>A <code class="literal">character</code> or the specical <code class="literal">#!eof</code> value (used to indicate
+end-of-file when reading from a port).
+This is implemented using a 32-bit <code class="literal">int</code>,
+where the value -1 indicates end-of-file.
+When an object is needed, it is implemented an instance of
+<code class="literal">gnu.text.Char</code> or the special <code class="literal">#!eof</code> object.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp44873232"></a><code class="function">char</code></p>
+<div class="blockquote"><blockquote class="blockquote"><p>A UTF-16 code unit.  Same as Java primitive <code class="literal">char</code> type.
+Considered to be a sub-type of <code class="literal">character</code>.
+When an object is needed, it is implemented as an instance
+of <code class="literal">java.lang.Character</code>.  Note the unfortunate inconsistency
+(for historical reasons) of <code class="literal">char</code> boxed as <code class="literal">Character</code>
+vs <code class="literal">character</code> boxed as <code class="literal">Char</code>.
+</p></blockquote></div>
+</div>
+<p>Characters are written using the notation
+<code class="literal">#\</code><em class="replaceable"><code>character</code></em> (which stands for the given <em class="replaceable"><code>character</code></em>;
+<code class="literal">#\x</code><em class="replaceable"><code>hex-scalar-value</code></em> (the character whose scalar value
+is the given hex integer);
+or <code class="literal">#\</code><em class="replaceable"><code>character-name</code></em> (a character with a given name):
+</p>
+<div class="literallayout"><p><a class="indexterm" name="idp44885472"></a><a name="meta-character"></a><em class="replaceable"><code>character</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>#\</strong></span></code><em class="replaceable"><code>any-character</code></em><br>
+        | <code class="literal"><span class="bold"><strong>#\</strong></span></code> <em class="replaceable"><code>character-name</code></em><br>
+        | <code class="literal"><span class="bold"><strong>#\x</strong></span></code> <a class="link" href="Syntax.html#meta-hex-scalar-value"><em class="replaceable"><code>hex-scalar-value</code></em></a><br>
+        | <code class="literal"><span class="bold"><strong>#\X</strong></span></code> <a class="link" href="Syntax.html#meta-hex-scalar-value"><em class="replaceable"><code>hex-scalar-value</code></em></a><br>
+</p></div>
+<p>The following <em class="replaceable"><code>character-name</code></em> forms are recognized:
+</p>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term"><code class="literal"><span class="bold"><strong>#\alarm</strong></span></code></dt>
+<dd><p><code class="literal">#\x0007</code> - the alarm (bell) character
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\backspace</strong></span></code></dt>
+<dd><p><code class="literal">#\x0008</code>
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\delete</strong></span></code></dt>
+<dd><p></p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\del</strong></span></code></dt>
+<dd><p></p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\rubout</strong></span></code></dt>
+<dd><p><code class="literal">#\x007f</code> - the delete or rubout character
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\escape</strong></span></code></dt>
+<dd><p></p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\esc</strong></span></code></dt>
+<dd><p><code class="literal">#\x001b</code>
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\newline</strong></span></code></dt>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\linefeed</strong></span></code></dt>
+<dd><p><code class="literal">#\x001a</code> - the linefeed character
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\null</strong></span></code></dt>
+<dd><p></p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\nul</strong></span></code></dt>
+<dd><p><code class="literal">#\x0000</code> - the null character
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\page</strong></span></code></dt>
+<dd><p><code class="literal">#\000c</code> - the formfeed character
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\return</strong></span></code></dt>
+<dd><p><code class="literal">#\000d</code> - the carriage return character
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\space</strong></span></code></dt>
+<dd><p><code class="literal">#\x0020</code> - the preferred way to write a space
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\tab</strong></span></code></dt>
+<dd><p><code class="literal">#\x0009</code> - the tab character
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\vtab</strong></span></code></dt>
+<dd><p><code class="literal">#\x000b</code> - the vertical tabulation character
+</p></dd>
+</dl></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp44930992"></a><code class="function">char?</code> <em class="replaceable"><code>obj</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Return <code class="literal">#t</code> if <em class="replaceable"><code>obj</code></em> is a character, <code class="literal">#f</code> otherwise.
+(The <em class="replaceable"><code>obj</code></em> can be any character, not just a 16-bit <code class="literal">char</code>.)
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp44937536"></a><code class="function">char-&gt;integer</code> <em class="replaceable"><code>char</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp44940240"></a><code class="function">integer-&gt;char</code> <em class="replaceable"><code>sv</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p><em class="replaceable"><code>sv</code></em> should be a Unicode scalar value, i.e., a non–negative exact
+integer object in <code class="literal">[0, #xD7FF] union [#xE000, #x10FFFF]</code>.
+(Kawa also allows values in the surrogate range.)
+</p>
+<p>Given a character, <code class="literal">char-&gt;integer</code> returns its Unicode scalar value
+as an exact integer object.  For a Unicode scalar value <em class="replaceable"><code>sv</code></em>,
+<code class="literal">integer-&gt;char</code> returns its associated character.
+</p>
+<pre class="screen">(integer-&gt;char 32)                     ⇒ #\space
+(char-&gt;integer (integer-&gt;char 5000))   ⇒ 5000
+(integer-&gt;char #\xD800)                ⇒ throws ClassCastException
+</pre>
+<p><span class="emphasis"><em>Performance note:</em></span> A call to <code class="literal">char-&gt;integer</code> is compiled as
+casting the argument to a <code class="literal">character</code>, and then re-interpreting
+that value as an <code class="literal">int</code>.
+A call to <code class="literal">integer-&gt;char</code> is compiled as
+casting the argument to an <code class="literal">int</code>, and then re-interpreting
+that value as an <code class="literal">character</code>.
+If the argument is the right type, no code is emitted: the value is
+just re-interpreted as the result type.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp44953296"></a><code class="function">char=?</code> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp44957888"></a><code class="function">char&lt;?</code> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp44962480"></a><code class="function">char&gt;?</code> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp44967072"></a><code class="function">char&lt;=?</code> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp44971664"></a><code class="function">char&gt;=?</code> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>These procedures impose a total ordering on the set of characters
+according to their Unicode scalar values.
+</p>
+<pre class="screen">(char&lt;? #\z #\ß)      ⇒ #t
+(char&lt;? #\z #\Z)      ⇒ #f
+</pre>
+<p><span class="emphasis"><em>Performance note:</em></span>  This is compiled as if converting each
+argument using <code class="literal">char-&gt;integer</code> (which requires no code)
+and the using the corresponing <code class="literal">int</code> comparison.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp44980368"></a><code class="function">digit-value</code><em class="replaceable"><code> char</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>This procedure returns the numeric value (0 to 9) of its
+argument if it is a numeric digit (that is, if <code class="literal">char-numeric?</code>
+returns <code class="literal">#t</code>), or <code class="literal">#f</code> on any other character.
+</p>
+<pre class="screen">(digit-value #\3)        ⇒ 3
+(digit-value #\x0664)    ⇒ 4
+(digit-value #\x0AE6)    ⇒ 0
+(digit-value #\x0EA6)    ⇒ #f
+</pre>
+</blockquote></div>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Character-sets"></a>Character sets</h3></div></div></div>
+<p>Sets of characters are useful for text-processing code,
+including parsing, lexing, and pattern-matching.
+<a class="ulink" href="http://srfi.schemers.org/srfi-14/srfi-14.html" target="_top">SRFI 14</a> specifies
+a <code class="literal">char-set</code> type for such uses.  Some examples:
+</p>
+<pre class="screen">(import (srfi :14 char-sets))
+(define vowel (char-set #\a #\e #\i #\o #\u))
+(define vowely (char-set-adjoin vowel #\y))
+(char-set-contains? vowel #\y) ⇒  #f
+(char-set-contains? vowely #\y) ⇒  #t
+</pre>
+<p>See the <a class="ulink" href="http://srfi.schemers.org/srfi-14/srfi-14.html" target="_top">SRFI 14 specification</a> for details.
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp44992432"></a><code class="function">char-set</code></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The type of character sets.
+In Kawa <code class="literal">char-set</code> is a type that can be used in type specifiers:
+</p>
+<pre class="screen">(define vowely ::char-set (char-set-adjoin vowel #\y))
+</pre>
+</blockquote></div>
+</div>
+<p>Kawa uses <a class="ulink" href="http://www.ibm.com/developerworks/linux/library/l-cpinv.html" target="_top">inversion lists</a> for an efficient implementation, using Java <code class="literal">int</code> arrays
+to represents character ranges (inversions).
+The <code class="literal">char-set-contains?</code> function uses binary search,
+so it takes time proportional to the logarithm of the number of inversions.
+Other operations may take time proportional to the number of inversions.
+</p>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Strings"></a>Strings</h3></div></div></div>
+<p>Strings are sequences of characters.  The <span class="emphasis"><em>length</em></span> of a string is
+the number of characters that it contains, as an exact non-negative integer.
+This number is usually fixed when the string is created,
+however, you can extend a mutable string with
+the (Kawa-specific) <code class="literal">string-append!</code> function.
+The <span class="emphasis"><em>valid indices</em></span> of a string are the
+exact non-negative integers less than the length of the string.
+The first character of a
+string has index 0, the second has index 1, and so on.
+</p>
+<p>Strings are <span class="emphasis"><em>implemented</em></span> as a sequence of 16-bit <code class="literal">char</code> values,
+even though they're semantically a sequence of 32-bit Unicode code points.
+A character whose value is greater than <code class="literal">#xffff</code>
+is represented using two surrogate characters.
+The implementation allows for natural interoperability with Java APIs.
+However it does make certain operations (indexing or counting based on
+character counts) difficult to implement efficiently.  Luckily one
+rarely needs to index or count based on character counts;
+alternatives are discussed below.
+</p>
+<p>Some of the procedures that operate on strings ignore the
+difference between upper and lower case. The names of
+the versions that ignore case end with “<code class="literal">-ci</code>” (for “case
+insensitive”).
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45007984"></a><code class="function">string</code></p>
+<div class="blockquote"><blockquote class="blockquote"><p>The type of string objects.
+The underlying type is the interface <code class="literal">java.lang.CharSequence</code>.
+Immultable strings are <code class="literal">java.lang.String</code>,
+while mutable strings are <code class="literal">gnu.lists.FString</code>.
+</p></blockquote></div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Basic-string-procedures"></a>Basic string procedures</h4></div></div></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45014368"></a><code class="function">string?</code> <em class="replaceable"><code>obj</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Return <code class="literal">#t</code> if <em class="replaceable"><code>obj</code></em> is a string, <code class="literal">#f</code> otherwise.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45019776"></a><code class="function">string</code> <em class="replaceable"><code>char</code></em><em class="replaceable"><code> …</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Return a newly allocated string composed of the arguments.
+This is analogous to <em class="replaceable"><code>list</code></em>.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45024192"></a><code class="function">make-string</code> <em class="replaceable"><code>k</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45026864"></a><code class="function">make-string</code> <em class="replaceable"><code>k</code></em> <em class="replaceable"><code>char</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Return a newly allocated string of length <em class="replaceable"><code>k</code></em>.  If <em class="replaceable"><code>char</code></em> is
+given, then all elements of the string are initialized to <em class="replaceable"><code>char</code></em>,
+otherwise the contents of the <em class="replaceable"><code>string</code></em> are unspecified.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45032752"></a><code class="function">string-length</code> <em class="replaceable"><code>string</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Return the number of characters in the given <em class="replaceable"><code>string</code></em> as an exact
+integer object.
+</p>
+<p><span class="emphasis"><em>Performance note:</em></span> Calling <code class="literal">string-length</code> may take time propertial
+to the length of the <em class="replaceable"><code>string</code></em>,
+because of the need to scan for surrogate pairs.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45038832"></a><code class="function">string-ref</code> <em class="replaceable"><code>string</code></em> <em class="replaceable"><code>k</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p><em class="replaceable"><code>k</code></em> must be a valid index of <em class="replaceable"><code>string</code></em>.  The <code class="literal">string-ref</code>
+procedure returns character <em class="replaceable"><code>k</code></em> of <em class="replaceable"><code>string</code></em> using zero–origin
+indexing.
+</p>
+<p><span class="emphasis"><em>Performance note:</em></span> Calling <code class="literal">string-ref</code> may take time propertial
+to <em class="replaceable"><code>k</code></em> because of the need to check for surrogate pairs.
+An alternative is to use <code class="literal">string-cursor-ref</code>.
+If iterating through a string, use <code class="literal">string-for-each</code>.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45048544"></a><code class="function">string-set!</code><em class="replaceable"><code> string</code></em><em class="replaceable"><code> k</code></em><em class="replaceable"><code> char</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>This procedure stores <em class="replaceable"><code>char</code></em> in element <em class="replaceable"><code>k</code></em> of <em class="replaceable"><code>string</code></em>.
+</p>
+<pre class="screen">(define s1 (make-string 3 #\*))
+(define s2 "***")
+(string-set! s1 0 #\?) ⇒ <span class="emphasis"><em>void</em></span>
+s1 ⇒ "?**"
+(string-set! s2 0 #\?) ⇒ <span class="emphasis"><em>error</em></span>
+(string-set! (symbol-&gt;string 'immutable) 0 #\?) ⇒ <span class="emphasis"><em>error</em></span>
+</pre>
+<p><span class="emphasis"><em>Performance note:</em></span> Calling <code class="literal">string-set!</code> may take time propertial
+to the length of the string:  First it must scan for the right position,
+like <code class="literal">string-ref</code> does. Then if the new character requires
+using a surrogate pair (and the old one doesn't) then we have to make rom
+in the string, possible re-allocating a new <code class="literal">char</code> array.
+Alternatively, if the old character requires using a surrogate pair
+(and the new one doesn't) then following characters need to be moved.
+</p>
+<p>The function <code class="literal">string-set!</code> is deprecated: It is inefficient,
+and it very seldom does the correct thing.  Instead, you can
+construct a string with <code class="literal">string-append!</code>.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45061296"></a><code class="function">substring</code> <em class="replaceable"><code>string</code></em> <em class="replaceable"><code>start</code></em> <em class="replaceable"><code>end</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p><em class="replaceable"><code>string</code></em> must be a string, and <em class="replaceable"><code>start</code></em> and <em class="replaceable"><code>end</code></em> must be
+exact integer objects satisfying:
+</p>
+<pre class="screen">0 &lt;= <em class="replaceable"><code>start</code></em> &lt;= <em class="replaceable"><code>end</code></em> &lt;= (string-length <em class="replaceable"><code>string</code></em>)
+</pre>
+<p>The <code class="literal">substring</code> procedure returns a newly allocated string formed
+from the characters of <em class="replaceable"><code>string</code></em> beginning with index <em class="replaceable"><code>start</code></em>
+(inclusive) and ending with index <em class="replaceable"><code>end</code></em> (exclusive).
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45071360"></a><code class="function">string-append</code> <em class="replaceable"><code>string</code></em><em class="replaceable"><code> …</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Return a newly allocated string whose characters form the concatenation
+of the given strings.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45075376"></a><code class="function">string-append!</code> <em class="replaceable"><code>string</code></em> <em class="replaceable"><code>value</code></em><em class="replaceable"><code> …</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The <em class="replaceable"><code>string</code></em> must be a mutable string, such as one retuned
+by <code class="literal">make-string</code> or <code class="literal">string-copy</code>.
+The <code class="literal">string-append!</code> procedure extends <em class="replaceable"><code>string</code></em>
+by appending each <em class="replaceable"><code>value</code></em> (in order) to the end of <em class="replaceable"><code>string</code></em>.
+</p>
+<p><span class="emphasis"><em>Performance note:</em></span> The compiler converts a call with multiple <em class="replaceable"><code>value</code></em>s
+to a multiple <code class="literal">string-append!</code> calls.
+If a <em class="replaceable"><code>value</code></em> is known to be a <code class="literal">character</code>, then
+no boxing (object-allocation) is needed.
+</p>
+<p>The following example show to to efficiently process a string
+using <code class="literal">string-for-each</code> and incrementally “building” a result string
+using <code class="literal">string-append!</code>.
+</p>
+<pre class="screen">(define (translate-space-to-newline str::string)::string
+  (let ((result (make-string 0)))
+    (string-for-each
+     (lambda (ch)
+       (string-append! result
+                       (if (char=? ch #\Space) #\Newline ch)))
+     str)
+    result))
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45089632"></a><code class="function">string-&gt;list</code> <em class="replaceable"><code>string</code></em> [<em class="replaceable"><code>start</code></em> [<em class="replaceable"><code>end</code></em>]]</p>
+<p class="synopsis"><a class="indexterm" name="idp45093264"></a><code class="function">list-&gt;string</code> <em class="replaceable"><code>list</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>It is an error if any element of <em class="replaceable"><code>list</code></em> is not a character.
+</p>
+<p>The <code class="literal">string-&gt;list</code> procedure returns a newly allocated list of the
+characters of <em class="replaceable"><code>string</code></em> between <em class="replaceable"><code>start</code></em> and <em class="replaceable"><code>end</code></em>.
+The <code class="literal">list-&gt;string</code> procedure returns a newly allocated string
+formed from the characters in <em class="replaceable"><code>list</code></em>.
+In both procedures, order is preserved.
+The <code class="literal">string-&gt;list</code> and <code class="literal">list-&gt;string</code> procedures are inverses
+so far as <code class="literal">equal?</code> is concerned.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45103312"></a><code class="function">string-for-each</code> <em class="replaceable"><code>proc</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_2</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45107648"></a><code class="function">string-for-each</code> <em class="replaceable"><code>proc</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_1</code></em> [<em class="replaceable"><code>start</code></em> [<em class="replaceable"><code>end</code></em>]]</p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The <em class="replaceable"><code>string</code></em>s must all have the same length.  <em class="replaceable"><code>proc</code></em> should
+accept as many arguments as there are <em class="replaceable"><code>string</code></em>s.
+</p>
+<p>The <em class="replaceable"><code>start</code></em>-<em class="replaceable"><code>end</code></em> variant is provided for compatibility
+with the SRFI-13 version.  (In that case <em class="replaceable"><code>start</code></em> and <em class="replaceable"><code>end</code></em>
+count code Unicode scalar values (<code class="literal">character</code> values),
+not Java 16-bit <code class="literal">char</code> values.)
+</p>
+<p>The <code class="literal">string-for-each</code> procedure applies <em class="replaceable"><code>proc</code></em> element–wise to
+the characters of the <em class="replaceable"><code>string</code></em>s for its side effects, in order from
+the first characters to the last.  <em class="replaceable"><code>proc</code></em> is always called in the
+same dynamic environment as <code class="literal">string-for-each</code> itself.
+
+</p>
+<p>Analogous to <code class="literal">for-each</code>.
+</p>
+<pre class="screen">(let ((v '()))
+  (string-for-each
+    (lambda (c) (set! v (cons (char-&gt;integer c) v)))
+    "abcde")
+   v)
+  ⇒ (101 100 99 98 97)
+</pre>
+<p><span class="emphasis"><em>Performance note:</em></span> The compiler generates efficient code
+for <code class="literal">string-for-each</code>.
+If <em class="replaceable"><code>proc</code></em> is a lambda expression, it is inlined,
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45125424"></a><code class="function">string-map</code> <em class="replaceable"><code>proc</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_2</code></em><em class="replaceable"><code> …</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The <code class="literal">string-map</code> procedure applies <em class="replaceable"><code>proc</code></em> element-wise to
+the elements of the strings and returns a string of the results, in order.
+It is an error if <em class="replaceable"><code>proc</code></em> does not accept as many arguments as there
+are strings, or return other than a single character.
+If more than one string is given and not all strings have the same length,
+<code class="literal">string-map</code> terminates when the shortest string runs out.
+The dynamic order in
+which <em class="replaceable"><code>proc</code></em> is applied to the elements of the strings is unspecified.
+
+
+</p>
+<pre class="screen">(string-map char-foldcase "AbdEgH")  ⇒ "abdegh"
+</pre>
+<pre class="screen">(string-map
+  (lambda (c) (integer-&gt;char (+ 1 (char-&gt;integer c))))
+  "HAL")
+        ⇒ "IBM"
+</pre>
+<pre class="screen">(string-map
+  (lambda (c k)
+    ((if (eqv? k #\u) char-upcase char-downcase) c))
+  "studlycaps xxx"
+  "ululululul")
+        ⇒ "StUdLyCaPs"
+</pre>
+<p><span class="emphasis"><em>Performance note:</em></span> The <code class="literal">string-map</code> procedure has not been
+optimized (mainly because it is not very useful):
+The characters are boxed, and the <em class="replaceable"><code>proc</code></em> is not inlined even if
+a lambda expression.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45139088"></a><code class="function">string-copy</code> <em class="replaceable"><code>string</code></em> [<em class="replaceable"><code>start</code></em> [<em class="replaceable"><code>end</code></em>]]</p>
+<div class="blockquote"><blockquote class="blockquote"><p>Returns a newly allocated copy of the the part of the given <em class="replaceable"><code>string</code></em>
+between <em class="replaceable"><code>start</code></em> and <em class="replaceable"><code>end</code></em>.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45144992"></a><code class="function">string-replace!</code> <em class="replaceable"><code>dst</code></em> <em class="replaceable"><code>dst-start</code></em> <em class="replaceable"><code>dst-end</code></em> <em class="replaceable"><code>src</code></em> [<em class="replaceable"><code>src-start</code></em> [<em class="replaceable"><code>src-end</code></em>]]</p>
+<div class="blockquote"><blockquote class="blockquote"><p>Replaces the characters of string <em class="replaceable"><code>dst</code></em> (between <em class="replaceable"><code>dst-start</code></em> and <em class="replaceable"><code>dst-end</code></em>) with the characters of <em class="replaceable"><code>src</code></em> (between <em class="replaceable"><code>src-start</code></em> and <em class="replaceable"><code>src-end</code></em>).
+The number of characters from <em class="replaceable"><code>src</code></em> may be different than the
+number replaced in <em class="replaceable"><code>dst</code></em>, so the string may grow or contract.
+The special case where <em class="replaceable"><code>dst-start</code></em> is equal to <em class="replaceable"><code>dst-end</code></em> corresponds to
+insertion; the case where <em class="replaceable"><code>src-start</code></em> is equal to <em class="replaceable"><code>src-end</code></em>
+corresponds to deletion.
+The order in which characters are copied
+is unspecified, except that if the source and destination overlap,
+copying takes places as if the source is first copied into a
+temporary string and then into the destination.
+(This is achieved without allocating storage by making sure to copy in
+the correct direction in such circumstances.)
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45156464"></a><code class="function">string-copy!</code> <em class="replaceable"><code>to</code></em> <em class="replaceable"><code>at</code></em> <em class="replaceable"><code>from</code></em> [<em class="replaceable"><code>start</code></em> [<em class="replaceable"><code>end</code></em>]]</p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Copies the characters of the string <em class="replaceable"><code>from</code></em> that are between
+<em class="replaceable"><code>start</code></em> end <em class="replaceable"><code>end</code></em> into the string <em class="replaceable"><code>to</code></em>,
+starting at index <em class="replaceable"><code>at</code></em>.  The order in which characters are copied
+is unspecified, except that if the source and destination overlap,
+copying takes places as if the source is first copied into a
+temporary string and then into the destination.
+(This is achieved without allocating storage by making sure to copy in
+the correct direction in such circumstances.)
+</p>
+<p>This is equivalent to (and implemented as):
+</p>
+<pre class="screen">(string-replace! to at (+ at (- end start)) from start end))
+</pre>
+<pre class="screen">(define a "12345")
+(define b (string-copy "abcde"))
+(string-copy! b 1 a 0 2)
+b  ⇒  "a12de"
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45166240"></a><code class="function">string-fill!</code> <em class="replaceable"><code>string</code></em> <em class="replaceable"><code>fill</code></em> [<em class="replaceable"><code>start</code></em> [<em class="replaceable"><code>end</code></em>]]</p>
+<div class="blockquote"><blockquote class="blockquote"><p>The <code class="literal">string-fill!</code> procedure stores <em class="replaceable"><code>fill</code></em> in the elements
+of <em class="replaceable"><code>string</code></em> between <em class="replaceable"><code>start</code></em> and <em class="replaceable"><code>end</code></em>.
+It is an error if <em class="replaceable"><code>fill</code></em> is not a character or is forbidden in strings.
+</p></blockquote></div>
+</div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="String-Comparisons"></a>String Comparisons</h4></div></div></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45175264"></a><code class="function">string=?</code> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Return <code class="literal">#t</code> if the strings are the same length and contain the same
+characters in the same positions.  Otherwise, the <code class="literal">string=?</code>
+procedure returns <code class="literal">#f</code>.
+</p>
+<pre class="screen">(string=? "Straße" "Strasse")    ⇒ #f
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45183728"></a><code class="function">string&lt;?</code> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45188320"></a><code class="function">string&gt;?</code> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45192912"></a><code class="function">string&lt;=?</code> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45197504"></a><code class="function">string&gt;=?</code> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>These procedures return <code class="literal">#t</code> if their arguments are (respectively):
+monotonically increasing, monotonically decreasing,
+monotonically non-decreasing, or monotonically nonincreasing.
+These predicates are required to be transitive.
+</p>
+<p>These procedures are the lexicographic extensions to strings of the
+corresponding orderings on characters.  For example, <code class="literal">string&lt;?</code> is
+the lexicographic ordering on strings induced by the ordering
+<code class="literal">char&lt;?</code> on characters.  If two strings differ in length but are
+the same up to the length of the shorter string, the shorter string is
+considered to be lexicographically less than the longer string.
+</p>
+<pre class="screen">(string&lt;? "z" "ß")      ⇒ #t
+(string&lt;? "z" "zz")     ⇒ #t
+(string&lt;? "z" "Z")      ⇒ #f
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45206944"></a><code class="function">string-ci=?</code> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45211536"></a><code class="function">string-ci&lt;?</code> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45216128"></a><code class="function">string-ci&gt;?</code> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45220720"></a><code class="function">string-ci&lt;=?</code> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45225152"></a><code class="function">string-ci&gt;=?</code> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>string</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>These procedures are similar to <code class="literal">string=?</code>, etc.,
+but behave as if they applied <code class="literal">string-foldcase</code> to their arguments
+before invokng the corresponding procedures without <code class="literal">-ci</code>.
+</p>
+<pre class="screen">(string-ci&lt;? "z" "Z")                   ⇒ #f
+(string-ci=? "z" "Z")                   ⇒ #t
+(string-ci=? "Straße" "Strasse")        ⇒ #t
+(string-ci=? "Straße" "STRASSE")        ⇒ #t
+(string-ci=? "ΧΑΟΣ" "χαοσ")             ⇒ #t
+</pre>
+</blockquote></div>
+</div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="String-Conversions"></a>String Conversions</h4></div></div></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45234928"></a><code class="function">string-upcase</code> <em class="replaceable"><code>string</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45237568"></a><code class="function">string-downcase</code> <em class="replaceable"><code>string</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45240272"></a><code class="function">string-titlecase</code> <em class="replaceable"><code>string</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45242976"></a><code class="function">string-foldcase</code> <em class="replaceable"><code>string</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>These procedures take a string argument and return a string result.
+They are defined in terms of Unicode's locale–independent case mappings
+from Unicode scalar–value sequences to scalar–value sequences.  In
+particular, the length of the result string can be different from the
+length of the input string.  When the specified result is equal in the
+sense of <code class="literal">string=?</code> to the argument, these procedures may return
+the argument instead of a newly allocated string.
+</p>
+<p>The <code class="literal">string-upcase</code> procedure converts a string to upper case;
+<code class="literal">string-downcase</code> converts a string to lower case.  The
+<code class="literal">string-foldcase</code> procedure converts the string to its case–folded
+counterpart, using the full case–folding mapping, but without the
+special mappings for Turkic languages.  The <code class="literal">string-titlecase</code>
+procedure converts the first cased character of each word, and downcases
+all other cased characters.
+</p>
+<pre class="screen">(string-upcase "Hi")              ⇒ "HI"
+(string-downcase "Hi")            ⇒ "hi"
+(string-foldcase "Hi")            ⇒ "hi"
+
+(string-upcase "Straße")          ⇒ "STRASSE"
+(string-downcase "Straße")        ⇒ "straße"
+(string-foldcase "Straße")        ⇒ "strasse"
+(string-downcase "STRASSE")       ⇒ "strasse"
+
+(string-downcase "Σ")             ⇒ "σ"
+; Chi Alpha Omicron Sigma:
+(string-upcase "ΧΑΟΣ")            ⇒ "ΧΑΟΣ"
+(string-downcase "ΧΑΟΣ")          ⇒ "χαος"
+(string-downcase "ΧΑΟΣΣ")         ⇒ "χαοσς"
+(string-downcase "ΧΑΟΣ Σ")        ⇒ "χαος σ"
+(string-foldcase "ΧΑΟΣΣ")         ⇒ "χαοσσ"
+(string-upcase "χαος")            ⇒ "ΧΑΟΣ"
+(string-upcase "χαοσ")            ⇒ "ΧΑΟΣ"
+
+(string-titlecase "kNock KNoCK")  ⇒ "Knock Knock"
+(string-titlecase "who's there?") ⇒ "Who's There?"
+(string-titlecase "r6rs")         ⇒ "R6rs"
+(string-titlecase "R6RS")         ⇒ "R6rs"
+</pre>
+<div class="blockquote"><blockquote class="blockquote">
+<p><span class="emphasis"><em>Note:</em></span> The case mappings needed for implementing these procedures
+can be extracted from <code class="filename">UnicodeData.txt</code>, <code class="filename">SpecialCasing.txt</code>,
+<code class="filename">WordBreakProperty.txt</code> (the “MidLetter” property partly defines
+case–ignorable characters), and <code class="filename">CaseFolding.txt</code> from the Unicode
+Consortium.
+</p>
+<p>Since these procedures are locale–independent, they may not be
+appropriate for some locales.
+</p>
+</blockquote></div>
+<div class="blockquote"><blockquote class="blockquote"><p><span class="emphasis"><em>Note:</em></span> Word breaking, as needed for the correct casing of the
+upper case greek sigma and for <code class="literal">string-titlecase</code>, is specified in
+Unicode Standard Annex #29.
+</p></blockquote></div>
+<div class="blockquote"><blockquote class="blockquote"><p><span class="emphasis"><em>Kawa Note:</em></span>  The implementation of <code class="literal">string-titlecase</code>
+does not correctly handle the case where an initial character
+needs to be converted to multiple characters, such as
+“LATIN SMALL LIGATURE FL” which should be converted to
+the two letters <code class="literal">"Fl"</code>.
+</p></blockquote></div>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45262448"></a><code class="function">string-normalize-nfd</code> <em class="replaceable"><code>string</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45265152"></a><code class="function">string-normalize-nfkd</code> <em class="replaceable"><code>string</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45267856"></a><code class="function">string-normalize-nfc</code> <em class="replaceable"><code>string</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45270560"></a><code class="function">string-normalize-nfkc</code> <em class="replaceable"><code>string</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>These procedures take a string argument and return a string result,
+which is the input string normalized to Unicode normalization form D,
+KD, C, or KC, respectively.  When the specified result is equal in the
+sense of <code class="literal">string=?</code> to the argument, these procedures may return
+the argument instead of a newly allocated string.
+</p>
+<pre class="screen">(string-normalize-nfd "\xE9;")          ⇒ "\x65;\x301;"
+(string-normalize-nfc "\xE9;")          ⇒ "\xE9;"
+(string-normalize-nfd "\x65;\x301;")    ⇒ "\x65;\x301;"
+(string-normalize-nfc "\x65;\x301;")    ⇒ "\xE9;"
+</pre>
+</blockquote></div>
+</div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="String-Cursor-API"></a>String Cursor API</h4></div></div></div>
+<p>Indexing into a string (using for example <code class="literal">string-ref</code>)
+is inefficient because of the possible presence of surrogate pairs.
+Hence given an index <em class="replaceable"><code>i</code></em> access normally requires linearly
+scanning the string until we have seen <em class="replaceable"><code>i</code></em> characters.
+</p>
+<p>The string-cursor API is defined in terms of abstract “cursor values”,
+which point to a position in the string.  This avoids the linear scan.
+</p>
+<p>The API is non-standard, but is based on that in Chibi Scheme.
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45280672"></a><code class="function">string-cursor</code></p>
+<div class="blockquote"><blockquote class="blockquote"><p>An abstract posistion (index) in a string.
+Implemented as a primitive <code class="literal">int</code> which counts the
+number of preceding code units (16-bit <code class="literal">char</code> values).
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45285408"></a><code class="function">string-cursor-start</code><em class="replaceable"><code> str</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Returns a cursor for the start of the string.
+The result is always 0, cast to a <code class="literal">string-cursor</code>.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45289680"></a><code class="function">string-cursor-end</code><em class="replaceable"><code> str</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Returns a cursor for the end of the string - one past the last valid character.
+Implemented as <code class="literal">(as string-cursor (invoke <em class="replaceable"><code>str</code></em> 'length))</code>.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45294400"></a><code class="function">string-cursor-ref</code><em class="replaceable"><code> str</code></em><em class="replaceable"><code> cursor</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Return the <code class="literal">character</code> at the <em class="replaceable"><code>cursor</code></em>.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45299344"></a><code class="function">string-cursor-next</code><em class="replaceable"><code> string</code></em><em class="replaceable"><code> cursor</code></em> [<em class="replaceable"><code>count</code></em>]</p>
+<div class="blockquote"><blockquote class="blockquote"><p>Return the cursor position <em class="replaceable"><code>count</code></em> (default 1) character
+positions forwards beyond <em class="replaceable"><code>cursor</code></em>.
+For each <em class="replaceable"><code>count</code></em> this may add either 1 or 2
+(if pointing at a surrogate pair) to the <em class="replaceable"><code>cursor</code></em>.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45305488"></a><code class="function">string-cursor-prev</code><em class="replaceable"><code> string</code></em><em class="replaceable"><code> cursor</code></em> [<em class="replaceable"><code>count</code></em>]</p>
+<div class="blockquote"><blockquote class="blockquote"><p>Return the cursor position <em class="replaceable"><code>count</code></em> (default 1) character
+positions backwards before <em class="replaceable"><code>cursor</code></em>.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45310752"></a><code class="function">substring-cursor</code><em class="replaceable"><code> string</code></em> [<em class="replaceable"><code>start</code></em> [<em class="replaceable"><code>end</code></em>]]</p>
+<div class="blockquote"><blockquote class="blockquote"><p>Create a substring of the section of <em class="replaceable"><code>string</code></em>
+between the cursors <em class="replaceable"><code>start</code></em> and <em class="replaceable"><code>end</code></em>.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45316496"></a><code class="function">string-cursor&lt;?</code><em class="replaceable"><code> cursor1</code></em><em class="replaceable"><code> cursor2</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45319392"></a><code class="function">string-cursor&lt;=?</code><em class="replaceable"><code> cursor1</code></em><em class="replaceable"><code> cursor2</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45322288"></a><code class="function">string-cursor=?</code><em class="replaceable"><code> cursor1</code></em><em class="replaceable"><code> cursor2</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45325152"></a><code class="function">string-cursor&gt;=?</code><em class="replaceable"><code> cursor1</code></em><em class="replaceable"><code> cursor2</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45328048"></a><code class="function">string-cursor&gt;?</code><em class="replaceable"><code> cursor1</code></em><em class="replaceable"><code> cursor2</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Is the position of <em class="replaceable"><code>cursor1</code></em> respectively before,
+before or same, same, after, or after or same, as <em class="replaceable"><code>cursor2</code></em>.
+</p>
+<p><span class="emphasis"><em>Performance note:</em></span> Implemented as the corresponding <code class="literal">int</code> comparison.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45334544"></a><code class="function">string-cursor-for-each</code><em class="replaceable"><code> proc</code></em><em class="replaceable"><code> string</code></em> [<em class="replaceable"><code>start</code></em> [<em class="replaceable"><code>end</code></em>]]</p>
+<div class="blockquote"><blockquote class="blockquote"><p>Apply the procedure <em class="replaceable"><code>proc</code></em> to each character position in
+<em class="replaceable"><code>string</code></em> between the cursors <em class="replaceable"><code>start</code></em> and <em class="replaceable"><code>end</code></em>.
+</p></blockquote></div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="String-literals"></a>String literals</h3></div></div></div>
+<p>Kaw support two syntaxes of string literals:
+The traditional, portable, qdouble-quoted-delimited literals
+like <code class="literal">"this"</code>;
+and extended SRFI-109 quasi-literals like <code class="literal">&amp;{this}</code>.
+</p>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Simple-string-literals"></a>Simple string literals</h4></div></div></div>
+<div class="literallayout"><p><a class="indexterm" name="idp45345136"></a><a name="meta-string"></a><em class="replaceable"><code>string</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>"</strong></span></code><a class="link" href="Characters-and-text.html#meta-string-element"><em class="replaceable"><code>string-element</code></em></a>^*<code class="literal"><span class="bold"><strong>"</strong></span></code><br>
+<a class="indexterm" name="idp45350912"></a><a name="meta-string-element"></a><em class="replaceable"><code>string-element</code></em> <code class="literal">::=</code> <em class="wordasword">any character other than</em> <code class="literal"><span class="bold"><strong>"</strong></span></code> <em class="wordasword">or</em> <code class="literal"><span class="bold"><strong>@backslashchar{}</strong></span></code><br>
+    | <a class="link" href="Characters-and-text.html#meta-mnemonic-escape"><em class="replaceable"><code>mnemonic-escape</code></em></a> | <code class="literal"><span class="bold"><strong>@backslashchar{}"</strong></span></code> | <code class="literal"><span class="bold"><strong>@backslashchar{}@backslashchar{}</strong></span></code><br>
+    | <code class="literal"><span class="bold"><strong>@backslashchar{}</strong></span></code><a class="link" href="Syntax.html#meta-intraline-whitespace"><em class="replaceable"><code>intraline-whitespace</code></em></a>^*<a class="link" href="Syntax.html#meta-line-ending"><em class="replaceable"><code>line-ending</code></em></a> <a class="link" href="Syntax.html#meta-intraline-whitespace"><em class="replaceable"><code>intraline-whitespace</code></em></a>^*<br>
+    | <a class="link" href="Syntax.html#meta-inline-hex-escape"><em class="replaceable"><code>inline-hex-escape</code></em></a><br>
+<a class="indexterm" name="idp45364624"></a><a name="meta-mnemonic-escape"></a><em class="replaceable"><code>mnemonic-escape</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>@backslashchar{}a</strong></span></code> | <code class="literal"><span class="bold"><strong>@backslashchar{}b</strong></span></code> | <code class="literal"><span class="bold"><strong>@backslashchar{}t</strong></span></code> | <code class="literal"><span class="bold"><strong>@backslashchar{}n</strong></span></code> | <code class="literal"><span class="bold"><strong>@backslashchar{}r</strong></span></code> | ... <em class="wordasword">(see below)</em><br>
+</p></div>
+<p>A string is written as a sequence of characters enclosed
+within quotation marks (<code class="literal"><span class="bold"><strong>"</strong></span></code>).
+Within a string literal, various escape sequence represent characters
+other than themselves.
+Escape sequences always start with a backslash (<code class="literal"><span class="bold"><strong>@backslashchar{}</strong></span></code>):
+</p>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term"><code class="literal"><span class="bold"><strong>@backslashchar{}a</strong></span></code></dt>
+<dd><p>Alarm (bell), <code class="literal">#\x0007</code>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>@backslashchar{}b</strong></span></code></dt>
+<dd><p>Backspace, <code class="literal">#\x0008</code>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>@backslashchar{}e</strong></span></code></dt>
+<dd><p>Escape, <code class="literal">#\x001B</code>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>@backslashchar{}f</strong></span></code></dt>
+<dd><p>Form feed, <code class="literal">#\x000C</code>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>@backslashchar{}n</strong></span></code></dt>
+<dd><p>Linefeed (newline), <code class="literal">#\x000A</code>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>@backslashchar{}r</strong></span></code></dt>
+<dd><p>Return, <code class="literal">#\x000D</code>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>@backslashchar{}t</strong></span></code></dt>
+<dd><p>Character tabulation, <code class="literal">#\x0009</code>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>@backslashchar{}v</strong></span></code></dt>
+<dd><p>Vertical tab, <code class="literal">#\x000B</code>.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>@backslashchar{}C-</strong></span></code><em class="replaceable"><code>x</code></em>
+</dt>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>@backslashchar{}^</strong></span></code><em class="replaceable"><code>x</code></em>
+</dt>
+<dd><p>Returns the scalar value of <em class="replaceable"><code>x</code></em> masked (anded) with <code class="literal">#x9F</code>.
+An alternative way to write the Ascii control characters:
+For example <code class="literal">"\C-m"</code> or <code class="literal">"\^m"</code> is
+the same as <code class="literal">"#\x000D"</code> (which the same as <code class="literal">"\r"</code>).
+As a special case <code class="literal">\^?</code> is rubout (delete) (<code class="literal">\x7f;</code>).
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>@backslashchar{}x</strong></span></code> <a class="link" href="Syntax.html#meta-hex-scalar-value"><em class="replaceable"><code>hex-scalar-value</code></em></a><code class="literal"><span class="bold"><strong>;</strong></span></code>
+</dt>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>@backslashchar{}X</strong></span></code> <a class="link" href="Syntax.html#meta-hex-scalar-value"><em class="replaceable"><code>hex-scalar-value</code></em></a><code class="literal"><span class="bold"><strong>;</strong></span></code>
+</dt>
+<dd><p>A hex encoding that gives the scalar value of a character.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>@backslashchar{}@backslashchar{}</strong></span></code> <a class="link" href="Syntax.html#meta-oct-digit"><em class="replaceable"><code>oct-digit</code></em></a>^+</dt>
+<dd><p>At most three octal digits that give the scalar value of a character.
+(Historical, for C compatibility.)
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>@backslashchar{}u</strong></span></code> <a class="link" href="Syntax.html#meta-hex-digit"><em class="replaceable"><code>hex-digit</code></em></a>^+</dt>
+<dd><p>Exactly four hex digits that give the scalar value of a character.
+(Historical, for Java compatibility.)
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>@backslashchar{}M-</strong></span></code><em class="replaceable"><code>x</code></em>
+</dt>
+<dd><p>(Historical, for Emacs Lisp.)
+Set the meta-bit (high-bit of single byte) of the following character <em class="replaceable"><code>x</code></em>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>@backslashchar{}|</strong></span></code></dt>
+<dd><p>Vertical line, <code class="literal">#\x007c</code>.
+(Not useful for string literals, but useful for symbols.)
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>@backslashchar{}"</strong></span></code></dt>
+<dd><p>Double quote, <code class="literal">#\x0022</code>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>@backslashchar{}@backslashchar{}</strong></span></code></dt>
+<dd><p>Backslah, <code class="literal">#\005C</code>.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>@backslashchar{}</strong></span></code><a class="link" href="Syntax.html#meta-intraline-whitespace"><em class="replaceable"><code>intraline-whitespace</code></em></a>^*<a class="link" href="Syntax.html#meta-line-ending"><em class="replaceable"><code>line-ending</code></em></a> <a class="link" href="Syntax.html#meta-intraline-whitespace"><em class="replaceable"><code>intraline-whitespace</code></em></a>^*</dt>
+<dd><p>Nothing (ignored).  Allows you to split up a long string over multiple
+lines; ignoring initial whitespace on the continuation lines allows
+you to indent them.
+</p></dd>
+</dl></div>
+<p>Except for a line ending, any character outside of an escape
+sequence stands for itself in the string literal. A line ending
+which is preceded by  <code class="literal"><span class="bold"><strong>@backslashchar{}</strong></span></code><em class="replaceable"><code>intraline-whitespace</code></em>^*
+expands to nothing (along with any trailing <em class="replaceable"><code>intraline-whitespace</code></em>),
+and can be used to indent strings for improved legibility.
+Any other line ending has the same effect as inserting a <code class="literal"><span class="bold"><strong>@backslashchar{}n</strong></span></code>
+character into the string.
+</p>
+<p>Examples:
+</p>
+<pre class="screen">"The word \"recursion\" has many meanings."
+"Another example:\ntwo lines of text"
+"Here’s text \
+containing just one line"
+"\x03B1; is named GREEK SMALL LETTER ALPHA."
+</pre>
+<p><a name="string%20quasi-literals"></a>
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="String-templates"></a>String templates</h4></div></div></div>
+<p>The following syntax is a <em class="firstterm">string template</em> (also called
+a string quasi-literal or
+“<a class="ulink" href="http://en.wikipedia.org/wiki/Here_document" target="_top">here document</a>”):
+</p>
+<pre class="screen">&amp;{Hello &amp;[name]!}
+</pre>
+<p>Assuming the variable <code class="literal">name</code> evaluates to <code class="literal">"John"</code>
+then the example evaluates to <code class="literal">"Hello John!"</code>.
+</p>
+<p>The Kawa reader converts the above example to:
+</p>
+<pre class="screen">($string$ "Hello " $&lt;&lt;$ name $&gt;&gt;$ "!")
+</pre>
+<p>See the <a class="ulink" href="http://srfi.schemers.org/srfi-109/srfi-109.html" target="_top">SRFI-109</a>
+specification for details.
+</p>
+<div class="literallayout"><p><a class="indexterm" name="idp45446320"></a><a name="meta-extended-string-literal"></a><em class="replaceable"><code>extended-string-literal</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>&amp;@lbracechar{}</strong></span></code> [<a class="link" href="Characters-and-text.html#meta-initial-ignored"><em class="replaceable"><code>initial-ignored</code></em></a>] <a class="link" href="Characters-and-text.html#meta-string-literal-part"><em class="replaceable"><code>string-literal-part</code></em></a>^* <code class="literal"><span class="bold"><strong>@rbracechar{}</strong></span></code><br>
+<a class="indexterm" name="idp45453168"></a><a name="meta-string-literal-part"></a><em class="replaceable"><code>string-literal-part</code></em> <code class="literal">::=</code>  <em class="wordasword">any character except</em> <code class="literal"><span class="bold"><strong>&amp;</strong></span></code>, <code class="literal"><span class="bold"><strong>@lbracechar{}</strong></span></code> <em class="wordasword">or</em> <code class="literal"><span class="bold"><strong>@rbracechar{}</strong></span></code><br>
+    | <code class="literal"><span class="bold"><strong>@lbracechar{}</strong></span></code> <a class="link" href="Characters-and-text.html#meta-string-literal-part"><em class="replaceable"><code>string-literal-part</code></em></a>^* <code class="literal"><span class="bold"><strong>@rbracechar{}</strong></span></code><br>
+    | <a class="link" href="Characters-and-text.html#meta-char-ref"><em class="replaceable"><code>char-ref</code></em></a><br>
+    | <a class="link" href="Characters-and-text.html#meta-entity-ref"><em class="replaceable"><code>entity-ref</code></em></a><br>
+    | <a class="link" href="Characters-and-text.html#meta-special-escape"><em class="replaceable"><code>special-escape</code></em></a><br>
+    | <a class="link" href="Characters-and-text.html#meta-enclosed-part"><em class="replaceable"><code>enclosed-part</code></em></a><br>
+</p></div>
+<p>You can use the plain <code class="literal">"<em class="replaceable"><code>string</code></em>"</code> syntax for
+longer multiline strings, but <code class="literal">&amp;{<em class="replaceable"><code>string</code></em>}</code> has
+various advantages.
+The syntax is less error-prone because the start-delimiter is
+different from the end-delimiter.  Also note that nested braces
+are allowed: a right brace <code class="literal">@rbracechar{}</code> is only an end-delimiter
+if it is unbalanced, so you would seldom need to escape it:
+</p>
+<pre class="screen">&amp;{This has a {braced} section.}
+  ⇒ "This has a {braced} section."
+</pre>
+<p>The escape character used for special characters is
+<code class="literal"><span class="bold"><strong>&amp;</strong></span></code>.  This is compatible with XML syntax and <a class="xref" href="XML-tools.html#XML-literals" title="Kawa: XML literals">the section called “XML literals”</a>.
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Special-characters"></a>Special characters</h4></div></div></div>
+<div class="literallayout"><p><a class="indexterm" name="idp45475344"></a><a name="meta-char-ref"></a><em class="replaceable"><code>char-ref</code></em> <code class="literal">::=</code><br>
+    <code class="literal"><span class="bold"><strong>&amp;#</strong></span></code> <a class="link" href="Syntax.html#meta-digit"><em class="replaceable"><code>digit</code></em></a>^+ <code class="literal"><span class="bold"><strong>;</strong></span></code><br>
+  | <code class="literal"><span class="bold"><strong>&amp;#x</strong></span></code> <a class="link" href="Syntax.html#meta-hex-digit"><em class="replaceable"><code>hex-digit</code></em></a>^+  <code class="literal"><span class="bold"><strong>;</strong></span></code><br>
+<a class="indexterm" name="idp45484240"></a><a name="meta-entity-ref"></a><em class="replaceable"><code>entity-ref</code></em> <code class="literal">::=</code><br>
+    <code class="literal"><span class="bold"><strong>&amp;</strong></span></code> <a class="link" href="Characters-and-text.html#meta-char-or-entity-name"><em class="replaceable"><code>char-or-entity-name</code></em></a> <code class="literal"><span class="bold"><strong>;</strong></span></code><br>
+<a class="indexterm" name="idp45490192"></a><a name="meta-char-or-entity-name"></a><em class="replaceable"><code>char-or-entity-name</code></em> <code class="literal">::=</code> <em class="replaceable"><code>tagname</code></em><br>
+</p></div>
+<p>You can the standard XML syntax for character references, using
+either decimal or hexadecimal values. The following string has two
+instances of the Ascii escape character, as either decimal 27 or hex 1B:
+</p>
+<pre class="screen">&amp;{&amp;#27;&amp;#x1B;} ⇒ "\e\e"
+</pre>
+<p>You can also use the pre-defined XML entity names:
+</p>
+<pre class="screen">&amp;{&amp;amp; &amp;lt; &amp;gt; &amp;quot; &amp;apos;} ⇒ "&amp; &lt; &gt; \" '"
+</pre>
+<p>In addition, <code class="literal">&amp;lbrace;</code> <code class="literal">&amp;rbrace;</code> can be used for left and
+right curly brace, though you don't need them for balanced parentheses:
+</p>
+<pre class="screen">&amp;{ &amp;rbrace;_&amp;lbrace; / {_} }  ⇒ " }_{ / {_} "
+</pre>
+<p>You can use the <a class="ulink" href="http://www.w3.org/2003/entities/2007/w3centities-f.ent" target="_top">standard XML entity names</a>. For example:
+</p>
+<pre class="screen">&amp;{L&amp;aelig;rdals&amp;oslash;yri}
+  ⇒ "Lærdalsøyri"
+</pre>
+<p>You can also use the standard R7RS character names <code class="literal">null</code>,
+<code class="literal">alarm</code>, <code class="literal">backspace</code>, <code class="literal">tab</code>, <code class="literal">newline</code>, <code class="literal">return</code>,
+<code class="literal">escape</code>, <code class="literal">space</code>, and <code class="literal">delete</code>.
+For example:
+</p>
+<pre class="screen">&amp;{&amp;escape;&amp;space;}
+</pre>
+<p>The syntax <code class="literal">&amp;<em class="replaceable"><code>name</code></em>;</code> is actually syntactic sugar
+(specifically reader syntax) to the variable reference
+<code class="literal">$entity$:<em class="replaceable"><code>name</code></em></code>.
+Hence you can also define your own entity names:
+</p>
+<pre class="screen">(define $entity$:crnl "\r\n")
+&amp;{&amp;crnl;} ⟹ "\r\n"
+</pre>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Multiline-string-literals"></a>Multiline string literals</h4></div></div></div>
+<pre class="screen"><a class="indexterm" name="idp45511888"></a><a name="meta-initial-ignored"></a><em class="replaceable"><code>initial-ignored</code></em> <code class="literal">::=</code>
+    <a class="link" href="Syntax.html#meta-intraline-whitespace"><em class="replaceable"><code>intraline-whitespace</code></em></a>^* <a class="link" href="Syntax.html#meta-line-ending"><em class="replaceable"><code>line-ending</code></em></a> <a class="link" href="Syntax.html#meta-intraline-whitespace"><em class="replaceable"><code>intraline-whitespace</code></em></a>^* <code class="literal"><span class="bold"><strong>&amp;|</strong></span></code>
+<a class="indexterm" name="idp45518496"></a><a name="meta-special-escape"></a><em class="replaceable"><code>special-escape</code></em> <code class="literal">::=</code>
+    <a class="link" href="Syntax.html#meta-intraline-whitespace"><em class="replaceable"><code>intraline-whitespace</code></em></a>^* <code class="literal"><span class="bold"><strong>&amp;|</strong></span></code>
+  | <code class="literal"><span class="bold"><strong>&amp;</strong></span></code> <a class="link" href="Syntax.html#meta-nested-comment"><em class="replaceable"><code>nested-comment</code></em></a>
+  | <code class="literal"><span class="bold"><strong>&amp;-</strong></span></code> <a class="link" href="Syntax.html#meta-intraline-whitespace"><em class="replaceable"><code>intraline-whitespace</code></em></a>^* <a class="link" href="Syntax.html#meta-line-ending"><em class="replaceable"><code>line-ending</code></em></a>
+</pre>
+<p>A line-ending directly in the text is becomes a newline,
+as in a simple string literal:
+</p>
+<pre class="screen">(string-capitalize &amp;{one two three
+uno dos tres
+}) ⇒ "One Two Three\nUno Dos Tres\n"
+</pre>
+<p>However, you have extra control over layout.
+If the string is in a nested expression, it is confusing
+(and ugly) if the string cannot be indented to match
+the surrounding context. The indentation marker <code class="literal"><span class="bold"><strong>&amp;|</strong></span></code>
+is used to mark the end of insignificant initial whitespace.
+The <code class="literal">&amp;|</code> characters and all the preceding whitespace are removed.
+In addition, it also suppresses an initial newline.  Specifically,
+when the initial left-brace is followed by optional (invisible)
+intraline-whitespace, then a newline, then optional
+intraline-whitespace (the indentation), and finally the indentation
+marker <code class="literal">&amp;|</code> - all of which is removed from the output.
+Otherwise the <code class="literal">&amp;|</code> only removes initial intraline-whitespace
+on the same line (and itself).
+</p>
+<pre class="screen">(write (string-capitalize &amp;{
+     &amp;|one two three
+     &amp;|uno dos tres
+}) out)
+    ⇒ <em class="wordasword">prints</em> "One Two Three\nUno Dos Tres\n"
+</pre>
+<p>As a matter of style, all of the indentation lines should line up.
+It is an error if there are any non-whitespace characters between
+the previous newline and the indentation marker.
+It is also an error to write an indentation marker before the
+first newline in the literal.
+</p>
+<p>The line-continuation marker <code class="literal"><span class="bold"><strong>&amp;-</strong></span></code> is used to suppress a newline:
+</p>
+<pre class="screen">&amp;{abc&amp;-
+  def} ⇒ "abc  def"
+</pre>
+<p>You can write a <code class="literal">#|...|#</code>-style comment following a <code class="literal">&amp;</code>.
+This could be useful for annotation, or line numbers:
+</p>
+<pre class="screen">&amp;{&amp;#|line 1|#one two
+  &amp;#|line 2|# three
+  &amp;#|line 3|#uno dos tres
+} ⇒ "one two\n three\nuno dos tres\n"
+</pre>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Embedded-expressions"></a>Embedded expressions</h4></div></div></div>
+<pre class="screen"><a class="indexterm" name="idp45542016"></a><a name="meta-enclosed-part"></a><em class="replaceable"><code>enclosed-part</code></em> <code class="literal">::=</code>
+    <code class="literal"><span class="bold"><strong>&amp;</strong></span></code> enclosed-modifier <code class="literal"><span class="bold"><strong>[</strong></span></code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a>^* <code class="literal"><span class="bold"><strong>]</strong></span></code>
+  | <code class="literal"><span class="bold"><strong>&amp;</strong></span></code> enclosed-modifier <code class="literal"><span class="bold"><strong>(</strong></span></code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a>^+ <code class="literal"><span class="bold"><strong>)</strong></span></code>
+</pre>
+<p>An embedded expression has the form <code class="literal">&amp;[<em class="replaceable"><code>expression</code></em>]</code>.
+It is evaluated, the result converted to a string (as by <code class="literal">display</code>),
+and the result added in the result string.
+(If there are multiple expressions, they are all evaluated and
+the corresponding strings inserted in the result.)
+</p>
+<pre class="screen">&amp;{Hello &amp;[(string-capitalize name)]!}
+</pre>
+<p>You can leave out the square brackets when the expression
+is a parenthesized expression:
+</p>
+<pre class="screen">&amp;{Hello &amp;(string-capitalize name)!}
+</pre>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Formatting"></a>Formatting</h4></div></div></div>
+<pre class="screen"><a class="indexterm" name="idp45558768"></a><a name="meta-enclosed-modifier"></a><em class="replaceable"><code>enclosed-modifier</code></em> <code class="literal">::=</code>
+  <code class="literal"><span class="bold"><strong>~</strong></span></code> <em class="replaceable"><code>format-specifier-after-tilde</code></em>^*
+</pre>
+<p>Using <a class="link" href="Input-Output.html#Format" title="Kawa: Formatted Output (Common-Lisp-style)"><code class="literal">format</code></a> allows finer-grained control over the
+output, but a problem is that the association between format
+specifiers and data expressions is positional, which is hard-to-read
+and error-prone. A better solution places the specifier adjacant to
+the data expression:
+</p>
+<pre class="screen">&amp;{The response was &amp;~,2f(* 100.0 (/ responses total))%.}
+</pre>
+<p>The following escape forms are equivalent to the corresponding
+forms withput the <code class="literal"><span class="bold"><strong>~</strong></span></code><em class="replaceable"><code>fmt-spec</code></em>, except the
+expression(s) are formatted using <code class="literal">format</code>:
+</p>
+<div class="literallayout"><p><code class="literal"><span class="bold"><strong>&amp;~</strong></span></code><em class="replaceable"><code>fmt-spec</code></em><code class="literal"><span class="bold"><strong>[</strong></span></code><em class="replaceable"><code>expression</code></em>^*<code class="literal"><span class="bold"><strong>]</strong></span></code><br>
+</p></div>
+<p>Again using parentheses like this:
+</p>
+<div class="literallayout"><p><code class="literal"><span class="bold"><strong>&amp;~</strong></span></code><em class="replaceable"><code>fmt-spec</code></em><code class="literal"><span class="bold"><strong>(</strong></span></code><em class="replaceable"><code>expression</code></em>^+<code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+</p></div>
+<p>is equivalent to:
+</p>
+<div class="literallayout"><p><code class="literal"><span class="bold"><strong>&amp;~</strong></span></code><em class="replaceable"><code>fmt-spec</code></em><code class="literal"><span class="bold"><strong>[(</strong></span></code><em class="replaceable"><code>expression</code></em>^+<code class="literal"><span class="bold"><strong>)]</strong></span></code><br>
+</p></div>
+<p>The syntax of <code class="literal">format</code> specifications is arcane, but it allows you
+to do some pretty neat things in a compact space.
+For example to include <code class="literal">"_"</code> between each element of
+the array <code class="literal">arr</code> you can use the <code class="literal">~{...~}</code> format speciers:
+</p>
+<pre class="screen">(define arr [5 6 7])
+&amp;{&amp;~{&amp;[arr]&amp;~^_&amp;~}} ⇒ "5_6_7"
+</pre>
+<p>If no format is specified for an enclosed expression,
+the that is equivalent to a <code class="literal">~a</code> format specifier,
+so this is equivalent to:
+</p>
+<pre class="screen">&amp;{&amp;~{&amp;~a[arr]&amp;~^_&amp;~}} ⇒ "5_6_7"
+</pre>
+<p>which is in turn equivalent to:
+</p>
+<pre class="screen">(format #f "~{~a~^_~}" arr)
+</pre>
+<p>The fine print that makes this work:
+If there are multiple expressions in a <code class="literal">&amp;[...]</code> with
+no format specifier then there is an implicit <code class="literal">~a</code> for
+each expression.
+On the other hand, if there is an explicit format specifier,
+it is not repeated for each enclosed expression: it appears
+exactly once in the effective format string, whether
+there are zero, one, or many expressions.
+</p>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Unicode"></a>Unicode character classes and conversions</h3></div></div></div>
+<p>Some of the procedures that operate on characters or strings ignore the
+difference between upper case and lower case.  These procedures have
+<code class="literal">-ci</code> (for “case insensitive”) embedded in their names.
+</p>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Characters"></a>Characters</h4></div></div></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45595616"></a><code class="function">char-upcase</code> <em class="replaceable"><code>char</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45598320"></a><code class="function">char-downcase</code> <em class="replaceable"><code>char</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45601024"></a><code class="function">char-titlecase</code> <em class="replaceable"><code>char</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45603728"></a><code class="function">char-foldcase</code> <em class="replaceable"><code>char</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>These procedures take a character argument and return a character
+result.
+</p>
+<p>If the argument is an upper–case or title–case character, and if there
+is a single character that is its lower–case form, then
+<code class="literal">char-downcase</code> returns that character.
+</p>
+<p>If the argument is a lower–case or title–case character, and there is
+a single character that is its upper–case form, then <code class="literal">char-upcase</code>
+returns that character.
+</p>
+<p>If the argument is a lower–case or upper–case character, and there is
+a single character that is its title–case form, then
+<code class="literal">char-titlecase</code> returns that character.
+</p>
+<p>If the argument is not a title–case character and there is no single
+character that is its title–case form, then <code class="literal">char-titlecase</code>
+returns the upper–case form of the argument.
+</p>
+<p>Finally, if the character has a case–folded character, then
+<code class="literal">char-foldcase</code> returns that character.  Otherwise the character
+returned is the same as the argument.
+</p>
+<p>For Turkic characters <code class="literal">#\x130</code> and <code class="literal">#\x131</code>,
+<code class="literal">char-foldcase</code> behaves as the identity function; otherwise
+<code class="literal">char-foldcase</code> is the same as <code class="literal">char-downcase</code> composed with
+<code class="literal">char-upcase</code>.
+</p>
+<pre class="screen">(char-upcase #\i)               ⇒  #\I
+(char-downcase #\i)             ⇒  #\i
+(char-titlecase #\i)            ⇒  #\I
+(char-foldcase #\i)             ⇒  #\i
+
+(char-upcase #\ß)               ⇒  #\ß
+(char-downcase #\ß)             ⇒  #\ß
+(char-titlecase #\ß)            ⇒  #\ß
+(char-foldcase #\ß)             ⇒  #\ß
+
+(char-upcase #\Σ)               ⇒  #\Σ
+(char-downcase #\Σ)             ⇒  #\σ
+(char-titlecase #\Σ)            ⇒  #\Σ
+(char-foldcase #\Σ)             ⇒  #\σ
+
+(char-upcase #\ς)               ⇒  #\Σ
+(char-downcase #\ς)             ⇒  #\ς
+(char-titlecase #\ς)            ⇒  #\Σ
+(char-foldcase #\ς)             ⇒  #\σ
+</pre>
+<div class="blockquote"><blockquote class="blockquote"><p><span class="emphasis"><em>Note:</em></span> <code class="literal">char-titlecase</code> does not always return a title–case
+character.
+</p></blockquote></div>
+<div class="blockquote"><blockquote class="blockquote">
+<p><span class="emphasis"><em>Note:</em></span> These procedures are consistent with Unicode's
+locale–independent mappings from scalar values to scalar values for
+upcase, downcase, titlecase, and case–folding operations.  These
+mappings can be extracted from <code class="filename">UnicodeData.txt</code> and
+<code class="filename">CaseFolding.txt</code> from the Unicode Consortium, ignoring Turkic
+mappings in the latter.
+</p>
+<p>Note that these character–based procedures are an incomplete
+approximation to case conversion, even ignoring the user's locale.  In
+general, case mappings require the context of a string, both in
+arguments and in result.  The <code class="literal">string-upcase</code>,
+<code class="literal">string-downcase</code>, <code class="literal">string-titlecase</code>, and
+<code class="literal">string-foldcase</code> procedures perform more general case conversion.
+</p>
+</blockquote></div>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45628192"></a><code class="function">char-ci=?</code> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45632784"></a><code class="function">char-ci&lt;?</code> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45637376"></a><code class="function">char-ci&gt;?</code> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45641968"></a><code class="function">char-ci&lt;=?</code> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45646560"></a><code class="function">char-ci&gt;=?</code> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_2</code></em> <em class="replaceable"><code>char</code></em><em class="replaceable"><code>_3</code></em><em class="replaceable"><code> …</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>These procedures are similar to <code class="literal">char=?</code>, etc., but operate on the
+case–folded versions of the characters.
+</p>
+<pre class="screen">(char-ci&lt;? #\z #\Z)             ⇒ #f
+(char-ci=? #\z #\Z)             ⇒ #f
+(char-ci=? #\ς #\σ)             ⇒ #t
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45653808"></a><code class="function">char-alphabetic?</code> <em class="replaceable"><code>char</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45656512"></a><code class="function">char-numeric?</code> <em class="replaceable"><code>char</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45659216"></a><code class="function">char-whitespace?</code> <em class="replaceable"><code>char</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45661920"></a><code class="function">char-upper-case?</code> <em class="replaceable"><code>char</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45664624"></a><code class="function">char-lower-case?</code> <em class="replaceable"><code>char</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp45667328"></a><code class="function">char-title-case?</code> <em class="replaceable"><code>char</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>These procedures return <code class="literal">#t</code> if their arguments are alphabetic,
+numeric, whitespace, upper–case, lower–case, or title–case
+characters, respectively; otherwise they return <code class="literal">#f</code>.
+</p>
+<p>A character is alphabetic if it has the Unicode “Alphabetic” property.
+A character is numeric if it has the Unicode “Numeric” property.  A
+character is whitespace if has the Unicode “White_Space” property.  A
+character is upper case if it has the Unicode “Uppercase” property,
+lower case if it has the “Lowercase” property, and title case if it is
+in the Lt general category.
+</p>
+<pre class="screen">(char-alphabetic? #\a)          ⇒  #t
+(char-numeric? #\1)             ⇒  #t
+(char-whitespace? #\space)      ⇒  #t
+(char-whitespace? #\x00A0)      ⇒  #t
+(char-upper-case? #\Σ)          ⇒  #t
+(char-lower-case? #\σ)          ⇒  #t
+(char-lower-case? #\x00AA)      ⇒  #t
+(char-title-case? #\I)          ⇒  #f
+(char-title-case? #\x01C5)      ⇒  #t
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45674336"></a><code class="function">char-general-category</code> <em class="replaceable"><code>char</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Return a symbol representing the Unicode general category of
+<em class="replaceable"><code>char</code></em>, one of <code class="literal">Lu</code>, <code class="literal">Ll</code>, <code class="literal">Lt</code>, <code class="literal">Lm</code>,
+<code class="literal">Lo</code>, <code class="literal">Mn</code>, <code class="literal">Mc</code>, <code class="literal">Me</code>, <code class="literal">Nd</code>, <code class="literal">Nl</code>,
+<code class="literal">No</code>, <code class="literal">Ps</code>, <code class="literal">Pe</code>, <code class="literal">Pi</code>, <code class="literal">Pf</code>, <code class="literal">Pd</code>,
+<code class="literal">Pc</code>, <code class="literal">Po</code>, <code class="literal">Sc</code>, <code class="literal">Sm</code>, <code class="literal">Sk</code>, <code class="literal">So</code>,
+<code class="literal">Zs</code>, <code class="literal">Zp</code>, <code class="literal">Zl</code>, <code class="literal">Cc</code>, <code class="literal">Cf</code>, <code class="literal">Cs</code>,
+<code class="literal">Co</code>, or <code class="literal">Cn</code>.
+</p>
+<pre class="screen">(char-general-category #\a)         ⇒ Ll
+(char-general-category #\space)     ⇒ Zs
+(char-general-category #\x10FFFF)   ⇒ Cn
+</pre>
+</blockquote></div>
+</div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Deprecated-in-place-case-modification"></a>Deprecated in-place case modification</h4></div></div></div>
+<p>The following functions are deprecated; they really don't
+and cannot do the right thing, because in some languages
+upper and lower case can use different number of characters.
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45701488"></a><code class="function">string-upcase!</code><em class="replaceable"><code> str</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p><span class="emphasis"><em>Deprecated:</em></span> Destructively modify <em class="replaceable"><code>str</code></em>, replacing the letters
+by their upper-case equivalents.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45705760"></a><code class="function">string-downcase!</code><em class="replaceable"><code> str</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p><span class="emphasis"><em>Deprecated:</em></span> Destructively modify <em class="replaceable"><code>str</code></em>, replacing the letters
+by their upper-lower equivalents.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45710032"></a><code class="function">string-capitalize!</code><em class="replaceable"><code> str</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p><span class="emphasis"><em>Deprecated:</em></span> Destructively modify <em class="replaceable"><code>str</code></em>, such that the letters that start a new word
+are replaced by their title-case equivalents, while non-initial letters
+are replaced by their lower-case equivalents.
+</p></blockquote></div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Regular-expressions"></a>Regular expressions</h3></div></div></div>
+<p>Kawa provides <em class="firstterm">regular expressions</em>, which is a convenient
+mechanism for matching a string against a <em class="firstterm">pattern</em>
+and maybe replacing matching parts.
+</p>
+<p>A regexp is a string that describes a pattern. A regexp matcher tries
+to match this pattern against (a portion of) another string, which we
+will call the text string. The text string is treated as raw text and
+not as a pattern.
+</p>
+<p>Most of the characters in a regexp pattern are meant to match
+occurrences of themselves in the text string. Thus, the pattern “<code class="literal">abc</code>”
+matches a string that contains the characters “<code class="literal">a</code>”, “<code class="literal">b</code>”,
+“<code class="literal">c</code>” in succession.
+</p>
+<p>In the regexp pattern, some characters act as <em class="firstterm">metacharacters</em>,
+and some character sequences act as <em class="firstterm">metasequences</em>. That is, they
+specify something other than their literal selves. For example, in the
+pattern “<code class="literal">a.c</code>”, the characters “<code class="literal">a</code>” and “<code class="literal">c</code>” do stand
+for themselves but the metacharacter “<code class="literal">.</code>” can match any character
+(other than newline). Therefore, the pattern “<code class="literal">a.c</code>” matches an
+“<code class="literal">a</code>”, followed by any character, followed by a “<code class="literal">c</code>”.
+</p>
+<p>If we needed to match the character “<code class="literal">.</code>” itself, we <em class="firstterm">escape</em>
+it, ie, precede it with a backslash “<code class="literal">\</code>”. The character sequence
+“<code class="literal">\.</code>” is thus a metasequence, since it doesn’t match itself but
+rather just “<code class="literal">.</code>”.  So, to match “<code class="literal">a</code>” followed by a literal
+“<code class="literal">.</code>” followed by “<code class="literal">c</code>” we use the regexp pattern
+“<code class="literal">a\.c</code>”.  To write this as a Scheme string literal,
+you need to quote the backslash, so you need to write <code class="literal">"a\\.c"</code>.
+Kawa also allows the literal syntax <code class="literal">#/a\.c/</code>,
+which avoids the need to double the backslashes.
+</p>
+<p>You can choose between two similar styles of regular expressions.
+The two differ slightly in terms of which characters act as metacharacters,
+and what those metacharacters mean:
+</p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>Functions starting with <code class="literal">regex-</code> are implemented using
+the <code class="literal">java.util.regex</code> package.
+This is likely to be more efficient, has better Unicode support and
+some other minor extra features, and literal syntax <code class="literal">#/a\.c/</code>
+mentioned above.
+</p></li>
+<li class="listitem"><p>Functions starting with <code class="literal">pregexp-</code> are implemented in pure Scheme
+using Dorai Sitaram's “Portable Regular Expressions for Scheme” library.
+These will be portable to more Scheme implementations, including BRL,
+and is available on older Java versions.
+</p></li>
+</ul></div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Java-regular-expressions"></a>Java regular expressions</h4></div></div></div>
+<p>The syntax for regular expressions is
+<a class="ulink" href="http://java.sun.com/javase/6/docs/api/java/util/regex/Pattern.html" target="_top">documented here</a>.
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45743392"></a><code class="function">regex</code></p>
+<div class="blockquote"><blockquote class="blockquote"><p>A compiled regular expression,
+implemented as <code class="literal">java.util.regex.Pattern</code>.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45747280"></a><code class="function">regex</code><em class="replaceable"><code> arg</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Given a regular expression pattern (as a string),
+compiles it to a <code class="literal">regex</code> object.
+</p>
+<pre class="screen">(regex "a\\.c")
+</pre>
+<p>This compiles into a pattern that matches an
+“<code class="literal">a</code>”, followed by any character, followed by a “<code class="literal">c</code>”.
+</p>
+</blockquote></div>
+</div>
+<p>The Scheme reader recognizes “<code class="literal">#/</code>” as the start of a
+regular expression <em class="firstterm">pattern literal</em>, which ends with the next
+un-escaped “<code class="literal">/</code>”.
+This has the big advantage that you don't need to double the backslashes:
+</p>
+<pre class="screen">#/a\.c/
+</pre>
+<p>This is equivalent to <code class="literal">(regex "a\\.c")</code>, except it is
+compiled at read-time.
+If you need a literal “<code class="literal">/</code>” in a pattern, just escape it
+with a backslash: “<code class="literal">#/a\/c/</code>” matches a “<code class="literal">a</code>”,
+followed by a “<code class="literal">/</code>”, followed by a “<code class="literal">c</code>”.
+</p>
+<p>You can add single-letter <span class="emphasis"><em>modifiers</em></span> following the pattern literal.
+The following modifiers are allowed:
+</p>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term"><code class="literal">i</code></dt>
+<dd>
+<p>The modifier “<code class="literal">i</code>” cause the matching to ignore case.
+For example the following pattern matches “<code class="literal">a</code>” or “<code class="literal">A</code>”.
+</p>
+<pre class="screen">#/a/i
+</pre>
+</dd>
+<dt class="term"><code class="literal">m</code></dt>
+<dd>
+<p>Enables “metaline” mode.
+Normally metacharacters “<code class="literal">^</code>” and “<code class="literal">$</code>'
+match at the start end end of the entire input string.
+In metaline mode “<code class="literal">^</code>” and “<code class="literal">$</code>” also
+match just before or after a line terminator.
+</p>
+<p>Multiline mode can also be enabled by the metasequence “<code class="literal">(?m)</code>”.
+</p>
+</dd>
+<dt class="term"><code class="literal">s</code></dt>
+<dd><p>Enable “singleline” (aka “dot-all”) mode.
+In this mode the matacharacter “<code class="literal">.</code> matches any character,
+including a line breaks.
+This mode be enabled by the metasequence “<code class="literal">(?s)</code>”.
+</p></dd>
+</dl></div>
+<p>The following functions accept a regex either as
+a pattern string or a compiled <code class="literal">regex</code> pattern.
+I.e. the following are all equivalent:
+</p>
+<pre class="screen">(regex-match "b\\.c" "ab.cd")
+(regex-match #/b\.c/ "ab.cd")
+(regex-match (regex "b\\.c") "ab.cd")
+(regex-match (java.util.regex.Pattern:compile "b\\.c") "ab.cd")
+</pre>
+<p>These all evaluate to the list <code class="literal">("b.c")</code>.
+</p>
+<p>The following functions must be imported by doing one of:
+</p>
+<pre class="screen">(require 'regex) ;; or
+(import (kawa regex))
+</pre>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45779024"></a><code class="function">regex-match-positions</code><em class="replaceable"><code> regex</code></em><em class="replaceable"><code> string</code></em> [<em class="replaceable"><code>start</code></em> [<em class="replaceable"><code>end</code></em>]]</p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The procedure <code class="literal">regex‑match‑position</code> takes pattern and a
+text <em class="replaceable"><code>string</code></em>, and returns a match if the regex matches (some part of)
+the text string.
+</p>
+<p>Returns <code class="literal">#f</code> if the regexp did not match the string;
+and a list of index pairs if it did match.
+</p>
+<pre class="screen">(regex-match-positions "brain" "bird") ⇒ #f
+(regex-match-positions "needle" "hay needle stack")
+  ⇒ ((4 . 10))
+</pre>
+<p>In the second example, the integers 4 and 10 identify the substring
+that was matched. 4 is the starting (inclusive) index and 10 the
+ending (exclusive) index of the matching substring.
+</p>
+<pre class="screen">(substring "hay needle stack" 4 10) ⇒ "needle"
+</pre>
+<p>In this case the return list contains only one index
+pair, and that pair represents the entire substring matched by the
+regexp. When we discuss subpatterns later, we will see how a single
+match operation can yield a list of submatches.
+</p>
+<p><code class="literal">regex‑match‑positions</code> takes optional third and fourth arguments
+that specify the indices of the text string within which the matching
+should take place.
+</p>
+<pre class="screen">(regex-match-positions "needle"
+  "his hay needle stack -- my hay needle stack -- her hay needle stack"
+  24 43)
+  ⇒ ((31 . 37))
+</pre>
+<p>Note that the returned indices are still reckoned relative to the full text string.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45791584"></a><code class="function">regex-match</code><em class="replaceable"><code> regex</code></em><em class="replaceable"><code> string</code></em> [<em class="replaceable"><code>start</code></em> [<em class="replaceable"><code>end</code></em>]]</p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The procedure <code class="literal">regex‑match</code> is called like <code class="literal">regex‑match‑positions</code>
+but instead of returning index pairs it returns the matching substrings:
+</p>
+<pre class="screen">(regex-match "brain" "bird") ⇒ #f
+(regex-match "needle" "hay needle stack")
+  ⇒ ("needle")
+</pre>
+<p><code class="literal">regex‑match</code> also takes optional third and fourth arguments,
+with the same meaning as does <code class="literal">regex‑match‑positions</code>.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45800416"></a><code class="function">regex-split</code><em class="replaceable"><code> regex</code></em><em class="replaceable"><code> string</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Takes two arguments, a <em class="replaceable"><code>regex</code></em> pattern and a text <em class="replaceable"><code>string</code></em>,
+and returns a list of substrings of the text string,
+where the pattern identifies the delimiter separating the substrings.
+</p>
+<pre class="screen">(regex-split ":" "/bin:/usr/bin:/usr/bin/X11:/usr/local/bin")
+  ⇒ ("/bin" "/usr/bin" "/usr/bin/X11" "/usr/local/bin")
+
+(regex-split " " "pea soup")
+  ⇒ ("pea" "soup")
+</pre>
+<p>If the first argument can match an empty string, then the list of all
+the single-character substrings is returned, plus we get
+a empty strings at each end.
+</p>
+<pre class="screen">(regex-split "" "smithereens")
+  ⇒ ("" "s" "m" "i" "t" "h" "e" "r" "e" "e" "n" "s" "")
+</pre>
+<p>(Note: This behavior is different from <code class="literal">pregexp-split</code>.)
+</p>
+<p>To identify one-or-more spaces as the delimiter, take care to use the regexp
+“<code class="literal"> +</code>”, not “<code class="literal"> *</code>”.
+</p>
+<pre class="screen">(regex-split " +" "split pea     soup")
+  ⇒ ("split" "pea" "soup")
+(regex-split " *" "split pea     soup")
+  ⇒ ("" "s" "p" "l" "i" "t" "" "p" "e" "a" "" "s" "o" "u" "p" "")
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45811216"></a><code class="function">regex‑replace</code><em class="replaceable"><code> regex</code></em><em class="replaceable"><code> string</code></em><em class="replaceable"><code> replacement</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Replaces the matched portion of the text <em class="replaceable"><code>string</code></em> by another a
+<em class="replaceable"><code>replacdement</code></em> string.
+</p>
+<pre class="screen">(regex-replace "te" "liberte" "ty")
+  ⇒ "liberty"
+</pre>
+<p>Submatches can be used in the replacement string argument.
+The replacement string can use “<code class="literal">$<em class="replaceable"><code>n</code></em></code>”
+as a <em class="firstterm">backreference</em> to refer back to the <em class="replaceable"><code>n</code></em>th
+submatch, ie, the substring that matched the <em class="replaceable"><code>n</code></em>th
+subpattern.   “<code class="literal">$0</code>” refers to the entire match.
+</p>
+<pre class="screen">(regex-replace #/_(.+?)_/
+               "the _nina_, the _pinta_, and the _santa maria_"
+		"*$1*"))
+  ⇒ "the *nina*, the _pinta_, and the _santa maria_"
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45821136"></a><code class="function">regex‑replace*</code><em class="replaceable"><code> regex</code></em><em class="replaceable"><code> string</code></em><em class="replaceable"><code> replacement</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Replaces all matches in the text <em class="replaceable"><code>string</code></em> by the <em class="replaceable"><code>replacement</code></em> string:
+</p>
+<pre class="screen">(regex-replace* "te" "liberte egalite fraternite" "ty")
+  ⇒ "liberty egality fratyrnity"
+(regex-replace* #/_(.+?)_/
+                "the _nina_, the _pinta_, and the _santa maria_"
+                "*$1*")
+  ⇒ "the *nina*, the *pinta*, and the *santa maria*"
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp45827296"></a><code class="function">regex-quote</code><em class="replaceable"><code> pattern</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Takes an arbitrary string and returns a pattern string that precisely
+matches it. In particular, characters in the input string that could
+serve as regex metacharacters are escaped as needed.
+</p>
+<pre class="screen">(regex-quote "cons")
+  ⇒ "\Qcons\E"
+</pre>
+<p><code class="literal">regex‑quote</code> is useful when building a composite regex
+from a mix of regex strings and verbatim strings.
+</p>
+</blockquote></div>
+</div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Portable-Scheme-regular-expressions"></a>Portable Scheme regular expressions</h4></div></div></div>
+<p>This provides the procedures <code class="literal">pregexp</code>, <code class="literal">pregexp‑match‑positions</code>,
+<code class="literal">pregexp‑match</code>, <code class="literal">pregexp‑split</code>, <code class="literal">pregexp‑replace</code>,
+<code class="literal">pregexp‑replace*</code>, and <code class="literal">pregexp‑quote</code>.
+</p>
+<p>Before using them, you must require them:
+</p>
+<pre class="screen">(require 'pregexp)
+</pre>
+<p>These procedures have the same interface as the corresponding
+<code class="literal">regex-</code> versions, but take slightly different pattern syntax.
+The replace commands use “<code class="literal">\</code>” instead of “<code class="literal">$</code>”
+to indicate substitutions.
+Also, <code class="literal">pregexp‑split</code> behaves differently from
+<code class="literal">regex‑split</code> if the pattern can match an empty string.
+</p>
+<p>See <a class="ulink" href="http://www.ccs.neu.edu/home/dorai/pregexp/index.html" target="_top">here for details</a>.
+</p>
+</div>
+</div>
+</div>
+<div class="navfooter">
+<ul>
+<li><b class="toc"><a href="Characters-and-text.html#Characters">Characters</a></b></li>
+<li><b class="toc"><a href="Characters-and-text.html#Character-sets">Character sets</a></b></li>
+<li><b class="toc"><a href="Characters-and-text.html#Strings">Strings</a></b></li>
+<li><b class="toc"><a href="Characters-and-text.html#String-literals">String literals</a></b></li>
+<li><b class="toc"><a href="Characters-and-text.html#Unicode">Unicode character classes and conversions</a></b></li>
+<li><b class="toc"><a href="Characters-and-text.html#Regular-expressions">Regular expressions</a></b></li>
+</ul>
+<p>
+          Up: <a accesskey="u" href="Documentation.html">Documentation</a></p>
+<p>
+        Previous: <a accesskey="p" href="Numbers.html">Quantities and Numbers</a></p>
+<p>
+        Next: <a accesskey="n" href="Data-structures.html">Data structures</a></p>
+</div>
+</body>
+</html>

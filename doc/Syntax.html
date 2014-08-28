@@ -1,0 +1,1808 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Kawa: Syntax</title>
+<link rel="stylesheet" title="Kawa (navbar: fixed, left)" href="style/kawa-l.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Kawa (navbar: fixed, right)" href="style/kawa-r.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Single column, top navigation" href="style/kawa-1col.css" type="text/css" media="handheld, screen, print, projection, tv">
+<script language="JavaScript" type="text/javascript" src="style/utils.js"></script><meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="toc.html" title="Kawa: The Kawa Scheme language">
+<link rel="up" href="Documentation.html" title="Kawa: Documentation">
+<link rel="prev" href="Running.html" title="Kawa: How to start up and run Kawa">
+<link rel="next" href="Program-structure.html" title="Kawa: Program structure">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF" onload="javascript:onLoadHandler();" onunload="javascript:onUnloadHandler();">
+<div class="navcol">
+<div class="logo"><a href="index.html"><img src="style/kawa-logo.png"></a></div>
+<div class="navbar">
+<ul>
+<li><a href="toc.html">Table of Contents</a></li>
+<li><a href="tutorial/index.html">Tutorial</a></li>
+<li><a href="news.html">News: Recent changes</a></li>
+</ul>
+<div class="toc"><ul>
+<li><a href="index.html">The Kawa Scheme language</a></li>
+<li><a href="Installation.html">Getting and installing Kawa</a></li>
+<li><a href="Features.html">Features</a></li>
+<li>
+<a href="Documentation.html">Documentation</a><ul>
+<li><a href="Running.html">Usage Reference</a></li>
+<li>
+<b class="toc"><a href="Syntax.html">Syntax</a></b><ul>
+<li><b class="toc"><a href="Syntax.html#Syntax-notation">Notation</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Lexical-and-datum-syntax">Lexical and datum syntax</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Lexical-syntax">Lexical syntax</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Datum-syntax">Datum syntax</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Hash-prefixed-forms">Hash-prefixed forms</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Primitive-expression-syntax">Primitive expression syntax</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Colon-notation">Property access using colon notation</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Bodies">Bodies</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Syntax-and-conditional-compilation">Syntax and conditional compilation</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Macros">Macros</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Named-quasi-literals">Named quasi-literals</a></b></li>
+</ul>
+</li>
+<li><a href="Program-structure.html">Program structure</a></li>
+<li><a href="Multiple-values.html">Multiple values</a></li>
+<li><a href="Symbols-and-namespaces.html">Symbols and namespaces</a></li>
+<li><a href="Procedures.html">Procedures</a></li>
+<li><a href="Numbers.html">Numbers</a></li>
+<li><a href="Characters-and-text.html">Characters and text</a></li>
+<li><a href="Data-structures.html">Data structures</a></li>
+<li><a href="Eval-and-Environments.html">Eval and Environments</a></li>
+<li><a href="Debugging.html">Debugging</a></li>
+<li><a href="Input-Output.html">Input, output, files</a></li>
+<li><a href="Types.html">Types</a></li>
+<li><a href="Objects-Classes-and-Modules.html">Object, Classes and Modules</a></li>
+<li><a href="XML-tools.html">Working with XML and HTML</a></li>
+<li><a href="Miscellaneous.html">Miscellaneous topics</a></li>
+</ul>
+</li>
+<li><a href="Development.html">Development</a></li>
+<li><a href="Community.html">The Kawa Community</a></li>
+<li><a href="About.html">About</a></li>
+<li><a href="Overall-Index.html">Index</a></li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Syntax"></a>Syntax</h2></div></div></div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Syntax-notation"></a>Notation</h3></div></div></div>
+<p>The formal syntax for Kawa Scheme is written in an extended <acronym class="acronym">BNF</acronym>.
+Non–terminals are written <em class="replaceable"><code>like-this</code></em>.  Case is insignificant
+for non–terminal names.
+Literal text (terminals) are written <code class="literal"><span class="bold"><strong>like this</strong></span></code>.
+</p>
+<p>All spaces in the grammar are for legibility.
+
+</p>
+<p>The following extensions to <acronym class="acronym">BNF</acronym> are used to make the
+description more concise: <em class="replaceable"><code>thing</code></em>^* or <em class="replaceable"><code>thing</code></em><code class="literal">...</code>
+both mean zero or more occurrences of <em class="replaceable"><code>thing</code></em>,
+and <em class="replaceable"><code>thing</code></em>^+ means at least one <em class="replaceable"><code>thing</code></em>.
+</p>
+<p>Some non-terminal names refer to the Unicode scalar values of the same
+name: <em class="replaceable"><code>character-tabulation</code></em> (U+0009), <em class="replaceable"><code>linefeed</code></em> (U+000A),
+<em class="replaceable"><code>carriage-return</code></em> (U+000D), <em class="replaceable"><code>line-tabulation</code></em> (U+000B),
+<em class="replaceable"><code>form-feed</code></em> (U+000C), <em class="replaceable"><code>space</code></em> (U+0020), <em class="replaceable"><code>next-line</code></em>
+(U+0085), <em class="replaceable"><code>line-separator</code></em> (U+2028), and <em class="replaceable"><code>paragraph-separator</code></em>
+(U+2029).
+</p>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Lexical-and-datum-syntax"></a>Lexical and datum syntax</h3></div></div></div>
+<p>The syntax of Scheme code is organized in three levels:
+</p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><p>the <span class="emphasis"><em>lexical syntax</em></span> that describes how a program text is split
+into a sequence of lexemes,
+</p></li>
+<li class="listitem"><p>the <span class="emphasis"><em>datum syntax</em></span>, formulated in terms of the lexical syntax, that
+structures the lexeme sequence as a sequence of <span class="emphasis"><em>syntactic data</em></span>,
+where a syntactic datum is a recursively structured entity,
+</p></li>
+<li class="listitem"><p>the <span class="emphasis"><em>program syntax</em></span> formulated in terms of the datum syntax,
+imposing further structure and assigning meaning to syntactic data.
+</p></li>
+</ol></div>
+<p>Syntactic data (also called <span class="emphasis"><em>external representations</em></span>) double as a
+notation for objects, and the <code class="literal">read</code> and
+<code class="literal">write</code> procedures can be used for reading and writing syntactic data,
+converting between their textual representation and the corresponding
+objects.  Each syntactic datum represents a corresponding
+<span class="emphasis"><em>datum value</em></span>.  A syntactic datum can be used in a program to obtain the
+corresponding datum value using <code class="literal">quote</code>.
+
+</p>
+<p>Scheme source code consists of syntactic data and (non–significant)
+comments.  Syntactic data in Scheme source code are called <span class="emphasis"><em>forms</em></span>.
+(A form nested inside another form is called a <span class="emphasis"><em>subform</em></span>.)
+Consequently, Scheme's syntax has the property that any sequence of
+characters that is a form is also a syntactic datum representing some
+object.  This can lead to confusion, since it may not be obvious out of
+context whether a given sequence of characters is intended to be a
+representation of objects or the text of a program.  It is also a source
+of power, since it facilitates writing programs such as interpreters or
+compilers that treat programs as objects (or vice versa).
+</p>
+<p>A datum value may have several different external representations.  For
+example, both <code class="literal">#e28.000</code> and <code class="literal">#x1c</code> are syntactic data
+representing the exact integer object 28, and the syntactic data
+<code class="literal">(8 13)</code>, <code class="literal">( 08 13 )</code>, <code class="literal">(8 . (13 . ()))</code> all represent a
+list containing the exact integer objects 8 and 13.  Syntactic data that
+represent equal objects (in the sense of <code class="literal">equal?</code>)
+are always equivalent as forms of a program.
+</p>
+<p>Because of the close correspondence between syntactic data and datum
+values, we sometimes uses the term <span class="emphasis"><em>datum</em></span> for either a
+syntactic datum or a datum value when the exact meaning is apparent from
+the context.
+</p>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Lexical-syntax"></a>Lexical syntax</h3></div></div></div>
+<p>The lexical syntax determines how a character sequence is split into a
+sequence of lexemes, omitting non–significant portions such as comments
+and whitespace.  The character sequence is assumed to be text according
+to the <a class="ulink" href="http://unicode.org/" target="_top">Unicode standard</a>.
+Some of the lexemes, such as
+identifiers, representations of number objects, strings etc., of the
+lexical syntax are syntactic data in the datum syntax, and thus
+represent objects.  Besides the formal account of the syntax, this
+section also describes what datum values are represented by these
+syntactic data.
+</p>
+<p>The lexical syntax, in the description of comments, contains a forward
+reference to <em class="replaceable"><code>datum</code></em>, which is described as part of the datum
+syntax.  Being comments, however, these <em class="replaceable"><code>datum</code></em>s do not play a
+significant role in the syntax.
+</p>
+<p>Case is significant except in representations of booleans, number
+objects, and in hexadecimal numbers specifying Unicode scalar values.
+For example, <code class="literal">#x1A</code> and <code class="literal">#X1a</code> are equivalent.  The identifier
+<code class="literal">Foo</code> is, however, distinct from the identifier <code class="literal">FOO</code>.
+</p>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Formal-account"></a>Formal account</h4></div></div></div>
+<p><em class="replaceable"><code>Interlexeme-space</code></em> may occur on either side of any lexeme, but not
+within a lexeme.
+</p>
+<p><em class="replaceable"><code>Identifier</code></em>s, <code class="literal">.</code>, <em class="replaceable"><code>number</code></em>s, <em class="replaceable"><code>character</code></em>s, and
+<em class="replaceable"><code>boolean</code></em>s, must be terminated by a <em class="replaceable"><code>delimiter</code></em> or by the end
+of the input.
+</p>
+<div class="literallayout"><p><a class="indexterm" name="idp41872592"></a><a name="meta-lexeme"></a><em class="replaceable"><code>lexeme</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-identifier"><em class="replaceable"><code>identifier</code></em></a> | <em class="replaceable"><code>boolean</code></em> | <a class="link" href="Syntax.html#meta-number"><em class="replaceable"><code>number</code></em></a><br>
+         | <em class="replaceable"><code>character</code></em> | <a class="link" href="Characters-and-text.html#meta-string"><em class="replaceable"><code>string</code></em></a><br>
+         | <code class="literal"><span class="bold"><strong>(</strong></span></code> |  <code class="literal"><span class="bold"><strong>)</strong></span></code> |  <code class="literal"><span class="bold"><strong>[</strong></span></code> |  <code class="literal"><span class="bold"><strong>]</strong></span></code> |  <code class="literal"><span class="bold"><strong>#(</strong></span></code><br>
+         | <code class="literal"><span class="bold"><strong>'</strong></span></code> | <code class="literal"><span class="bold"><strong>`</strong></span></code> | <code class="literal"><span class="bold"><strong>,</strong></span></code> | <code class="literal"><span class="bold"><strong>,@</strong></span></code> | <code class="literal"><span class="bold"><strong>.</strong></span></code><br>
+         | <code class="literal"><span class="bold"><strong>#'</strong></span></code> |  <code class="literal"><span class="bold"><strong>#`</strong></span></code> |  <code class="literal"><span class="bold"><strong>#,</strong></span></code> |  <code class="literal"><span class="bold"><strong>#,@</strong></span></code><br>
+<a class="indexterm" name="idp41891872"></a><a name="meta-delimiter"></a><em class="replaceable"><code>delimiter</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>(</strong></span></code> |  <code class="literal"><span class="bold"><strong>)</strong></span></code> |  <code class="literal"><span class="bold"><strong>[</strong></span></code> | <code class="literal"><span class="bold"><strong>]</strong></span></code> | <code class="literal"><span class="bold"><strong>"</strong></span></code> | <code class="literal"><span class="bold"><strong>;</strong></span></code> | <code class="literal"><span class="bold"><strong>#</strong></span></code><br>
+         | <a class="link" href="Syntax.html#meta-whitespace"><em class="replaceable"><code>whitespace</code></em></a><br>
+</p></div>
+<p>((UNFINISHED))
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Line-endings"></a>Line endings</h4></div></div></div>
+<p>Line endings are significant in Scheme in single–line comments
+and within string literals.
+In Scheme source code, any of the line endings in <em class="replaceable"><code>line-ending</code></em>
+marks the end of a line.  Moreover, the two–character line endings
+<em class="replaceable"><code>carriage-return</code></em> <em class="replaceable"><code>linefeed</code></em> and <em class="replaceable"><code>carriage-return</code></em>
+<em class="replaceable"><code>next-line</code></em> each count as a single line ending.
+</p>
+<p>In a string literal, a <em class="replaceable"><code>line-ending</code></em> not preceded by a <code class="literal">\</code>
+stands for a linefeed character, which is the standard line–ending
+character of Scheme.
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Whitespace-and-comments"></a>Whitespace and comments</h4></div></div></div>
+<div class="literallayout"><p><a class="indexterm" name="idp41909200"></a><a name="meta-intraline-whitespace"></a><em class="replaceable"><code>intraline-whitespace</code></em> <code class="literal">::=</code> <em class="replaceable"><code>space</code></em> | <em class="replaceable"><code>character-tabulation</code></em><br>
+<a class="indexterm" name="idp41912336"></a><a name="meta-whitespace"></a><em class="replaceable"><code>whitespace</code></em> <code class="literal">::=</code>  <a class="link" href="Syntax.html#meta-intraline-whitespace"><em class="replaceable"><code>intraline-whitespace</code></em></a><br>
+         | <em class="replaceable"><code>linefeed</code></em> | <em class="replaceable"><code>line-tabulation</code></em> | <em class="replaceable"><code>form-feed</code></em><br>
+         | <em class="replaceable"><code>carriage-return</code></em> | <em class="replaceable"><code>next-line</code></em><br>
+         | <em class="wordasword">any character whose category is Zs, Zl, or Zp</em><br>
+<a class="indexterm" name="idp41917760"></a><a name="meta-line-ending"></a><em class="replaceable"><code>line-ending</code></em> <code class="literal">::=</code> <em class="replaceable"><code>linefeed</code></em> | <em class="replaceable"><code>carriage return</code></em><br>
+         | <em class="replaceable"><code>carriage-return</code></em> <em class="replaceable"><code>linefeed</code></em> | <em class="replaceable"><code>next-line</code></em><br>
+         | <em class="replaceable"><code>carriage-return</code></em> <em class="replaceable"><code>next-line</code></em> | <em class="replaceable"><code>line-separator</code></em><br>
+<a class="indexterm" name="idp41923200"></a><a name="meta-comment"></a><em class="replaceable"><code>comment</code></em> <code class="literal">::=</code>  <code class="literal"><span class="bold"><strong>;</strong></span></code> all subsequent characters up to a <em class="replaceable"><code>line-ending</code></em><br>
+                or <em class="replaceable"><code>paragraph-separator</code></em><br>
+         | <a class="link" href="Syntax.html#meta-nested-comment"><em class="replaceable"><code>nested-comment</code></em></a><br>
+         | <code class="literal"><span class="bold"><strong>#;</strong></span></code> <a class="link" href="Syntax.html#meta-interlexeme-space"><em class="replaceable"><code>interlexeme-space</code></em></a> <a class="link" href="Syntax.html#meta-datum"><em class="replaceable"><code>datum</code></em></a><br>
+         | <a class="link" href="Syntax.html#meta-shebang-comment"><em class="replaceable"><code>shebang-comment</code></em></a><br>
+<a class="indexterm" name="idp41931328"></a><a name="meta-nested-comment"></a><em class="replaceable"><code>nested-comment</code></em> <code class="literal">::=</code>  <code class="literal"><span class="bold"><strong>#|</strong></span></code> <a class="link" href="Syntax.html#meta-comment-text"><em class="replaceable"><code>comment-text</code></em></a> <a class="link" href="Syntax.html#meta-comment-cont"><em class="replaceable"><code>comment-cont</code></em></a>* <code class="literal"><span class="bold"><strong>|#</strong></span></code><br>
+<a class="indexterm" name="idp41937184"></a><a name="meta-comment-text"></a><em class="replaceable"><code>comment-text</code></em> <code class="literal">::=</code> character sequence not containing <code class="literal"><span class="bold"><strong>#|</strong></span></code> or <code class="literal"><span class="bold"><strong>|#</strong></span></code><br>
+<a class="indexterm" name="idp41941536"></a><a name="meta-comment-cont"></a><em class="replaceable"><code>comment-cont</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-nested-comment"><em class="replaceable"><code>nested-comment</code></em></a> <a class="link" href="Syntax.html#meta-comment-text"><em class="replaceable"><code>comment-text</code></em></a><br>
+<a class="indexterm" name="idp41945408"></a><a name="meta-atmosphere"></a><em class="replaceable"><code>atmosphere</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-whitespace"><em class="replaceable"><code>whitespace</code></em></a> | <a class="link" href="Syntax.html#meta-comment"><em class="replaceable"><code>comment</code></em></a><br>
+<a class="indexterm" name="idp41949280"></a><a name="meta-interlexeme-space"></a><em class="replaceable"><code>interlexeme-space</code></em> <code class="literal">::=</code> <em class="replaceable"><code>atmosphere</code></em>*<br>
+</p></div>
+<p>As a special case the characters <code class="literal"><span class="bold"><strong>#!/</strong></span></code> are treated as starting a comment,
+but only at the beginning of file.  These characters are used on
+Unix systems as an <a class="ulink" href="http://en.wikipedia.org/wiki/Shebang_(Unix)" target="_top">Shebang interpreter directive</a>.
+The Kawa reader skips the entire line.
+If the last non-whitespace character is <code class="literal"><span class="bold"><strong>@backslashchar{}</strong></span></code>
+(backslash) then the following line is also skipped, and so on.
+</p>
+<div class="literallayout"><p><a class="indexterm" name="idp41955776"></a><a name="meta-shebang-comment"></a><em class="replaceable"><code>shebang-comment</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>#!</strong></span></code> <em class="replaceable"><code>absolute-filename</code></em> text up to non-escaped <em class="replaceable"><code>line-ending</code></em><br>
+</p></div>
+<p><span class="emphasis"><em>Whitespace</em></span> characters are spaces, linefeeds, carriage returns,
+character tabulations, form feeds, line tabulations, and any other
+character whose category is Zs, Zl, or Zp.  Whitespace is used for
+improved readability and as necessary to separate lexemes from each
+other.  Whitespace may occur between any two lexemes, but not within a
+lexeme.  Whitespace may also occur inside a string, where it is
+significant.
+</p>
+<p>The lexical syntax includes several comment forms.  In all cases,
+comments are invisible to Scheme, except that they act as delimiters,
+so, for example, a comment cannot appear in the middle of an identifier
+or representation of a number object.
+</p>
+<p>A semicolon (<code class="literal">;</code>) indicates the start of a line comment.  The
+comment continues to the end of the line on which the semicolon appears.
+</p>
+<p>Another way to indicate a comment is to prefix a <a class="link" href="Syntax.html#meta-datum"><em class="replaceable"><code>datum</code></em></a>
+with <code class="literal">#;</code>, possibly with
+<em class="replaceable"><code>interlexeme-space</code></em> before the <em class="replaceable"><code>datum</code></em>.  The comment consists
+of the comment prefix <code class="literal">#;</code> and the <em class="replaceable"><code>datum</code></em> together.  This
+notation is useful for “commenting out” sections of code.
+</p>
+<p>Block comments may be indicated with properly nested <code class="literal">#|</code> and
+<code class="literal">|#</code> pairs.
+</p>
+<pre class="screen">#|
+   The FACT procedure computes the factorial of a
+   non-negative integer.
+|#
+(define fact
+  (lambda (n)
+    ;; base case
+    (if (= n 0)
+        #;(= n 1)
+        1       ; identity of *
+        (* n (fact (- n 1))))))
+</pre>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Identifiers"></a>Identifiers</h4></div></div></div>
+<div class="literallayout"><p><a class="indexterm" name="idp41971600"></a><a name="meta-identifier"></a><em class="replaceable"><code>identifier</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-initial"><em class="replaceable"><code>initial</code></em></a> <a class="link" href="Syntax.html#meta-subsequent"><em class="replaceable"><code>subsequent</code></em></a>*<br>
+         | <a class="link" href="Syntax.html#meta-peculiar-identifier"><em class="replaceable"><code>peculiar-identifier</code></em></a><br>
+<a class="indexterm" name="idp41976224"></a><a name="meta-initial"></a><em class="replaceable"><code>initial</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-constituent"><em class="replaceable"><code>constituent</code></em></a> | <a class="link" href="Syntax.html#meta-special-initial"><em class="replaceable"><code>special-initial</code></em></a><br>
+         | <a class="link" href="Syntax.html#meta-inline-hex-escape"><em class="replaceable"><code>inline-hex-escape</code></em></a><br>
+<a class="indexterm" name="idp41980848"></a><a name="meta-letter"></a><em class="replaceable"><code>letter</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>a</strong></span></code> | <code class="literal"><span class="bold"><strong>b</strong></span></code> | <code class="literal"><span class="bold"><strong>c</strong></span></code> | ... | <code class="literal"><span class="bold"><strong>z</strong></span></code><br>
+         | <code class="literal"><span class="bold"><strong>A</strong></span></code> | <code class="literal"><span class="bold"><strong>B</strong></span></code> | <code class="literal"><span class="bold"><strong>C</strong></span></code> | ... | <code class="literal"><span class="bold"><strong>Z</strong></span></code><br>
+<a class="indexterm" name="idp41991152"></a><a name="meta-constituent"></a><em class="replaceable"><code>constituent</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-letter"><em class="replaceable"><code>letter</code></em></a><br>
+         | <em class="wordasword">any character whose Unicode scalar value is greater than<br>
+             127, and whose category is Lu, Ll, Lt, Lm, Lo, Mn,<br>
+             Nl, No, Pd, Pc, Po, Sc, Sm, Sk, So, or Co</em><br>
+<a class="indexterm" name="idp41994848"></a><a name="meta-special-initial"></a><em class="replaceable"><code>special-initial</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>!</strong></span></code> | <code class="literal"><span class="bold"><strong>$</strong></span></code> | <code class="literal"><span class="bold"><strong>%</strong></span></code> | <code class="literal"><span class="bold"><strong>&amp;</strong></span></code> | <code class="literal"><span class="bold"><strong>*</strong></span></code> | <code class="literal"><span class="bold"><strong>/</strong></span></code> | <code class="literal"><span class="bold"><strong>&lt;</strong></span></code> | <code class="literal"><span class="bold"><strong>=</strong></span></code><br>
+         | <code class="literal"><span class="bold"><strong>&gt;</strong></span></code> | <code class="literal"><span class="bold"><strong>?</strong></span></code> | <code class="literal"><span class="bold"><strong>^</strong></span></code> | <code class="literal"><span class="bold"><strong>_</strong></span></code> | <code class="literal"><span class="bold"><strong>~</strong></span></code><br>
+<a class="indexterm" name="idp42010112"></a><a name="meta-subsequent"></a><em class="replaceable"><code>subsequent</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-initial"><em class="replaceable"><code>initial</code></em></a> | <a class="link" href="Syntax.html#meta-digit"><em class="replaceable"><code>digit</code></em></a><br>
+         | <em class="wordasword">any character whose category is Nd, Mc, or Me</em><br>
+         | <a class="link" href="Syntax.html#meta-special-subsequent"><em class="replaceable"><code>special-subsequent</code></em></a><br>
+<a class="indexterm" name="idp42015120"></a><a name="meta-digit"></a><em class="replaceable"><code>digit</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>0</strong></span></code> | <code class="literal"><span class="bold"><strong>1</strong></span></code> | <code class="literal"><span class="bold"><strong>2</strong></span></code> | <code class="literal"><span class="bold"><strong>3</strong></span></code> | <code class="literal"><span class="bold"><strong>4</strong></span></code> | <code class="literal"><span class="bold"><strong>5</strong></span></code> | <code class="literal"><span class="bold"><strong>6</strong></span></code> | <code class="literal"><span class="bold"><strong>7</strong></span></code> | <code class="literal"><span class="bold"><strong>8</strong></span></code> | <code class="literal"><span class="bold"><strong>9</strong></span></code><br>
+<a class="indexterm" name="idp42027408"></a><a name="meta-oct-digit"></a><em class="replaceable"><code>oct-digit</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>0</strong></span></code> | <code class="literal"><span class="bold"><strong>1</strong></span></code> | <code class="literal"><span class="bold"><strong>2</strong></span></code> | <code class="literal"><span class="bold"><strong>3</strong></span></code> | <code class="literal"><span class="bold"><strong>4</strong></span></code> | <code class="literal"><span class="bold"><strong>5</strong></span></code> | <code class="literal"><span class="bold"><strong>6</strong></span></code> | <code class="literal"><span class="bold"><strong>7</strong></span></code><br>
+<a class="indexterm" name="idp42037712"></a><a name="meta-hex-digit"></a><em class="replaceable"><code>hex-digit</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-digit"><em class="replaceable"><code>digit</code></em></a><br>
+         | <code class="literal"><span class="bold"><strong>a</strong></span></code> | <code class="literal"><span class="bold"><strong>A</strong></span></code> | <code class="literal"><span class="bold"><strong>b</strong></span></code> | <code class="literal"><span class="bold"><strong>B</strong></span></code> | <code class="literal"><span class="bold"><strong>c</strong></span></code> | <code class="literal"><span class="bold"><strong>C</strong></span></code> | <code class="literal"><span class="bold"><strong>d</strong></span></code> | <code class="literal"><span class="bold"><strong>D</strong></span></code> | <code class="literal"><span class="bold"><strong>e</strong></span></code> | <code class="literal"><span class="bold"><strong>E</strong></span></code> | <code class="literal"><span class="bold"><strong>f</strong></span></code> | <code class="literal"><span class="bold"><strong>F</strong></span></code><br>
+<a class="indexterm" name="idp42052736"></a><a name="meta-special-subsequent"></a><em class="replaceable"><code>special-subsequent</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>+</strong></span></code> | <code class="literal"><span class="bold"><strong>-</strong></span></code> | <code class="literal"><span class="bold"><strong>.</strong></span></code> | <code class="literal"><span class="bold"><strong>@</strong></span></code><br>
+<a class="indexterm" name="idp42059072"></a><a name="meta-escape-sequence"></a><em class="replaceable"><code>escape-sequence</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-inline-hex-escape"><em class="replaceable"><code>inline-hex-escape</code></em></a><br>
+         | <code class="literal"><span class="bold"><strong>\</strong></span></code><a class="link" href="Syntax.html#meta-character-except-x"><em class="replaceable"><code>character-except-x</code></em></a><br>
+         | <a class="link" href="Syntax.html#meta-multi-escape-sequence"><em class="replaceable"><code>multi-escape-sequence</code></em></a><br>
+<a class="indexterm" name="idp42064560"></a><a name="meta-inline-hex-escape"></a><em class="replaceable"><code>inline-hex-escape</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>\x</strong></span></code><a class="link" href="Syntax.html#meta-hex-scalar-value"><em class="replaceable"><code>hex-scalar-value</code></em></a><code class="literal"><span class="bold"><strong>;</strong></span></code><br>
+<a class="indexterm" name="idp42069408"></a><a name="meta-hex-scalar-value"></a><em class="replaceable"><code>hex-scalar-value</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-hex-digit"><em class="replaceable"><code>hex-digit</code></em></a>+<br>
+<a class="indexterm" name="idp42072528"></a><a name="meta-multi-escape-sequence"></a><em class="replaceable"><code>multi-escape-sequence</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>|</strong></span></code><a class="link" href="Syntax.html#meta-symbol-element"><em class="replaceable"><code>symbol-element</code></em></a>^*<code class="literal"><span class="bold"><strong>|</strong></span></code><br>
+<a class="indexterm" name="idp42077504"></a><a name="meta-symbol-element"></a><em class="replaceable"><code>symbol-element</code></em> <code class="literal">::=</code>  <em class="wordasword">any character except</em> <code class="literal"><span class="bold"><strong>|</strong></span></code> <em class="wordasword">or</em> <code class="literal"><span class="bold"><strong>@backslashchar{}</strong></span></code><br>
+         | <a class="link" href="Syntax.html#meta-inline-hex-escape"><em class="replaceable"><code>inline-hex-escape</code></em></a> | <a class="link" href="Characters-and-text.html#meta-mnemonic-escape"><em class="replaceable"><code>mnemonic-escape</code></em></a> | <code class="literal"><span class="bold"><strong>@backslashchar{}|</strong></span></code><br>
+<br>
+<a class="indexterm" name="idp42085120"></a><a name="meta-character-except-x"></a><em class="replaceable"><code>character-except-x</code></em> <code class="literal">::=</code> <em class="wordasword">any character except <code class="literal">x</code></em><br>
+<a class="indexterm" name="idp42088368"></a><a name="meta-peculiar-identifier"></a><em class="replaceable"><code>peculiar-identifier</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>+</strong></span></code> | <code class="literal"><span class="bold"><strong>-</strong></span></code> | <code class="literal"><span class="bold"><strong>...</strong></span></code> | <code class="literal"><span class="bold"><strong>-&gt;</strong></span></code> <em class="replaceable"><code>subsequent</code></em>^*<br>
+</p></div>
+<p>Most identifiers allowed by other programming languages are also
+acceptable to Scheme.  In general, a sequence of letters, digits, and
+“extended alphabetic characters” is an identifier when it begins with
+a character that cannot begin a representation of a number object.  In
+addition, <code class="literal">+</code>, <code class="literal">-</code>, and <code class="literal">...</code> are identifiers, as is a
+sequence of letters, digits, and extended alphabetic characters that
+begins with the two–character sequence <code class="literal">-&gt;</code>.  Here are some
+examples of identifiers:
+</p>
+<pre class="screen">lambda         q                soup
+list-&gt;vector   +                V17a
+&lt;=             a34kTMNs         -&gt;-
+the-word-recursion-has-many-meanings
+</pre>
+<p>Extended alphabetic characters may be used within identifiers as if they
+were letters.  The following are extended alphabetic characters:
+</p>
+<pre class="screen">! $ % &amp; * + - . / &lt; = &gt; ? @ ^ _ ~
+</pre>
+<p>Moreover, all characters whose Unicode scalar values are greater than
+127 and whose Unicode category is Lu, Ll, Lt, Lm, Lo, Mn, Mc, Me, Nd,
+Nl, No, Pd, Pc, Po, Sc, Sm, Sk, So, or Co can be used within
+identifiers.  In addition, any character can be used within an
+identifier when specified using an <em class="replaceable"><code>escape-sequence</code></em>.  For example,
+the identifier <code class="literal">H\x65;llo</code> is the same as the identifier
+<code class="literal">Hello</code>.
+</p>
+<p>Kawa supports two additional non-R6RS ways of making
+identifiers using special characters, both taken from Common Lisp:
+Any character (except <code class="literal">x</code>) following a backslash is treated
+as if it were a <em class="replaceable"><code>letter</code></em>;
+as is any character between a pair of vertical bars.
+</p>
+<p>Identifiers have two uses within Scheme programs:
+</p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>Any identifier may be used as a <a class="link" href="Syntax.html#variable-reference">variable</a>
+or as a <a class="link" href="Syntax.html#macro-reference">syntactic keyword</a>.
+</p></li>
+<li class="listitem"><p>When an identifier appears as or with in <a class="link" href="Syntax.html#literal-expression">literal</a>,
+it is being used to denote a <a class="link" href="Symbols-and-namespaces.html#Simple-symbols" title="Kawa: Simple symbols">symbol</a>.
+</p></li>
+</ul></div>
+<p>In contrast with older versions of Scheme, the syntax distinguishes
+between upper and lower case in identifiers and in characters
+specified via their names, but not in numbers, nor in inline hex
+escapes used in the syntax of identifiers, characters, or strings.
+The following directives give explicit control over case folding.
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42111040"></a><code class="function">#!fold-case</code></p>
+<p class="synopsis"><a class="indexterm" name="idp42113136"></a><code class="function">#!no-fold-case</code></p>
+</div>
+<p>These directives may appear anywhere comments are permitted and are
+treated as comments, except that they affect the reading of subsequent
+data.  The <code class="literal">#!fold-case</code> directive causes the <code class="literal">read</code>
+procedure to case-fold (as if by <code class="literal">string-foldcase</code>) each
+identifier and character name subsequently read from the same
+port. The <code class="literal">#!no-fold-case</code> directive causes the <code class="literal">read</code>
+procedure to return to the default, non-folding behavior.
+</p>
+<p>Note that colon <code class="literal">:</code> is treated specially for
+<a class="link" href="Syntax.html#Colon-notation" title="Kawa: Property access using colon notation">colon notation</a> in Kawa Scheme,
+though it is a <em class="replaceable"><code>special-initial</code></em> in standard Scheme (R6RS).
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Numbers"></a>Numbers</h4></div></div></div>
+<p>((INCOMPLETE))
+</p>
+<div class="literallayout"><p><a class="indexterm" name="idp42122432"></a><a name="meta-number"></a><em class="replaceable"><code>number</code></em> <code class="literal">::=</code> ((TODO))<br>
+  | <a class="link" href="Numbers.html#meta-quantity"><em class="replaceable"><code>quantity</code></em></a><br>
+<a class="indexterm" name="idp42125552"></a><a name="meta-decimal"></a><em class="replaceable"><code>decimal</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-digit"><em class="replaceable"><code>digit</code></em></a>+ <a class="link" href="Syntax.html#meta-optional-exponent"><em class="replaceable"><code>optional-exponent</code></em></a><br>
+  | <code class="literal"><span class="bold"><strong>.</strong></span></code> <a class="link" href="Syntax.html#meta-digit"><em class="replaceable"><code>digit</code></em></a>+ <a class="link" href="Syntax.html#meta-optional-exponent"><em class="replaceable"><code>optional-exponent</code></em></a><br>
+  | <a class="link" href="Syntax.html#meta-digit"><em class="replaceable"><code>digit</code></em></a>+ <code class="literal"><span class="bold"><strong>.</strong></span></code> <a class="link" href="Syntax.html#meta-digit"><em class="replaceable"><code>digit</code></em></a>+ <a class="link" href="Syntax.html#meta-optional-exponent"><em class="replaceable"><code>optional-exponent</code></em></a><br>
+</p></div>
+<div class="literallayout"><p><a class="indexterm" name="idp42135904"></a><a name="meta-optional-exponent"></a><em class="replaceable"><code>optional-exponent</code></em> <code class="literal">::=</code> <em class="wordasword">empty</em><br>
+  | <a class="link" href="Syntax.html#meta-exponent-marker"><em class="replaceable"><code>exponent-marker</code></em></a> <a class="link" href="Syntax.html#meta-optional-sign"><em class="replaceable"><code>optional-sign</code></em></a> <a class="link" href="Syntax.html#meta-digit"><em class="replaceable"><code>digit</code></em></a>+<br>
+<a class="indexterm" name="idp42140912"></a><a name="meta-exponent-marker"></a><em class="replaceable"><code>exponent-marker</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>e</strong></span></code> | <code class="literal"><span class="bold"><strong>s</strong></span></code> | <code class="literal"><span class="bold"><strong>f</strong></span></code> | <code class="literal"><span class="bold"><strong>d</strong></span></code> | <code class="literal"><span class="bold"><strong>l</strong></span></code><br>
+</p></div>
+<p>The letter used for the exponent in a floating-point literal determines
+its type:
+</p>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term"><code class="literal"><span class="bold"><strong>e</strong></span></code></dt>
+<dd><p>Returns a <code class="literal">gnu.math.DFloat</code> - for example <code class="literal">12e2</code>.
+Note this matches the default when there is no <a class="link" href="Syntax.html#meta-exponent-marker"><em class="replaceable"><code>exponent-marker</code></em></a>.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>s</strong></span></code> or <code class="literal"><span class="bold"><strong>f</strong></span></code>
+</dt>
+<dd><p>Returns a primitive <code class="literal">float</code> (or <code class="literal">java.lang.Float</code>
+when boxed as an object) - for example <code class="literal">12s2</code> or <code class="literal">12f2</code>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>d</strong></span></code></dt>
+<dd><p>Returns a primitive <code class="literal">double</code> (or <code class="literal">java.lang.Double</code> when boxed)
+- for example <code class="literal">12d2</code>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>l</strong></span></code></dt>
+<dd><p>Returns a <code class="literal">java.math.BigDecimal</code> - for example <code class="literal">12l2</code>.
+</p></dd>
+</dl></div>
+<div class="literallayout"><p><a class="indexterm" name="idp42164592"></a><a name="meta-optional-sign"></a><em class="replaceable"><code>optional-sign</code></em> <code class="literal">::=</code> <em class="wordasword">empty</em> | <code class="literal"><span class="bold"><strong>+</strong></span></code> | <code class="literal"><span class="bold"><strong>-</strong></span></code><br>
+<a class="indexterm" name="idp42169328"></a><a name="meta-digit-2"></a><em class="replaceable"><code>digit-2</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>0</strong></span></code> | <code class="literal"><span class="bold"><strong>1</strong></span></code><br>
+<a class="indexterm" name="idp42173680"></a><a name="meta-digit-8"></a><em class="replaceable"><code>digit-8</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>0</strong></span></code> | <code class="literal"><span class="bold"><strong>1</strong></span></code> | <code class="literal"><span class="bold"><strong>2</strong></span></code> | <code class="literal"><span class="bold"><strong>3</strong></span></code> | <code class="literal"><span class="bold"><strong>4</strong></span></code> | <code class="literal"><span class="bold"><strong>5</strong></span></code> | <code class="literal"><span class="bold"><strong>6</strong></span></code> | <code class="literal"><span class="bold"><strong>7</strong></span></code><br>
+<a class="indexterm" name="idp42183984"></a><a name="meta-digit-10"></a><em class="replaceable"><code>digit-10</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-digit"><em class="replaceable"><code>digit</code></em></a><br>
+<a class="indexterm" name="idp42187104"></a><a name="meta-digit-16"></a><em class="replaceable"><code>digit-16</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-digit-10"><em class="replaceable"><code>digit-10</code></em></a> | <code class="literal"><span class="bold"><strong>a</strong></span></code> | <code class="literal"><span class="bold"><strong>b</strong></span></code> | <code class="literal"><span class="bold"><strong>c</strong></span></code> | <code class="literal"><span class="bold"><strong>d</strong></span></code> | <code class="literal"><span class="bold"><strong>e</strong></span></code> | <code class="literal"><span class="bold"><strong>f</strong></span></code><br>
+</p></div>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Datum-syntax"></a>Datum syntax</h3></div></div></div>
+<p>The datum syntax describes the syntax of syntactic data in terms of a
+sequence of <em class="replaceable"><code>lexeme</code></em>s, as defined in the lexical syntax.
+</p>
+<p>The following grammar describes the syntax of syntactic data in terms of
+various kinds of lexemes defined in the grammar in section “Lexical
+Syntax”:
+</p>
+<div class="literallayout"><p><a class="indexterm" name="idp42199728"></a><a name="meta-datum"></a><em class="replaceable"><code>datum</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-defining-datum"><em class="replaceable"><code>defining-datum</code></em></a><br>
+         | <a class="link" href="Syntax.html#meta-nondefining-datum"><em class="replaceable"><code>nondefining-datum</code></em></a><br>
+         | <a class="link" href="Syntax.html#meta-defined-datum"><em class="replaceable"><code>defined-datum</code></em></a><br>
+<a class="indexterm" name="idp42204352"></a><a name="meta-nondefining-datum"></a><em class="replaceable"><code>nondefining-datum</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-lexeme-datum"><em class="replaceable"><code>lexeme-datum</code></em></a><br>
+         | <a class="link" href="Syntax.html#meta-compound-datum"><em class="replaceable"><code>compound-datum</code></em></a><br>
+<br>
+<a class="indexterm" name="idp42208224"></a><a name="meta-lexeme-datum"></a><em class="replaceable"><code>lexeme-datum</code></em> <code class="literal">::=</code> <a class="link" href="Program-structure.html#meta-boolean"><em class="replaceable"><code>boolean</code></em></a> | <em class="replaceable"><code>number</code></em><br>
+         | <a class="link" href="Characters-and-text.html#meta-character"><em class="replaceable"><code>character</code></em></a> | <a class="link" href="Characters-and-text.html#meta-string"><em class="replaceable"><code>string</code></em></a> | <a class="link" href="Syntax.html#meta-symbol"><em class="replaceable"><code>symbol</code></em></a><br>
+<a class="indexterm" name="idp42213984"></a><a name="meta-symbol"></a><em class="replaceable"><code>symbol</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-identifier"><em class="replaceable"><code>identifier</code></em></a><br>
+<a class="indexterm" name="idp42217104"></a><a name="meta-compound-datum"></a><em class="replaceable"><code>compound-datum</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-list"><em class="replaceable"><code>list</code></em></a> | <a class="link" href="Syntax.html#meta-vector"><em class="replaceable"><code>vector</code></em></a> | <a class="link" href="Syntax.html#meta-uniform-vector"><em class="replaceable"><code>uniform-vector</code></em></a> | <a class="link" href="Characters-and-text.html#meta-extended-string-literal"><em class="replaceable"><code>extended-string-literal</code></em></a> | <a class="link" href="XML-tools.html#meta-xml-literal"><em class="replaceable"><code>xml-literal</code></em></a><br>
+<a class="indexterm" name="idp42223280"></a><a name="meta-list"></a><em class="replaceable"><code>list</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>(</strong></span></code><a class="link" href="Syntax.html#meta-datum"><em class="replaceable"><code>datum</code></em></a>*<code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+         | <code class="literal"><span class="bold"><strong>(</strong></span></code><a class="link" href="Syntax.html#meta-datum"><em class="replaceable"><code>datum</code></em></a>+ <code class="literal"><span class="bold"><strong>.</strong></span></code> <a class="link" href="Syntax.html#meta-datum"><em class="replaceable"><code>datum</code></em></a><code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+         | <a class="link" href="Syntax.html#meta-abbreviation"><em class="replaceable"><code>abbreviation</code></em></a><br>
+<a class="indexterm" name="idp42234576"></a><a name="meta-vector"></a><em class="replaceable"><code>vector</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>#(</strong></span></code><a class="link" href="Syntax.html#meta-datum"><em class="replaceable"><code>datum</code></em></a>*<code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+<a class="indexterm" name="idp42240176"></a><a name="meta-uniform-vector"></a><em class="replaceable"><code>uniform-vector</code></em> <code class="literal">::=</code> TODO<br>
+</p></div>
+<p><a name="datum%20labels"></a>
+</p>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Datum-labels"></a>Datum labels</h4></div></div></div>
+<div class="literallayout"><p><a class="indexterm" name="idp42245664"></a><a name="meta-datum-label"></a><em class="replaceable"><code>datum-label</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>#</strong></span></code><a class="link" href="Syntax.html#meta-indexnum"><em class="replaceable"><code>indexnum</code></em></a><code class="literal"><span class="bold"><strong>=</strong></span></code><br>
+<a class="indexterm" name="idp42251248"></a><a name="meta-defining-datum"></a><em class="replaceable"><code>defining-datum</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-datum-label"><em class="replaceable"><code>datum-label</code></em></a>^+<a class="link" href="Syntax.html#meta-nondefining-datum"><em class="replaceable"><code>nondefining-datum</code></em></a><br>
+<a class="indexterm" name="idp42255904"></a><a name="meta-defined-datum"></a><em class="replaceable"><code>defined-datum</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>#</strong></span></code><a class="link" href="Syntax.html#meta-indexnum"><em class="replaceable"><code>indexnum</code></em></a><code class="literal"><span class="bold"><strong>#</strong></span></code><br>
+<a class="indexterm" name="idp42261312"></a><a name="meta-indexnum"></a><em class="replaceable"><code>indexnum</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-digit"><em class="replaceable"><code>digit</code></em></a>^+<br>
+</p></div>
+<p>The lexical syntax <code class="literal">#<em class="replaceable"><code>n</code></em>=<em class="replaceable"><code>datum</code></em></code> reads the
+same as <em class="replaceable"><code>datum</code></em>, but also results in <em class="replaceable"><code>datum</code></em> being
+labelled by <em class="replaceable"><code>n</code></em>, which must a sequence of digits.
+</p>
+<p>The lexical syntax <code class="literal">#<em class="replaceable"><code>n</code></em>#</code> serves as a reference to some
+object labelled by <code class="literal">#<em class="replaceable"><code>n</code></em>=</code>; the result is the same object
+(in the sense of <code class="literal">eq?</code>) as the <code class="literal">#<em class="replaceable"><code>n</code></em>=</code>.
+</p>
+<p>Together, these syntaxes permit the notation of structures
+with shared or circular substructure.
+</p>
+<pre class="screen">(let ((x (list 'a 'b 'c)))
+  (set-cdr! (cddr x) x)
+  x)    ⇒ #0=(a b c . #0#)
+</pre>
+<p>The scope of a datum label is the portion of the outermost
+datum in which it appears that is to the right of the label.
+Consequently, a reference <code class="literal">#<em class="replaceable"><code>n</code></em>#</code> can occur
+only after a label <code class="literal">#<em class="replaceable"><code>n</code></em>=</code>;
+it is an error to attempt a forward reference.
+In addition, it is an error if the reference appears as the labelled
+object itself (as in <code class="literal">#<em class="replaceable"><code>n</code></em>=#<em class="replaceable"><code>n</code></em>#</code>), because the object
+labelled by <code class="literal">#<em class="replaceable"><code>n</code></em>=</code> is not well defined in this case.
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Abbreviations"></a>Abbreviations</h4></div></div></div>
+<div class="literallayout"><p><a class="indexterm" name="idp42281456"></a><a name="meta-abbreviation"></a><em class="replaceable"><code>abbreviation</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-r6rs-abbreviation"><em class="replaceable"><code>r6rs-abbreviation</code></em></a> | <a class="link" href="Syntax.html#meta-kawa-abbreviation"><em class="replaceable"><code>kawa-abbreviation</code></em></a><br>
+<a class="indexterm" name="idp42286112"></a><a name="meta-r6rs-abbreviation"></a><em class="replaceable"><code>r6rs-abbreviation</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-abbrev-prefix"><em class="replaceable"><code>abbrev-prefix</code></em></a> <a class="link" href="Syntax.html#meta-datum"><em class="replaceable"><code>datum</code></em></a><br>
+<a class="indexterm" name="idp42290768"></a><a name="meta-abbrev-prefix"></a><em class="replaceable"><code>abbrev-prefix</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>'</strong></span></code> | <code class="literal"><span class="bold"><strong>`</strong></span></code> | <code class="literal"><span class="bold"><strong>,</strong></span></code> | <code class="literal"><span class="bold"><strong>,@</strong></span></code><br>
+         | <code class="literal"><span class="bold"><strong>#'</strong></span></code> | <code class="literal"><span class="bold"><strong>#`</strong></span></code><br>
+<a class="indexterm" name="idp42299760"></a><a name="meta-kawa-abbreviation"></a><em class="replaceable"><code>kawa-abbreviation</code></em> <code class="literal">::=</code> XXX<br>
+</p></div>
+<p>The following abbreviations are expanded at read-time:
+</p>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term">
+<code class="literal"><span class="bold"><strong>'</strong></span></code><em class="replaceable"><code>datum</code></em>
+</dt>
+<dd><p>means <code class="literal"><span class="bold"><strong>(quote</strong></span></code> <em class="replaceable"><code>datum</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code>.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>`</strong></span></code><em class="replaceable"><code>datum</code></em>
+</dt>
+<dd><p>means <code class="literal"><span class="bold"><strong>(quasiquote</strong></span></code> <em class="replaceable"><code>datum</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code>.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>,</strong></span></code><em class="replaceable"><code>datum</code></em>
+</dt>
+<dd><p>means <code class="literal"><span class="bold"><strong>(unquote</strong></span></code> <em class="replaceable"><code>datum</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code>.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>,@</strong></span></code><em class="replaceable"><code>datum</code></em>
+</dt>
+<dd><p>means <code class="literal"><span class="bold"><strong>(unquote-splicing</strong></span></code> <em class="replaceable"><code>datum</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code>.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#'</strong></span></code><em class="replaceable"><code>datum</code></em>
+</dt>
+<dd><p>means <code class="literal"><span class="bold"><strong>(syntax</strong></span></code> <em class="replaceable"><code>datum</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code>.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#`</strong></span></code><em class="replaceable"><code>datum</code></em>
+</dt>
+<dd><p>means <code class="literal"><span class="bold"><strong>(quasisyntax</strong></span></code> <em class="replaceable"><code>datum</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code>.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#,</strong></span></code><em class="replaceable"><code>datum</code></em>
+</dt>
+<dd><p>means <code class="literal"><span class="bold"><strong>(unsyntax</strong></span></code> <em class="replaceable"><code>datum</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code>.
+This abbreviation is currently only recognized when nested inside an explicit
+<code class="literal"><span class="bold"><strong>#`</strong></span></code><em class="replaceable"><code>datum</code></em> form,
+because of a conflict with SRFI-10 named constructors.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#,@</strong></span></code><em class="replaceable"><code>datum</code></em>
+</dt>
+<dd><p>means <code class="literal"><span class="bold"><strong>(unsyntax-splicing</strong></span></code> <em class="replaceable"><code>datum</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code>.
+</p></dd>
+<dt class="term">
+<em class="replaceable"><code>datum1</code></em><code class="literal"><span class="bold"><strong>:</strong></span></code><em class="replaceable"><code>datum2</code></em>
+</dt>
+<dd><p>means <code class="literal"><span class="bold"><strong>($lookup$</strong></span></code> <em class="replaceable"><code>datum1</code></em> <code class="literal"><span class="bold"><strong>(quasiquote</strong></span></code> <em class="replaceable"><code>datum2</code></em><code class="literal"><span class="bold"><strong>))</strong></span></code>.
+See <a class="xref" href="Syntax.html#Colon-notation" title="Kawa: Property access using colon notation">the section called “Property access using colon notation”</a>.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>[</strong></span></code><em class="replaceable"><code>expression</code></em> ...<code class="literal"><span class="bold"><strong>]</strong></span></code>
+</dt>
+<dd><p>means <code class="literal"><span class="bold"><strong>($bracket-list$</strong></span></code> <em class="replaceable"><code>expression</code></em> ...<code class="literal"><span class="bold"><strong>)</strong></span></code>.
+</p></dd>
+<dt class="term">
+<em class="replaceable"><code>operator</code></em><code class="literal"><span class="bold"><strong>[</strong></span></code><em class="replaceable"><code>expression</code></em> ...<code class="literal"><span class="bold"><strong>]</strong></span></code>
+</dt>
+<dd><p>means <code class="literal"><span class="bold"><strong>($bracket-apply$</strong></span></code> <em class="replaceable"><code>operator</code></em> <em class="replaceable"><code>expression</code></em> ...<code class="literal"><span class="bold"><strong>)</strong></span></code>.
+</p></dd>
+</dl></div>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Hash-prefixed-forms"></a>Hash-prefixed forms</h3></div></div></div>
+<p>A number of different special forms are indicated by an
+initial hash (number) symbols (<code class="literal">#</code>).
+Here is a table summarizing them.
+</p>
+<p>Case is ignored for the character followed the <code class="literal">#</code>.
+Thus <code class="literal">#x</code> and <code class="literal">#X</code> are the same.
+</p>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#:</strong></span></code><em class="replaceable"><code>keyword</code></em>
+</dt>
+<dd><p>Guile-style keyword syntax (deprecated).
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#\</strong></span></code></dt>
+<dd><p><a class="link" href="Characters-and-text.html#meta-character">Character literals</a>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#!</strong></span></code></dt>
+<dd><p>See <a class="xref" href="Symbols-and-namespaces.html#Special-named-constants" title="Kawa: Special named constants">the section called “Special named constants”</a>.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#`</strong></span></code><em class="replaceable"><code>datum</code></em>
+</dt>
+<dd><p>Equivalent to <code class="literal">(quasisyntax <em class="replaceable"><code>datum</code></em>)</code>.
+Convenience syntax for syntax-case macros.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#'</strong></span></code><em class="replaceable"><code>datum</code></em>
+</dt>
+<dd><p>Equivalent to <code class="literal">(syntax <em class="replaceable"><code>datum</code></em>)</code>.
+Convenience syntax for syntax-case macros.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#,</strong></span></code><em class="replaceable"><code>datum</code></em>
+</dt>
+<dd><p>Equivalent to <code class="literal">(unsyntax <em class="replaceable"><code>datum</code></em>)</code>.
+Currently only recognized when inside a <code class="literal">#`<em class="replaceable"><code>template</code></em></code> form.
+Convenience syntax for syntax-case macros.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#,(</strong></span></code><em class="replaceable"><code>name</code></em> <em class="replaceable"><code>datum</code></em> ...<code class="literal"><span class="bold"><strong>)</strong></span></code>
+</dt>
+<dd><p>Special named constructors.
+This syntax is deprecated, because it conflicts with <code class="literal">unsyntax</code>.
+It is only recognized when <span class="emphasis"><em>not</em></span> in a <code class="literal">#`<em class="replaceable"><code>template</code></em></code> form.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#,@</strong></span></code><em class="replaceable"><code>datum</code></em>
+</dt>
+<dd><p>Equivalent to <code class="literal">(unsyntax-splicing <em class="replaceable"><code>datum</code></em>)</code>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#(</strong></span></code></dt>
+<dd><p>A vector.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#|</strong></span></code></dt>
+<dd><p>Start of nested-comment.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#/</strong></span></code><em class="replaceable"><code>regex</code></em><code class="literal"><span class="bold"><strong>/</strong></span></code>
+</dt>
+<dd><p>See <a class="xref" href="Characters-and-text.html#Regular-expressions" title="Kawa: Regular expressions">the section called “Regular expressions”</a>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#&lt;</strong></span></code></dt>
+<dd><p>See <a class="xref" href="XML-tools.html#XML-literals" title="Kawa: XML literals">the section called “XML literals”</a>.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#;</strong></span></code><em class="replaceable"><code>datum</code></em>
+</dt>
+<dd><p>A datum comment - the <em class="replaceable"><code>datum</code></em> is ignored.
+(An <em class="replaceable"><code>interlexeme-space</code></em> may appear before the <em class="replaceable"><code>datum</code></em>.)
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#</strong></span></code><em class="replaceable"><code>number</code></em><code class="literal"><span class="bold"><strong>=</strong></span></code><em class="replaceable"><code>datum</code></em>
+</dt>
+<dd><p>A reference definition, allowing cyclic and shared structure.
+Equivalent to the <em class="replaceable"><code>datum</code></em>, but also defines an association between
+the integer <em class="replaceable"><code>number</code></em> and that <em class="replaceable"><code>datum</code></em>, which can be
+used by a subsequent <code class="literal">#<em class="replaceable"><code>number</code></em>#</code> form.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#</strong></span></code><em class="replaceable"><code>number</code></em><code class="literal"><span class="bold"><strong>#</strong></span></code>
+</dt>
+<dd><p>A back-reference, allowing cyclic and shared structure.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#b</strong></span></code></dt>
+<dd><p>A binary (base-2) number.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#d</strong></span></code></dt>
+<dd><p>A decimal (base-10) number.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#e</strong></span></code></dt>
+<dd><p>A prefix to treat the following number as exact.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#f</strong></span></code></dt>
+<dt class="term"><code class="literal"><span class="bold"><strong>#false</strong></span></code></dt>
+<dd><p>The standard boolean false object.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#f</strong></span></code><em class="replaceable"><code>n</code></em><code class="literal"><span class="bold"><strong>(</strong></span></code><em class="replaceable"><code>number</code></em> ...<code class="literal"><span class="bold"><strong>)</strong></span></code>
+</dt>
+<dd><p>A uniform vector of floating-point numbers.
+The parameter <em class="replaceable"><code>n</code></em> is a precision, which can be 32 or 64.
+See <a class="xref" href="Data-structures.html#Uniform-vectors" title="Kawa: Uniform vectors">the section called “Uniform vectors”</a>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#i</strong></span></code></dt>
+<dd><p>A prefix to treat the following number as inexact.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#o</strong></span></code></dt>
+<dd><p>An octal (base-8) number.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#</strong></span></code><em class="replaceable"><code>base</code></em><code class="literal"><span class="bold"><strong>r</strong></span></code>
+</dt>
+<dd><p>A number in the specified <em class="replaceable"><code>base</code></em> (radix).
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#s</strong></span></code><em class="replaceable"><code>n</code></em><code class="literal"><span class="bold"><strong>(</strong></span></code><em class="replaceable"><code>number</code></em> ...<code class="literal"><span class="bold"><strong>)</strong></span></code>
+</dt>
+<dd><p>A uniform vector of signed integers.
+The parameter <em class="replaceable"><code>n</code></em> is a precision, which can be 8, 16, 32, or 64.
+See <a class="xref" href="Data-structures.html#Uniform-vectors" title="Kawa: Uniform vectors">the section called “Uniform vectors”</a>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#t</strong></span></code></dt>
+<dt class="term"><code class="literal"><span class="bold"><strong>#true</strong></span></code></dt>
+<dd><p>The standard boolean true object.
+</p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#u</strong></span></code><em class="replaceable"><code>n</code></em><code class="literal"><span class="bold"><strong>(</strong></span></code><em class="replaceable"><code>number</code></em> ...<code class="literal"><span class="bold"><strong>)</strong></span></code>
+</dt>
+<dd><p>A uniform vector of unsigned integers.
+The parameter <em class="replaceable"><code>n</code></em> is a precision, which can be 8, 16, 32, or 64.
+See <a class="xref" href="Data-structures.html#Uniform-vectors" title="Kawa: Uniform vectors">the section called “Uniform vectors”</a>.
+</p></dd>
+<dt class="term"><code class="literal"><span class="bold"><strong>#x</strong></span></code></dt>
+<dd><p>A hexadecimal (base-16) number.
+</p></dd>
+</dl></div>
+<p>The follow named constructor forms are supported:
+</p>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#,(path</strong></span></code> <em class="replaceable"><code>path</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code>
+</dt>
+<dd><p></p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#,(filepath</strong></span></code> <em class="replaceable"><code>path</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code>
+</dt>
+<dd><p></p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#,(URI</strong></span></code> <em class="replaceable"><code>path</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code>
+</dt>
+<dd><p></p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#,(symbol</strong></span></code> <em class="replaceable"><code>local-name</code></em> [<em class="replaceable"><code>uri</code></em> [<em class="replaceable"><code>prefix</code></em>]]<code class="literal"><span class="bold"><strong>)</strong></span></code>
+</dt>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#,(symbol</strong></span></code> <em class="replaceable"><code>local-name</code></em> <em class="replaceable"><code>namespace</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code>
+</dt>
+<dd><p></p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#,(namespace</strong></span></code> <em class="replaceable"><code>uri</code></em> [<em class="replaceable"><code>prefix</code></em>]<code class="literal"><span class="bold"><strong>)</strong></span></code>
+</dt>
+<dd><p></p></dd>
+<dt class="term">
+<code class="literal"><span class="bold"><strong>#,(duration</strong></span></code> <em class="replaceable"><code>duration</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code>
+</dt>
+<dd><p></p></dd>
+</dl></div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Primitive-expression-syntax"></a>Primitive expression syntax</h3></div></div></div>
+<div class="literallayout"><p><a class="indexterm" name="idp42476416"></a><a name="meta-expression"></a><em class="replaceable"><code>expression</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-literal-expression"><em class="replaceable"><code>literal-expression</code></em></a> | <a class="link" href="Syntax.html#meta-variable-reference"><em class="replaceable"><code>variable-reference</code></em></a><br>
+  | <a class="link" href="Syntax.html#meta-procedure-call"><em class="replaceable"><code>procedure-call</code></em></a> | TODO<br>
+</p></div>
+<p><a name="literal-expression"></a>
+</p>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Literal-expressions"></a>Literal expressions</h4></div></div></div>
+<div class="literallayout"><p><a class="indexterm" name="idp42484688"></a><a name="meta-literal-expression"></a><em class="replaceable"><code>literal-expression</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>(quote</strong></span></code> <a class="link" href="Syntax.html#meta-datum"><em class="replaceable"><code>datum</code></em></a><code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+  | <code class="literal"><span class="bold"><strong>'</strong></span></code> <a class="link" href="Syntax.html#meta-datum"><em class="replaceable"><code>datum</code></em></a><br>
+  | <em class="replaceable"><code>constant</code></em><br>
+<a class="indexterm" name="idp42492720"></a><a name="meta-constant"></a><em class="replaceable"><code>constant</code></em> <code class="literal">::=</code> <em class="replaceable"><code>number</code></em> | <em class="replaceable"><code>boolean</code></em> | <em class="replaceable"><code>character</code></em> | <em class="replaceable"><code>string</code></em><br>
+</p></div>
+<p><code class="literal">(quote <em class="replaceable"><code>datum</code></em>)</code> evaluates to <em class="replaceable"><code>datum</code></em>,
+which may be any external representation of a Scheme object.
+This notation is used to include literal constants in Scheme code.
+</p>
+<pre class="screen">(quote a)               ⇒  a
+(quote #(a b c))        ⇒  #(a b c)
+(quote (+ 1 2))         ⇒  (+ 1 2)
+</pre>
+<p><code class="literal">(quote <em class="replaceable"><code>datum</code></em>)</code> may be abbreviated as <code class="literal">'<em class="replaceable"><code>datum</code></em></code>.
+The two notations are equivalent in all respects.
+</p>
+<pre class="screen">’a                      ⇒  a
+’#(a b c)               ⇒  #(a b c)
+’()                     ⇒  ()
+’(+ 1 2)                ⇒  (+ 1 2)
+’(quote a)              ⇒  (quote a)
+’’a                     ⇒  (quote a)
+</pre>
+<p>Numerical constants, string constants, character constants,
+bytevector constants, and boolean constants evaluate to
+themselves; they need not be quoted.
+</p>
+<pre class="screen">145932          ⇒  145932
+#t              ⇒  #t
+"abc"           ⇒  "abc"
+</pre>
+<p><a name="variable-reference"></a>
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Variable-references"></a>Variable references</h4></div></div></div>
+<div class="literallayout"><p><a class="indexterm" name="idp42507504"></a><a name="meta-variable-reference"></a><em class="replaceable"><code>variable-reference</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-identifier"><em class="replaceable"><code>identifier</code></em></a><br>
+</p></div>
+<p>An expression consisting of a variable is a variable reference if it is
+not a macro use (see below).  The value of the variable reference is the
+value stored in the location to which the variable is bound.  It is a
+syntax violation to reference an unbound variable.
+</p>
+<p>The following example examples assumes the base library has been
+imported:
+</p>
+<pre class="screen">(define x 28)
+x   ⇒  28
+</pre>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Procedure-calls"></a>Procedure calls</h4></div></div></div>
+<div class="literallayout"><p><a class="indexterm" name="idp42514464"></a><a name="meta-procedure-call"></a><em class="replaceable"><code>procedure-call</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>(</strong></span></code><a class="link" href="Syntax.html#meta-operator"><em class="replaceable"><code>operator</code></em></a> <a class="link" href="Syntax.html#meta-operand"><em class="replaceable"><code>operand</code></em></a> …)<br>
+<a class="indexterm" name="idp42520896"></a><a name="meta-operator"></a><em class="replaceable"><code>operator</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a><br>
+<a class="indexterm" name="idp42523616"></a><a name="meta-operand"></a><em class="replaceable"><code>operand</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a><br>
+</p></div>
+<p>A procedure call consists of expressions for the procedure to be called
+and the arguments to be passed to it, with enclosing parentheses.  A
+form in an expression context is a procedure call if <em class="replaceable"><code>operator</code></em> is
+not an identifier bound as a syntactic keyword.
+</p>
+<p>When a procedure call is evaluated, the operator and operand expressions
+are evaluated (in an unspecified order) and the resulting procedure is
+passed the resulting arguments.
+</p>
+<pre class="screen">(+ 3 4)                ⇒  7
+((if #f + *) 3 4)      ⇒  12
+</pre>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Colon-notation"></a>Property access using colon notation</h3></div></div></div>
+<p>The <em class="firstterm">colon notation</em> accesses named parts (properties) of a value.
+It is used to get and set fields, call methods, construct compound symbols,
+and more.
+Evaluating the form <code class="literal"><em class="replaceable"><code>owner</code></em>:<em class="replaceable"><code>property</code></em></code>
+evaluates the <code class="literal"><em class="replaceable"><code>owner</code></em></code> then it extracts the named <code class="literal"><em class="replaceable"><code>property</code></em></code> of the result.
+</p>
+<div class="literallayout"><p><a class="indexterm" name="idp42536384"></a><a name="meta-property-access-abbreviation"></a><em class="replaceable"><code>property-access-abbreviation</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-property-owner-expression"><em class="replaceable"><code>property-owner-expression</code></em></a><code class="literal"><span class="bold"><strong>:</strong></span></code><a class="link" href="Syntax.html#meta-property-name"><em class="replaceable"><code>property-name</code></em></a><br>
+<a class="indexterm" name="idp42542112"></a><a name="meta-property-owner-expression"></a><em class="replaceable"><code>property-owner-expression</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a><br>
+<a class="indexterm" name="idp42545728"></a><a name="meta-property-name"></a><em class="replaceable"><code>property-name</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-identifier"><em class="replaceable"><code>identifier</code></em></a> | <code class="literal"><span class="bold"><strong>,</strong></span></code><a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a><br>
+</p></div>
+<p>The <em class="replaceable"><code>property-name</code></em> is usually a literal name,
+but it can be an unquoted <em class="replaceable"><code>expression</code></em> (i.e. following a <code class="literal">,</code>),
+in which case the name is evaluated at run-time.
+No separators are allowed on either side of the colon.
+</p>
+<p>The input syntax <code class="literal"><em class="replaceable"><code>owner</code></em>:<em class="replaceable"><code>part</code></em></code> is translated by
+the Scheme reader to the internal representation <code class="literal">($lookup$ <em class="replaceable"><code>owner</code></em> (quasiquote <em class="replaceable"><code>part</code></em>))</code>.
+</p>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Part-lookup-rules"></a>Part lookup rules</h4></div></div></div>
+<p>Evaluation proceeds as follows.
+First <em class="replaceable"><code>property-owner-expression</code></em> is
+evaluated to yield a <em class="replaceable"><code>owner</code></em> object.
+Evaluating the <em class="replaceable"><code>property-name</code></em> yields a <em class="replaceable"><code>part</code></em> name,
+which is a simple symbol: Either
+the literal <em class="replaceable"><code>identifier</code></em>, or the result of evaluating the
+property-name <em class="replaceable"><code>expression</code></em>.
+If the <em class="replaceable"><code>expression</code></em> evaluates to a string, it is converted to
+a symbol, as if using <code class="literal">string-&gt;symbol</code>.
+</p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+<p>If the <em class="replaceable"><code>owner</code></em> implements <code class="literal">gnu.mapping.HasNamedParts</code>,
+then the result is that of invoking the <code class="literal">get</code> method of the <em class="replaceable"><code>owner</code></em>
+with the <em class="replaceable"><code>part</code></em> name as a parameter.
+</p>
+<p>As a special case of this rule, if <em class="replaceable"><code>owner</code></em> is a
+<code class="literal">gnu.mapping.Namespace</code>, then the result is the
+<a class="link" href="Symbols-and-namespaces.html#Namespaces" title="Kawa: Namespaces and compound symbols">compound symbol in that namespace</a>.
+</p>
+</li>
+<li class="listitem"><p>If <em class="replaceable"><code>owner</code></em> is a <code class="literal">java.lang.Class</code> or a <code class="literal">gnu.bytecode.ObjectType</code>,
+the result is the static member named <em class="replaceable"><code>part</code></em>
+(i.e. a static field, method, or member class).
+</p></li>
+<li class="listitem"><p>If <em class="replaceable"><code>owner</code></em> is a <code class="literal">java.lang.Package</code> object, we get the member
+class or sub-package named <em class="replaceable"><code>part</code></em>.
+</p></li>
+<li class="listitem">
+<p>Otherwise, we look for a named member (instance member or field).
+</p>
+<p>Note you can't use colon notation to invoke instance methods
+of a <code class="literal">Class</code>, because it will match a previous rule.
+For example if you want to invoke the <code class="literal">getDeclaredMethod</code>
+method of the <code class="literal">java.util.List</code> , you can't write <code class="literal">(java.util.List:getDeclaredMethod</code> because that will look for a static method in <code class="literal">java.util.List</code>.
+</p>
+</li>
+</ul></div>
+<p>If the colon form is on the left-hand-side of an assignment (<code class="literal">set!</code>),
+then the named part is modified as appropriate.
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Specific-cases"></a>Specific cases</h4></div></div></div>
+<p>Some of these are depecated;
+more compact and readable forms are usually preferred.
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Type-literal"></a>Type literal</h4></div></div></div>
+<div class="literallayout"><p><code class="literal"><span class="bold"><strong>(</strong></span></code><a class="link" href="Types.html#meta-type"><em class="replaceable"><code>type</code></em></a><code class="literal"><span class="bold"><strong>:&lt;&gt;)</strong></span></code><br>
+</p></div>
+<p>Returns the <em class="replaceable"><code>type</code></em>.
+Deprecated; usually you can just write:
+</p>
+<pre class="screen"><em class="replaceable"><code>type</code></em>
+</pre>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Type-cast"></a>Type cast</h4></div></div></div>
+<div class="literallayout"><p><code class="literal"><span class="bold"><strong>(</strong></span></code><a class="link" href="Types.html#meta-type"><em class="replaceable"><code>type</code></em></a><code class="literal"><span class="bold"><strong>:</strong></span></code><code class="literal"><span class="bold"><strong>@atchar{}</strong></span></code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a><code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+</p></div>
+<p>Performs a cast.
+Deprecated; usually you can just write:
+</p>
+<pre class="screen">-&gt;<em class="replaceable"><code>type</code></em>
+</pre>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Type-test"></a>Type test</h4></div></div></div>
+<div class="literallayout"><p><code class="literal"><span class="bold"><strong>(</strong></span></code><a class="link" href="Types.html#meta-type"><em class="replaceable"><code>type</code></em></a><code class="literal"><span class="bold"><strong>:instanceof?</strong></span></code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a><code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+</p></div>
+<p>Deprecated; usually you can just write:
+</p>
+<pre class="screen">(<em class="replaceable"><code>type</code></em>? <em class="replaceable"><code>expression</code></em>)
+</pre>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="New-object-construction"></a>New object construction</h4></div></div></div>
+<div class="literallayout"><p><code class="literal"><span class="bold"><strong>(</strong></span></code><a class="link" href="Types.html#meta-type"><em class="replaceable"><code>type</code></em></a><code class="literal"><span class="bold"><strong>:new</strong></span></code> <em class="replaceable"><code>arg</code></em> ...<code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+</p></div>
+<p>Deprecated; usually you can just write:
+</p>
+<div class="literallayout"><p><code class="literal"><span class="bold"><strong>(</strong></span></code><a class="link" href="Types.html#meta-type"><em class="replaceable"><code>type</code></em></a> <em class="replaceable"><code>arg</code></em> ...<code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+</p></div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Invoking-methods"></a>Invoking methods</h4></div></div></div>
+<div class="literallayout"><p><code class="literal"><span class="bold"><strong>(</strong></span></code><em class="replaceable"><code>instance</code></em><code class="literal"><span class="bold"><strong>:</strong></span></code><a class="link" href="Objects-Classes-and-Modules.html#meta-method-name"><em class="replaceable"><code>method-name</code></em></a> <em class="replaceable"><code>arg</code></em> ...<code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+<code class="literal"><span class="bold"><strong>(</strong></span></code><em class="replaceable"><code>class</code></em><code class="literal"><span class="bold"><strong>:</strong></span></code><a class="link" href="Objects-Classes-and-Modules.html#meta-method-name"><em class="replaceable"><code>method-name</code></em></a> <em class="replaceable"><code>instance</code></em> <em class="replaceable"><code>arg</code></em> ...<code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+<code class="literal"><span class="bold"><strong>(</strong></span></code><em class="replaceable"><code>class</code></em><code class="literal"><span class="bold"><strong>:</strong></span></code><a class="link" href="Objects-Classes-and-Modules.html#meta-method-name"><em class="replaceable"><code>method-name</code></em></a> <em class="replaceable"><code>arg</code></em> ...<code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+<code class="literal"><span class="bold"><strong>(*:</strong></span></code><a class="link" href="Objects-Classes-and-Modules.html#meta-method-name"><em class="replaceable"><code>method-name</code></em></a> <em class="replaceable"><code>instance</code></em> <em class="replaceable"><code>arg</code></em> ...<code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+</p></div>
+<p>For details see <a class="xref" href="Objects-Classes-and-Modules.html#Method-operations" title="Kawa: Calling Java methods from Scheme">the section called “Calling Java methods from Scheme”</a>.
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Accessing-fields"></a>Accessing fields</h4></div></div></div>
+<div class="literallayout"><p><em class="replaceable"><code>class</code></em><code class="literal"><span class="bold"><strong>:</strong></span></code><a class="link" href="Objects-Classes-and-Modules.html#meta-field-name"><em class="replaceable"><code>field-name</code></em></a><br>
+<em class="replaceable"><code>instance</code></em><code class="literal"><span class="bold"><strong>:</strong></span></code><a class="link" href="Objects-Classes-and-Modules.html#meta-field-name"><em class="replaceable"><code>field-name</code></em></a><br>
+<code class="literal"><span class="bold"><strong>(</strong></span></code><em class="replaceable"><code>prefix</code></em><code class="literal"><span class="bold"><strong>:.</strong></span></code><a class="link" href="Objects-Classes-and-Modules.html#meta-field-name"><em class="replaceable"><code>field-name</code></em></a> <em class="replaceable"><code>instance</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+</p></div>
+<p>For details see <a class="xref" href="Objects-Classes-and-Modules.html#Field-operations" title="Kawa: Accessing object fields">the section called “Accessing object fields”</a>.
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Getting-array-length"></a>Getting array length</h4></div></div></div>
+<div class="literallayout"><p><code class="literal"><span class="bold"><strong>(</strong></span></code><a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a><code class="literal"><span class="bold"><strong>:.length)</strong></span></code><br>
+</p></div>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Bodies"></a>Bodies</h3></div></div></div>
+<p>The <em class="replaceable"><code>body</code></em> of a <code class="literal">lambda</code>, <code class="literal">let</code>, <code class="literal">let*</code>,
+<code class="literal">let-values</code>, <code class="literal">let*-values</code>, <code class="literal">letrec</code>, or <code class="literal">letrec*</code>
+expression, or that of a definition with a body consists of zero or more
+definitions or expressions followed by a final expression.
+(Standard Scheme requires that all definitions precede all expressions.)
+</p>
+<pre class="screen"><a class="indexterm" name="idp42662112"></a><a name="meta-body"></a><em class="replaceable"><code>body</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-statement"><em class="replaceable"><code>statement</code></em></a> ... <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a>
+<a class="indexterm" name="idp42666848"></a><a name="meta-statement"></a><em class="replaceable"><code>statement</code></em> <code class="literal">::=</code> <em class="replaceable"><code>definition</code></em> | <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a>
+</pre>
+<p>Each identifier defined by a definition is local to the <em class="replaceable"><code>body</code></em>.
+That is, the identifier is bound, and the region of the binding is the
+entire <em class="replaceable"><code>body</code></em>.
+Example:
+</p>
+<pre class="screen">(let ((x 5))
+  (define foo (lambda (y) (bar x y)))
+  (define bar (lambda (a b) (+ (* a b) a)))
+  (foo (+ x 3)))
+⇒ 45
+</pre>
+<p>When <code class="literal">begin</code>, <code class="literal">let-syntax</code>, or <code class="literal">letrec-syntax</code> forms
+occur in a body prior to the first expression, they are spliced into the
+body.  Some or all of the body, including portions wrapped in
+<code class="literal">begin</code>, <code class="literal">let-syntax</code>, or <code class="literal">letrec-syntax</code> forms, may be
+specified by a macro use.
+</p>
+<p>An expanded <em class="replaceable"><code>body</code></em> containing variable definitions can be
+converted into an equivalent <code class="literal">letrec*</code> expression.
+(If there is a definition following expressions you may need to
+convert the expressions to dummy definitions.)     For example,
+the <code class="literal">let</code> expression in the above example is equivalent to
+</p>
+<pre class="screen">(let ((x 5))
+  (letrec* ((foo (lambda (y) (bar x y)))
+            (bar (lambda (a b) (+ (* a b) a))))
+    (foo (+ x 3))))
+</pre>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Syntax-and-conditional-compilation"></a>Syntax and conditional compilation</h3></div></div></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42683824"></a><code class="function">cond-expand</code><em class="replaceable"><code> cond-expand-clause*</code></em> [<em class="replaceable"><code><code class="literal"><span class="bold"><strong>(else</strong></span></code></code></em><em class="replaceable"><code> command-or-definition*</code></em><em class="replaceable"><code><code class="literal"><span class="bold"><strong>)</strong></span></code></code></em>]</p>
+<div class="blockquote"><blockquote class="blockquote">
+<div class="literallayout"><p><a class="indexterm" name="idp42689216"></a><a name="meta-cond-expand-clause"></a><em class="replaceable"><code>cond-expand-clause</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>(</strong></span></code><em class="replaceable"><code>feature-requirement</code></em> <em class="replaceable"><code>command-or-definition</code></em>*<code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+<a class="indexterm" name="idp42694768"></a><a class="indexterm" name="idp42695824"></a><a name="meta-feature-requirement"></a><em class="replaceable"><code>feature-requirement</code></em> <code class="literal">::=</code> <em class="replaceable"><code>feature-identifier</code></em><br>
+  | <code class="literal"><span class="bold"><strong>(and</strong></span></code> <em class="replaceable"><code>feature-requirement</code></em>*<code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+  | <code class="literal"><span class="bold"><strong>(or</strong></span></code> <em class="replaceable"><code>feature-requirement</code></em>*<code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+  | <code class="literal"><span class="bold"><strong>(not</strong></span></code> <em class="replaceable"><code>feature-requirement</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+<a class="indexterm" name="idp42706560"></a><a name="meta-feature-identifier"></a><em class="replaceable"><code>feature-identifier</code></em> <code class="literal">::=</code> a symbol which is the name or alias of a SRFI<br>
+</p></div>
+<p>The <code class="literal">cond-expand</code> form tests for the existence of features at
+macro-expansion time. It either expands into the body of one of its
+clauses or signals an error during syntactic
+processing. <code class="literal">cond-expand</code> expands into the body of the first clause
+whose feature requirement is currently satisfied; the <code class="literal">else</code>
+clause, if present, is selected if none of the previous clauses is
+selected.
+</p>
+<p>A feature requirement has an obvious interpretation as a logical
+formula, where the <em class="replaceable"><code>feature-identifier</code></em> variables have meaning true if 
+the feature corresponding to the feature identifier, as specified in the
+SRFI registry, is in effect at the location of the <code class="literal">cond-expand</code> form, and
+false otherwise. A feature requirement is satisfied if its formula is
+true under this interpretation.
+</p>
+<p>Examples:
+</p>
+<pre class="screen">(cond-expand
+    ((and srfi-1 srfi-10)
+     (write 1))
+    ((or srfi-1 srfi-10)
+     (write 2))
+    (else))
+</pre>
+<pre class="screen">(cond-expand
+  (command-line
+   (define (program-name) (car (argv)))))
+</pre>
+<p>The second example assumes that <code class="literal">command-line</code> is an alias for some
+feature which gives access to command line arguments. Note that an error
+will be signaled at macro-expansion time if this feature is not present.
+</p>
+<p>You can use <code class="literal">java-6</code>, <code class="literal">java-7</code>, <code class="literal">java-8</code>,
+or <code class="literal">java-9</code> to check check if the underlying Java
+is a specific version or newer.
+For example the name <code class="literal">java-7</code> matches for
+either Java 7, Java 8, or newer, as
+reported by <code class="literal">System</code> property <code class="literal">"java.version"</code>.
+</p>
+<p>You can use <code class="literal">class-exists:<em class="replaceable"><code>ClassName</code></em></code> to check
+if <code class="literal"><em class="replaceable"><code>ClassName</code></em></code> exists at compile-time.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42726480"></a><code class="function">features</code></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Returns a list of feature identifiers which <code class="literal">cond-expand</code>
+treats as true.
+This not a complete list - for example <code class="literal">class-exists:<em class="replaceable"><code>ClassName</code></em></code>
+feature identifiers are not included.
+It is an error to modify this list.
+Here is example of what <code class="literal">features</code> might return:
+</p>
+<pre class="screen">(features)  ⇒
+(complex exact-complex full-unicode java-7 java-6 kawa
+ ratios srfi-0 srfi-4 srfi-6 srfi-8 srfi-9 srfi-11
+ srfi-16 srfi-17 srfi-23 srfi-25 srfi-26 srfi-28 srfi-30
+ srfi-39 string-normalize-unicode threads)
+</pre>
+</blockquote></div>
+</div>
+<p><a name="include"></a>
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42733952"></a><code class="function">include</code><em class="replaceable"><code> path</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Read the contents of the file at <em class="replaceable"><code>path</code></em> as a sequence of forms,
+and treat the result as if the resulting forms were the forms
+of a <code class="literal">begin</code>.
+</p></blockquote></div>
+</div>
+<p><a name="include-relative"></a>
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42739504"></a><code class="function">include-relative</code><em class="replaceable"><code> path</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Same as <code class="literal">include</code>, except that the <em class="replaceable"><code>path</code></em> is relative to the
+path of the source-file containing the <code class="literal">include-file</code>.
+</p></blockquote></div>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Macros"></a>Macros</h3></div></div></div>
+<p><a name="macro-reference"></a>
+</p>
+<p>Libraries and top–level programs can define and use new kinds of
+derived expressions and definitions called <span class="emphasis"><em>syntactic abstractions</em></span>
+or <span class="emphasis"><em>macros</em></span>.  A syntactic abstraction is created by binding a
+keyword to a <span class="emphasis"><em>macro transformer</em></span> or, simply, <span class="emphasis"><em>transformer</em></span>.
+</p>
+<p>The transformer determines how a use of the macro (called a <span class="emphasis"><em>macro
+use</em></span>) is transcribed into a more primitive form.
+</p>
+<p>Most macro uses have the form:
+</p>
+<pre class="screen">(<em class="replaceable"><code>keyword</code></em> <em class="replaceable"><code>datum</code></em> …)
+</pre>
+<p>where <em class="replaceable"><code>keyword</code></em> is an identifier that uniquely determines the kind
+of form.  This identifier is called the <span class="emphasis"><em>syntactic keyword</em></span>, or
+simply <span class="emphasis"><em>keyword</em></span>.  The number of <em class="replaceable"><code>datum</code></em>s and the syntax of
+each depends on the syntactic abstraction.
+</p>
+<p>Macro uses can also take the form of improper lists, singleton
+identifiers, or <code class="literal">set!</code> forms, where the second subform of the
+<code class="literal">set!</code> is the keyword:
+</p>
+<pre class="screen">(<em class="replaceable"><code>keyword</code></em> <em class="replaceable"><code>datum</code></em> … . <em class="replaceable"><code>datum</code></em>)
+<em class="replaceable"><code>keyword</code></em>
+(set! <em class="replaceable"><code>keyword</code></em> <em class="replaceable"><code>datum</code></em>)
+</pre>
+<p>The <code class="literal">define-syntax</code>, <code class="literal">let-syntax</code> and <code class="literal">letrec-syntax</code>
+forms create bindings for keywords, associate them with macro
+transformers, and control the scope within which they are visible.
+</p>
+<p>The <code class="literal">syntax-rules</code> and <code class="literal">identifier-syntax</code> forms create
+transformers via a pattern language.  Moreover, the <code class="literal">syntax-case</code>
+form allows creating transformers via arbitrary Scheme code.
+</p>
+<p>Keywords occupy the same name space as variables.  That is, within the
+same scope, an identifier can be bound as a variable or keyword, or
+neither, but not both, and local bindings of either kind may shadow
+other bindings of either kind.
+</p>
+<p>Macros defined using <code class="literal">syntax-rules</code> and <code class="literal">identifier-syntax</code>
+are “hygienic” and “referentially transparent” and thus preserve
+Scheme's lexical scoping.
+</p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>If a macro transformer inserts a binding for an identifier (variable or
+keyword) not appearing in the macro use, the identifier is in effect
+renamed throughout its scope to avoid conflicts with other identifiers.
+</p></li>
+<li class="listitem"><p>If a macro transformer inserts a free reference to an identifier, the
+reference refers to the binding that was visible where the transformer
+was specified, regardless of any local bindings that may surround the
+use of the macro.
+</p></li>
+</ul></div>
+<p>Macros defined using the <code class="literal">syntax-case</code> facility are also hygienic
+unless <code class="literal">datum-&gt;syntax</code> is used.
+</p>
+<p>Kawa supports most of the <code class="literal">syntax-case</code> feature.
+</p>
+<p>Syntax definitions are valid wherever definitions are.
+They have the following form:
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42773456"></a><code class="function">define-syntax</code><em class="replaceable"><code> keyword</code></em><em class="replaceable"><code> transformer-spec</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The <em class="replaceable"><code>keyword</code></em> is a identifier, and <em class="replaceable"><code>transformer-spec</code></em>
+is a function that maps syntax forms to syntax forms,
+usually an instance of <code class="literal">syntax-rules</code>.
+If the <code class="literal">define-syntax</code> occurs at the top level, then the top-level
+syntactic environment is extended by binding the <em class="replaceable"><code>keyword</code></em>
+to to the specified transformer, but existing references to any top-level
+binding for <em class="replaceable"><code>keyword</code></em> remain unchanged.  Otherwise, it is a
+<em class="firstterm">internal syntax definition</em>, and is local to the <em class="replaceable"><code>body</code></em>
+in which it is defined.
+</p>
+<pre class="screen">(let ((x 1) (y 2))
+   (define-syntax swap!
+     (syntax-rules ()
+       ((swap! a b)
+        (let ((tmp a))
+          (set! a b)
+          (set! b tmp)))))
+   (swap! x y)
+   (list x y))  ⇒ (2 1)
+</pre>
+<p>Macros can expand into definitions in any context that permits them.
+However, it is an error for a definition to define an identifier
+whose binding has to be known in order to determine the meaning
+of the definitoion itself, or of any predecing definiton that belongs
+to the same group of internal definitions.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42783216"></a><code class="function">define-syntax-case</code><em class="replaceable"><code> name</code></em><em class="replaceable"><code> <code class="literal"><span class="bold"><strong>(</strong></span></code></code></em><em class="replaceable"><code>literals</code></em><em class="replaceable"><code><code class="literal"><span class="bold"><strong>)</strong></span></code></code></em><em class="replaceable"><code> <code class="literal"><span class="bold"><strong>(</strong></span></code></code></em><em class="replaceable"><code>pattern</code></em><em class="replaceable"><code> expr</code></em><em class="replaceable"><code><code class="literal"><span class="bold"><strong>)</strong></span></code></code></em><em class="replaceable"><code> ...</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>A convenience macro to make it easy to define <code class="literal">syntax-case</code>-style macros.
+Defines a macro with the given <em class="replaceable"><code>name</code></em> and list of <em class="replaceable"><code>literals</code></em>.
+Each <em class="replaceable"><code>pattern</code></em> has the form of a <code class="literal">syntax-rules</code>-style pattern,
+and it is matched against the macro invocation syntax form.
+When a match is found, the corresponding <em class="replaceable"><code>expr</code></em> is evaluated.
+It must evaluate to a syntax form,
+which replaces the macro invocation.
+</p>
+<pre class="screen">(define-syntax-case macro-name (literals)
+  (pat1 result1)
+  (pat2 result2))
+</pre>
+<p>is equivalent to:
+</p>
+<pre class="screen">(define-syntax macro-name
+  (lambda (form)
+    (syntax-case form (literals)
+      (pat1 result1)
+      (pat2 result2))))
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42797408"></a><code class="function">define-macro</code><em class="replaceable"><code> <code class="literal"><span class="bold"><strong>(</strong></span></code></code></em><em class="replaceable"><code>name</code></em><em class="replaceable"><code> lambda-list</code></em><em class="replaceable"><code><code class="literal"><span class="bold"><strong>)</strong></span></code></code></em><em class="replaceable"><code> form</code></em><em class="replaceable"><code> ...</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p><span class="emphasis"><em>This form is deprecated.</em></span>
+Functionally equivalent to <code class="literal">defmacro</code>.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42805040"></a><code class="function">defmacro</code><em class="replaceable"><code> name</code></em><em class="replaceable"><code> lambda-list</code></em><em class="replaceable"><code> form</code></em><em class="replaceable"><code> ...</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p><span class="emphasis"><em>This form is deprecated.</em></span>
+Instead of
+</p>
+<pre class="screen">(defmacro (<em class="replaceable"><code>name</code></em> ...)
+  (let ... `(... ,<em class="replaceable"><code>exp</code></em> ...)))
+</pre>
+<p>you should probably do:
+</p>
+<pre class="screen">(define-syntax-case <em class="replaceable"><code>name</code></em> ()
+  ((_ ...) (let #`(... #,<em class="replaceable"><code>exp</code></em> ...))))
+</pre>
+<p>and instead of
+</p>
+<pre class="screen">(defmacro (<em class="replaceable"><code>name</code></em> ... <em class="replaceable"><code>var</code></em> ...) `(... <em class="replaceable"><code>var</code></em> ...))
+</pre>
+<p>you should probably do:
+</p>
+<pre class="screen">(define-syntax-case <em class="replaceable"><code>name</code></em> ()
+  ((_ ... <em class="replaceable"><code>var</code></em> ...) #`(... <em class="replaceable"><code>var</code></em> ...))
+</pre>
+<p>Defines an old-style macro a la Common Lisp,
+and installs <code class="literal">(lambda <em class="replaceable"><code>lambda-list</code></em> <em class="replaceable"><code>form</code></em> ...)</code>
+as the expansion function for <em class="replaceable"><code>name</code></em>.
+When the translator sees an application of <em class="replaceable"><code>name</code></em>,
+the expansion function is called with the rest of the application
+as the actual arguments.  The resulting object must be a Scheme
+source form that is futher processed (it may be repeatedly macro-expanded).
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42820464"></a><code class="function">gentemp</code></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Returns a new (interned) symbol each time it is called.
+The symbol names are implementation-dependent.
+(This is not directly macro-related, but is often used in conjunction
+with <code class="literal">defmacro</code> to get a fresh unique identifier.)
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42824592"></a><code class="function">expand</code><em class="replaceable"><code> form</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The result of evaluating <em class="replaceable"><code>form</code></em> is treated as a Scheme expression,
+syntax-expanded to internal form, and then converted back to (roughly)
+the equivalent expanded Scheme form.
+</p>
+<p>This can be useful for debugging macros.
+</p>
+<p>To access this function, you must first <code class="literal">(require 'syntax-utils)</code>.
+</p>
+<pre class="screen">(require 'syntax-utils)
+(expand '(cond ((&gt; x y) 0) (else 1))) ⇒ (if (&gt; x y) 0 1)
+</pre>
+</blockquote></div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Identifier-predicates"></a>Identifier predicates</h4></div></div></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42832016"></a><code class="function">identifier?</code> <em class="replaceable"><code>obj</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Return <code class="literal">#t</code> if <em class="replaceable"><code>obj</code></em> is an identifier, i.e., a syntax object
+representing an identifier, and <code class="literal">#f</code> otherwise.
+</p>
+<p>The <code class="literal">identifier?</code> procedure is often used within a fender to verify
+that certain subforms of an input form are identifiers, as in the
+definition of <code class="literal">rec</code>, which creates self–contained recursive
+objects, below.
+</p>
+<pre class="screen">(define-syntax rec
+  (lambda (x)
+    (syntax-case x ()
+      ((_ x e)
+       (identifier? #'x)
+       #'(letrec ((x e)) x)))))
+
+(map (rec fact
+       (lambda (n)
+         (if (= n 0)
+             1
+             (* n (fact (- n 1))))))
+     '(1 2 3 4 5))    ⇒ (1 2 6 24 120)
+
+(rec 5 (lambda (x) x))  ⇒ exception
+</pre>
+</blockquote></div>
+</div>
+<p>The procedures <code class="literal">bound-identifier=?</code> and <code class="literal">free-identifier=?</code>
+each take two identifier arguments and return <code class="literal">#t</code> if their arguments
+are equivalent and <code class="literal">#f</code> otherwise.  These predicates are used to
+compare identifiers according to their <span class="emphasis"><em>intended use</em></span> as free
+references or bound identifiers in a given context.
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42844272"></a><code class="function">bound-identifier=?</code> <em class="replaceable"><code>id</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>id</code></em><em class="replaceable"><code>_2</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p><em class="replaceable"><code>id</code></em>_1 and <em class="replaceable"><code>id</code></em>_2 must be identifiers.
+</p>
+<p>The procedure <code class="literal">bound-identifier=?</code> returns <code class="literal">#t</code> if a binding for
+one would capture a reference to the other in the output of the
+transformer, assuming that the reference appears within the scope of the
+binding, and <code class="literal">#f</code> otherwise.
+</p>
+<p>In general, two identifiers are <code class="literal">bound-identifier=?</code> only if both
+are present in the original program or both are introduced by the same
+transformer application (perhaps implicitly, see <code class="literal">datum-&gt;syntax</code>).
+</p>
+<p>The <code class="literal">bound-identifier=?</code> procedure can be used for detecting
+duplicate identifiers in a binding construct or for other preprocessing
+of a binding construct that requires detecting instances of the bound
+identifiers.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42855456"></a><code class="function">free-identifier=?</code> <em class="replaceable"><code>id</code></em><em class="replaceable"><code>_1</code></em> <em class="replaceable"><code>id</code></em><em class="replaceable"><code>_2</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p><em class="replaceable"><code>id</code></em>_1 and <em class="replaceable"><code>id</code></em>_2 must be identifiers.
+</p>
+<p>The <code class="literal">free-identifier=?</code> procedure returns <code class="literal">#t</code> if and only if
+the two identifiers would resolve to the same binding if both were to
+appear in the output of a transformer outside of any bindings inserted
+by the transformer.  (If neither of two like–named identifiers resolves
+to a binding, i.e., both are unbound, they are considered to resolve to
+the same binding.)
+</p>
+<p>Operationally, two identifiers are considered equivalent by
+<code class="literal">free-identifier=?</code> if and only the topmost matching substitution
+for each maps to the same binding or the identifiers have the same name
+and no matching substitution.
+</p>
+<p>The <code class="literal">syntax-case</code> and <code class="literal">syntax-rules</code> forms internally use
+<code class="literal">free-identifier=?</code> to compare identifiers listed in the literals
+list against input identifiers.
+</p>
+<pre class="screen">(let ((fred 17))
+  (define-syntax a
+    (lambda (x)
+      (syntax-case x ()
+        ((_ id) #'(b id fred)))))
+  (define-syntax b
+    (lambda (x)
+      (syntax-case x ()
+        ((_ id1 id2)
+         #`(list
+             #,(free-identifier=? #'id1 #'id2)
+             #,(bound-identifier=? #'id1 #'id2))))))
+  (a fred))
+    ⇒ (#t #f)
+</pre>
+<p>The following definition of unnamed <code class="literal">let</code> uses
+<code class="literal">bound-identifier=?</code> to detect duplicate identifiers.
+</p>
+<pre class="screen">(define-syntax let
+  (lambda (x)
+    (define unique-ids?
+      (lambda (ls)
+        (or (null? ls)
+            (and (let notmem? ((x (car ls)) (ls (cdr ls)))
+                   (or (null? ls)
+                       (and (not (bound-identifier=? x (car ls)))
+                            (notmem? x (cdr ls)))))
+                 (unique-ids? (cdr ls))))))
+    (syntax-case x ()
+      ((_ ((i v) ...) e1 e2 ...)
+       (unique-ids? #'(i ...))
+       #'((lambda (i ...) e1 e2 ...) v ...)))))
+</pre>
+<p>The argument <code class="literal">#'(i ...)</code> to <code class="literal">unique-ids?</code> is guaranteed to be
+a list by the rules given in the description of <code class="literal">syntax</code> above.
+</p>
+<p>With this definition of <code class="literal">let</code>:
+</p>
+<pre class="screen">(let ((a 3) (a 4)) (+ a a))    ⇒ <em class="wordasword">syntax error</em>
+</pre>
+<p>However,
+</p>
+<pre class="screen">(let-syntax
+  ((dolet (lambda (x)
+            (syntax-case x ()
+              ((_ b)
+               #'(let ((a 3) (b 4)) (+ a b)))))))
+  (dolet a))
+⇒ 7
+</pre>
+<p>since the identifier <code class="literal">a</code> introduced by <code class="literal">dolet</code> and the
+identifier <code class="literal">a</code> extracted from the input form are not
+<code class="literal">bound-identifier=?</code>.
+</p>
+<p>Rather than including <code class="literal">else</code> in the literals list as before, this
+version of <code class="literal">case</code> explicitly tests for <code class="literal">else</code> using
+<code class="literal">free-identifier=?</code>.
+</p>
+<pre class="screen">(define-syntax case
+  (lambda (x)
+    (syntax-case x ()
+      ((_ e0 ((k ...) e1 e2 ...) ...
+          (else-key else-e1 else-e2 ...))
+       (and (identifier? #'else-key)
+            (free-identifier=? #'else-key #'else))
+       #'(let ((t e0))
+           (cond
+            ((memv t '(k ...)) e1 e2 ...)
+            ...
+            (else else-e1 else-e2 ...))))
+      ((_ e0 ((ka ...) e1a e2a ...)
+          ((kb ...) e1b e2b ...) ...)
+       #'(let ((t e0))
+           (cond
+            ((memv t '(ka ...)) e1a e2a ...)
+            ((memv t '(kb ...)) e1b e2b ...)
+            ...))))))
+</pre>
+<p>With either definition of <code class="literal">case</code>, <code class="literal">else</code> is not recognized as
+an auxiliary keyword if an enclosing lexical binding for <code class="literal">else</code>
+exists.  For example,
+</p>
+<pre class="screen">(let ((else <code class="literal">#f</code>))
+  (case 0 (else (write "oops"))))    ⇒ <em class="wordasword">syntax error</em>
+</pre>
+<p>since <code class="literal">else</code> is bound lexically and is therefore not the same
+<code class="literal">else</code> that appears in the definition of <code class="literal">case</code>.
+</p>
+</blockquote></div>
+</div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Syntax-object-and-datum-conversions"></a>Syntax-object and datum conversions</h4></div></div></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42892688"></a><code class="function">syntax-&gt;datum</code> <em class="replaceable"><code>syntax-object</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp42895392"></a><code class="function">syntax-object-&gt;datum</code> <em class="replaceable"><code>syntax-object</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Strip all syntactic information from a syntax object and returns the
+corresponding Scheme datum.
+</p>
+<p>Identifiers stripped in this manner are converted to their symbolic
+names, which can then be compared with <code class="literal">eq?</code>.  Thus, a predicate
+<code class="literal">symbolic-identifier=?</code> might be defined as follows.
+</p>
+<pre class="screen">(define symbolic-identifier=?
+  (lambda (x y)
+    (eq? (syntax-&gt;datum x)
+         (syntax-&gt;datum y))))
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42901888"></a><code class="function">datum-&gt;syntax</code> <em class="replaceable"><code>template-id</code></em> <em class="replaceable"><code>datum</code></em> [<em class="replaceable"><code>srcloc</code></em>]</p>
+<p class="synopsis"><a class="indexterm" name="idp42905552"></a><code class="function">datum-&gt;syntax-object</code> <em class="replaceable"><code>template-id</code></em> <em class="replaceable"><code>datum</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p><em class="replaceable"><code>template-id</code></em> must be a template identifier and <em class="replaceable"><code>datum</code></em> should
+be a datum value.
+</p>
+<p>The <code class="literal">datum-&gt;syntax</code> procedure returns a syntax-object
+representation of <em class="replaceable"><code>datum</code></em> that contains the same contextual
+information as <em class="replaceable"><code>template-id</code></em>, with the effect that the syntax object
+behaves as if it were introduced into the code when <em class="replaceable"><code>template-id</code></em>
+was introduced.
+</p>
+<p>If <em class="replaceable"><code>srcloc</code></em> is specified (and neither <code class="literal">#f</code> or <code class="literal">#!null</code>),
+it specifies the file position (including line number) for the result.
+In that case it should be a syntax object representing
+a list; otherwise it is currently ignored, though future extensions
+may support other ways of specifying the position.
+</p>
+<p>The <code class="literal">datum-&gt;syntax</code> procedure allows a transformer to “bend”
+lexical scoping rules by creating <span class="emphasis"><em>implicit identifiers</em></span> that
+behave as if they were present in the input form, thus permitting the
+definition of macros that introduce visible bindings for or references
+to identifiers that do not appear explicitly in the input form.  For
+example, the following defines a <code class="literal">loop</code> expression that uses this
+controlled form of identifier capture to bind the variable <code class="literal">break</code>
+to an escape procedure within the loop body.  (The derived
+<code class="literal">with-syntax</code> form is like <code class="literal">let</code> but binds pattern variables.)
+</p>
+<pre class="screen">(define-syntax loop
+  (lambda (x)
+    (syntax-case x ()
+      ((k e ...)
+       (with-syntax
+           ((break (datum-&gt;syntax #'k 'break)))
+         #'(call-with-current-continuation
+             (lambda (break)
+               (let f () e ... (f)))))))))
+
+(let ((n 3) (ls '()))
+  (loop
+    (if (= n 0) (break ls))
+    (set! ls (cons 'a ls))
+    (set! n (- n 1))))
+⇒ (a a a)
+</pre>
+<p>Were <code class="literal">loop</code> to be defined as:
+</p>
+<pre class="screen">(define-syntax loop
+  (lambda (x)
+    (syntax-case x ()
+      ((_ e ...)
+       #'(call-with-current-continuation
+           (lambda (break)
+             (let f () e ... (f))))))))
+</pre>
+<p>the variable <code class="literal">break</code> would not be visible in <code class="literal">e ...</code>.
+</p>
+<p>The datum argument <em class="replaceable"><code>datum</code></em> may also represent an arbitrary Scheme
+form, as demonstrated by the following definition of <code class="literal">include</code>.
+</p>
+<pre class="screen">(define-syntax include
+  (lambda (x)
+    (define read-file
+      (lambda (fn k)
+        (let ((p (open-file-input-port fn)))
+          (let f ((x (get-datum p)))
+            (if (eof-object? x)
+                (begin (close-port p) '())
+                (cons (datum-&gt;syntax k x)
+                      (f (get-datum p))))))))
+    (syntax-case x ()
+      ((k filename)
+       (let ((fn (syntax-&gt;datum #'filename)))
+         (with-syntax (((exp ...)
+                        (read-file fn #'k)))
+           #'(begin exp ...)))))))
+</pre>
+<p><code class="literal">(include "filename")</code> expands into a <code class="literal">begin</code> expression
+containing the forms found in the file named by <code class="literal">"filename"</code>.  For
+example, if the file <code class="filename">flib.ss</code> contains:
+</p>
+<pre class="screen">(define f (lambda (x) (g (* x x))))
+</pre>
+<p>and the file <code class="filename">glib.ss</code> contains:
+</p>
+<pre class="screen">(define g (lambda (x) (+ x x)))
+</pre>
+<p>the expression:
+</p>
+<pre class="screen">(let ()
+  (include "flib.ss")
+  (include "glib.ss")
+  (f 5))
+</pre>
+<p>evaluates to <code class="literal">50</code>.
+</p>
+<p>The definition of <code class="literal">include</code> uses <code class="literal">datum-&gt;syntax</code> to convert
+the objects read from the file into syntax objects in the proper lexical
+context, so that identifier references and definitions within those
+expressions are scoped where the <code class="literal">include</code> form appears.
+</p>
+<p>Using <code class="literal">datum-&gt;syntax</code>, it is even possible to break hygiene
+entirely and write macros in the style of old Lisp macros.  The
+<code class="literal">lisp-transformer</code> procedure defined below creates a transformer
+that converts its input into a datum, calls the programmer's procedure
+on this datum, and converts the result back into a syntax object scoped
+where the original macro use appeared.
+</p>
+<pre class="screen">(define lisp-transformer
+  (lambda (p)
+    (lambda (x)
+      (syntax-case x ()
+        ((kwd . rest)
+         (datum-&gt;syntax #'kwd
+           (p (syntax-&gt;datum x))))))))
+</pre>
+</blockquote></div>
+</div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Convenience-forms"></a>Convenience forms</h4></div></div></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42943088"></a><code class="function">with-syntax</code> ((<em class="replaceable"><code>pattern</code></em><em class="replaceable"><code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a></code></em>)<em class="replaceable"><code> …</code></em>)<em class="replaceable"><code> <a class="link" href="Syntax.html#meta-body"><em class="replaceable"><code>body</code></em></a></code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The <code class="literal">with-syntax</code> form is used to bind pattern variables, just as
+<code class="literal">let</code> is used to bind variables.  This allows a transformer to
+construct its output in separate pieces, then put the pieces together.
+</p>
+<p>Each <em class="replaceable"><code>pattern</code></em> is identical in form to a <code class="literal">syntax-case</code>
+pattern.  The value of each <em class="replaceable"><code>expression</code></em> is computed and
+destructured according to the corresponding <em class="replaceable"><code>pattern</code></em>, and pattern
+variables within the <em class="replaceable"><code>pattern</code></em> are bound as with
+<code class="literal">syntax-case</code> to the corresponding portions of the value within
+<em class="replaceable"><code>body</code></em>.
+</p>
+<p>The <code class="literal">with-syntax</code> form may be defined in terms of
+<code class="literal">syntax-case</code> as follows.
+</p>
+<pre class="screen">(define-syntax with-syntax
+  (lambda (x)
+    (syntax-case x ()
+      ((_ ((p e0) ...) e1 e2 ...)
+       (syntax (syntax-case (list e0 ...) ()
+                 ((p ...) (let () e1 e2 ...))))))))
+</pre>
+<p>The following definition of <code class="literal">cond</code> demonstrates the use of
+<code class="literal">with-syntax</code> to support transformers that employ recursion
+internally to construct their output.  It handles all <code class="literal">cond</code> clause
+variations and takes care to produce one-armed <code class="literal">if</code> expressions
+where appropriate.
+</p>
+<pre class="screen">(define-syntax cond
+  (lambda (x)
+    (syntax-case x ()
+      ((_ c1 c2 ...)
+       (let f ((c1 #'c1) (c2* #'(c2 ...)))
+         (syntax-case c2* ()
+           (()
+            (syntax-case c1 (else =&gt;)
+             (((else e1 e2 ...) #'(begin e1 e2 ...))
+              ((e0) #'e0)
+              ((e0 =&gt; e1)
+               #'(let ((t e0)) (if t (e1 t))))
+              ((e0 e1 e2 ...)
+               #'(if e0 (begin e1 e2 ...)))))
+           ((c2 c3 ...)
+            (with-syntax ((rest (f #'c2 #'(c3 ...))))
+              (syntax-case c1 (=&gt;)
+                ((e0) #'(let ((t e0)) (if t t rest)))
+                ((e0 =&gt; e1)
+                 #'(let ((t e0)) (if t (e1 t) rest)))
+                ((e0 e1 e2 ...)
+                 #'(if e0
+                        (begin e1 e2 ...)
+                        rest)))))))))))
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp42963312"></a><code class="function">quasisyntax</code> <em class="replaceable"><code>template</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp42966016"></a><code class="function">unsyntax</code></p>
+<p class="synopsis"><a class="indexterm" name="idp42968304"></a><code class="function">unsyntax-splicing</code></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The <code class="literal">quasisyntax</code> form is similar to <code class="literal">syntax</code>, but it allows
+parts of the quoted text to be evaluated, in a manner similar to the
+operation of <code class="literal">quasiquote</code>.
+</p>
+<p>Within a <code class="literal">quasisyntax</code> <em class="replaceable"><code>template</code></em>, subforms of <code class="literal">unsyntax</code>
+and <code class="literal">unsyntax-splicing</code> forms are evaluated, and everything else is
+treated as ordinary template material, as with <code class="literal">syntax</code>.
+</p>
+<p>The value of each <code class="literal">unsyntax</code> subform is inserted into the output in
+place of the <code class="literal">unsyntax</code> form, while the value of each
+<code class="literal">unsyntax-splicing</code> subform is spliced into the surrounding list or
+vector structure.  Uses of <code class="literal">unsyntax</code> and <code class="literal">unsyntax-splicing</code>
+are valid only within <code class="literal">quasisyntax</code> expressions.
+</p>
+<p>A <code class="literal">quasisyntax</code> expression may be nested, with each
+<code class="literal">quasisyntax</code> introducing a new level of syntax quotation and each
+<code class="literal">unsyntax</code> or <code class="literal">unsyntax-splicing</code> taking away a level of
+quotation.  An expression nested within <span class="emphasis"><em>n</em></span> <code class="literal">quasisyntax</code>
+expressions must be within <span class="emphasis"><em>n</em></span> <span class="emphasis"><em>unsyntax</em></span> or
+<code class="literal">unsyntax-splicing</code> expressions to be evaluated.
+</p>
+<p>As noted in <a class="link" href="Syntax.html#meta-abbreviation"><em class="replaceable"><code>abbreviation</code></em></a>, <code class="literal">#`<em class="replaceable"><code>template</code></em></code> is equivalent to
+<code class="literal">(quasisyntax <em class="replaceable"><code>template</code></em>)</code>, <code class="literal">#,<em class="replaceable"><code>template</code></em></code> is
+equivalent to <code class="literal">(unsyntax <em class="replaceable"><code>template</code></em>)</code>, and
+<code class="literal">#,@<em class="replaceable"><code>template</code></em></code> is equivalent to <code class="literal">(unsyntax-splicing
+<em class="replaceable"><code>template</code></em>)</code>.  <span class="emphasis"><em>Note</em></span> that for backwards compatibility,
+you should only use <code class="literal">#,<em class="replaceable"><code>template</code></em></code> inside a literal <code class="literal">#`<em class="replaceable"><code>template</code></em></code> form.
+</p>
+<p>The <code class="literal">quasisyntax</code> keyword can be used in place of
+<code class="literal">with-syntax</code> in many cases.  For example, the definition of
+<code class="literal">case</code> shown under the description of <code class="literal">with-syntax</code> above can
+be rewritten using <code class="literal">quasisyntax</code> as follows.
+</p>
+<pre class="screen">(define-syntax case
+  (lambda (x)
+    (syntax-case x ()
+      ((_ e c1 c2 ...)
+       #`(let ((t e))
+           #,(let f ((c1 #'c1) (cmore #'(c2 ...)))
+               (if (null? cmore)
+                   (syntax-case c1 (else)
+                     ((else e1 e2 ...)
+                      #'(begin e1 e2 ...))
+                     (((k ...) e1 e2 ...)
+                      #'(if (memv t '(k ...))
+                            (begin e1 e2 ...))])
+                   (syntax-case c1 ()
+                     (((k ...) e1 e2 ...)
+                      #`(if (memv t '(k ...))
+                            (begin e1 e2 ...)
+                            #,(f (car cmore)
+                                  (cdr cmore))))))))))))
+</pre>
+</blockquote></div>
+</div>
+<div class="blockquote"><blockquote class="blockquote">
+<p><span class="emphasis"><em>Note:</em></span> Any <code class="literal">syntax-rules</code> form can be expressed with
+<code class="literal">syntax-case</code> by making the <code class="literal">lambda</code> expression and
+<code class="literal">syntax</code> expressions explicit, and <code class="literal">syntax-rules</code> may be
+defined in terms of <code class="literal">syntax-case</code> as follows.
+</p>
+<pre class="screen">(define-syntax syntax-rules
+  (lambda (x)
+    (syntax-case x ()
+      ((_ (lit ...) ((k . p) t) ...)
+       (for-all identifier? #'(lit ... k ...))
+       #'(lambda (x)
+           (syntax-case x (lit ...)
+             ((_ . p) #'t) ...))))))
+</pre>
+</blockquote></div>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Named-quasi-literals"></a>Named quasi-literals</h3></div></div></div>
+<p>Traditional Scheme has only a few kinds of values,
+and thus only a few builtin kinds of literals.
+Modern Scheme allows defining new types,
+so it is desirable to have a mechanism for defining literal values
+for the new types.
+</p>
+<p>Consider the <code class="literal"><a class="link" href="Input-Output.html#URI-type">URI</a></code> type.
+You can create a new instance of a <code class="literal">URI</code> using a
+constructor function:
+</p>
+<pre class="screen">(URI "http://example.com/")
+</pre>
+<p>This isn't too bad, though the double-quote characters are an ugly distraction.
+However, if you need to construct the string it gets messy:
+</p>
+<pre class="screen">(URI (string-append base-uri "icon.png"))
+</pre>
+<p>Instead use can write:
+</p>
+<pre class="screen">&amp;URI{http://example.com/}
+</pre>
+<p>or:
+</p>
+<pre class="screen">&amp;URI{&amp;[base-uri]icon.png}
+</pre>
+<p>This syntax is translated by the Scheme reader
+to the more familiar but more verbose equivalent forms:
+</p>
+<pre class="screen">($construct$:URI "http://example.com/")
+($construct$:URI $&lt;&lt;$ base-uri $&gt;&gt;$ "icon.png")
+</pre>
+<p>So for this to work there just needs to be a definition
+of <code class="literal">$construct$:URI</code>, usually a macro.
+Normal scope rules apply; typically you'd define <code class="literal">$construct$:URI</code> in
+a module.
+</p>
+<p>The names <code class="literal">$&lt;&lt;$</code> and <code class="literal">$&gt;&gt;$</code> are bound to unique zero-length strings.
+They are used to allow the implementation of <code class="literal">$construct$:URI</code>
+to determine which arguments are literal and which come from
+escaped expressions.
+</p>
+<p>If you want to define your own <code class="literal">$construct$:<em class="replaceable"><code>tag</code></em></code>,
+or to read motivation and details, see the
+<a class="ulink" href="http://srfi.schemers.org/srfi-108/srfi-108.html" target="_top">SRFI 108</a> specification.
+</p>
+<div class="literallayout"><p><a class="indexterm" name="idp43031840"></a><a name="meta-extended-datum-literal"></a><em class="replaceable"><code>extended-datum-literal</code></em> <code class="literal">::=</code><br>
+    <code class="literal"><span class="bold"><strong>&amp;</strong></span></code> <a class="link" href="Syntax.html#meta-cname"><em class="replaceable"><code>cname</code></em></a> <code class="literal"><span class="bold"><strong>@lbracechar{}</strong></span></code> [<a class="link" href="Characters-and-text.html#meta-initial-ignored"><em class="replaceable"><code>initial-ignored</code></em></a>] <a class="link" href="Syntax.html#meta-named-literal-part"><em class="replaceable"><code>named-literal-part</code></em></a>^* <code class="literal"><span class="bold"><strong>@rbracechar{}</strong></span></code><br>
+  | <code class="literal"><span class="bold"><strong>&amp;</strong></span></code> <a class="link" href="Syntax.html#meta-cname"><em class="replaceable"><code>cname</code></em></a> <code class="literal"><span class="bold"><strong>[</strong></span></code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a>^* <code class="literal"><span class="bold"><strong>]@lbracechar{}</strong></span></code> [<a class="link" href="Characters-and-text.html#meta-initial-ignored"><em class="replaceable"><code>initial-ignored</code></em></a>] <a class="link" href="Syntax.html#meta-named-literal-part"><em class="replaceable"><code>named-literal-part</code></em></a>^* <code class="literal"><span class="bold"><strong>@rbracechar{}</strong></span></code><br>
+<a class="indexterm" name="idp43049040"></a><a name="meta-cname"></a><em class="replaceable"><code>cname</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-identifier"><em class="replaceable"><code>identifier</code></em></a><br>
+<a class="indexterm" name="idp43052656"></a><a name="meta-named-literal-part"></a><em class="replaceable"><code>named-literal-part</code></em> <code class="literal">::=</code><br>
+    <em class="wordasword">any character except</em> <code class="literal"><span class="bold"><strong>&amp;</strong></span></code><em class="wordasword">,</em> <code class="literal"><span class="bold"><strong>@lbracechar{}</strong></span></code> <em class="wordasword">or</em> <code class="literal"><span class="bold"><strong>@rbracechar{}</strong></span></code><br>
+  | <code class="literal"><span class="bold"><strong>@lbracechar{}</strong></span></code> <a class="link" href="Syntax.html#meta-named-literal-part"><em class="replaceable"><code>named-literal-part</code></em></a>^+ <code class="literal"><span class="bold"><strong>@rbracechar{}</strong></span></code><br>
+  | <a class="link" href="Characters-and-text.html#meta-char-ref"><em class="replaceable"><code>char-ref</code></em></a><br>
+  | <a class="link" href="Characters-and-text.html#meta-entity-ref"><em class="replaceable"><code>entity-ref</code></em></a><br>
+  | <a class="link" href="Characters-and-text.html#meta-special-escape"><em class="replaceable"><code>special-escape</code></em></a><br>
+  | <a class="link" href="Characters-and-text.html#meta-enclosed-part"><em class="replaceable"><code>enclosed-part</code></em></a><br>
+  | <a class="link" href="Syntax.html#meta-extended-datum-literal"><em class="replaceable"><code>extended-datum-literal</code></em></a><br>
+</p></div>
+</div>
+</div>
+<div class="navfooter">
+<ul>
+<li><b class="toc"><a href="Syntax.html#Syntax-notation">Notation</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Lexical-and-datum-syntax">Lexical and datum syntax</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Lexical-syntax">Lexical syntax</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Datum-syntax">Datum syntax</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Hash-prefixed-forms">Hash-prefixed forms</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Primitive-expression-syntax">Primitive expression syntax</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Colon-notation">Property access using colon notation</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Bodies">Bodies</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Syntax-and-conditional-compilation">Syntax and conditional compilation</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Macros">Macros</a></b></li>
+<li><b class="toc"><a href="Syntax.html#Named-quasi-literals">Named quasi-literals</a></b></li>
+</ul>
+<p>
+          Up: <a accesskey="u" href="Documentation.html">Documentation</a></p>
+<p>
+        Previous: <a accesskey="p" href="Running.html">How to start up and run Kawa</a></p>
+<p>
+        Next: <a accesskey="n" href="Program-structure.html">Program structure</a></p>
+</div>
+</body>
+</html>

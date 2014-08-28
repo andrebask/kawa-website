@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Kawa Tutorial: Booleans</title>
+<link rel="stylesheet" title="Kawa (navbar: fixed, left)" href="../style/kawa-l.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Kawa (navbar: fixed, right)" href="../style/kawa-r.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Single column, top navigation" href="../style/top-navbar.css" media="screen, print, projection, tv">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Kawa Tutorial: Kawa Scheme Tutorial">
+<link rel="up" href="index.html" title="Kawa Tutorial: Kawa Scheme Tutorial">
+<link rel="prev" href="index.html" title="Kawa Tutorial: Kawa Scheme Tutorial">
+<link rel="next" href="Numbers.html" title="Kawa Tutorial: Numbers">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF" onload="javascript:onLoadHandler();" onunload="javascript:onUnloadHandler();">
+<div class="navcol">
+<div class="logo"><a href="../index.html"><img src="../style/kawa-logo.png"></a></div>
+<div class="navbar">
+<ul>
+<li><a href="../api/index.html">JavaDoc API</a></li>
+<li><a href="../Getting-Kawa.html">Download</a></li>
+</ul>
+<div class="toc"><ul>
+<li><a href="index.html">Kawa Scheme Tutorial</a></li>
+<li><ul>
+<li><a href="index.html#Introduction">Introduction</a></li>
+<li><b class="toc"><a href="Booleans.html">Booleans</a></b></li>
+<li><a href="Numbers.html">Numbers</a></li>
+<li><a href="Functions.html">Functions</a></li>
+<li><a href="Variables.html">Variables</a></li>
+<li><a href="Sequences.html">Lists and sequences</a></li>
+<li><a href="Types.html">Types and declarations</a></li>
+<li><a href="Classes.html">Classes</a></li>
+</ul></li>
+</ul></div>
+</div>
+</div>
+<div class="sect1" title="Kawa Tutorial: Booleans">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Booleans"></a>Booleans</h2></div></div></div>
+<p>
+Scheme uses the syntax <code class="literal">#t</code> and <code class="literal">#f</code>
+for Boolean true and false value.  For example the
+<span class="quote">“<span class="quote">less-than</span>”</span> function is named <code class="literal">&lt;</code>.
+Its result is true if the first argument is less than the second (or if
+there are more than two arguments: that they are in increasing order):</p>
+<pre class="programlisting">
+(&lt; 3 4) ⇒ #t
+(&lt; -3 -4) ⇒ #f
+(&lt; 2 3 5 7 11)) ⇒ #t
+</pre>
+<p>
+The <code class="literal">if</code> special form takes two or three sub-expressions:
+It evaluates the first expression.
+If that is true it evaluates the second expression;
+otherwise it evaluates the third expression, if provided:</p>
+<pre class="programlisting">
+(if (&lt; 3 4) (+ 5 5) (+ 5 6)) ⇒ 10
+</pre>
+<p>
+We call <code class="literal">if</code> a special form rather than a function,
+because for a function all the arguments are evaluated before the
+function is called, but in a special form that is not neceassarily the case.
+</p>
+<p>
+In addition to <code class="literal">#t</code> any value except <code class="literal">#f</code>
+counts as <span class="quote">“<span class="quote">true</span>”</span> when evaluating the first expression of an <code class="literal">if</code>:
+</p>
+<pre class="programlisting">
+(if 0 (+ 5 5) (+ 5 6)) ⇒ 11
+</pre>
+<p>
+You can use <code class="literal">and</code>, <code class="literal">or</code>,
+and not <code class="literal">and</code> to create complex boolean expressions.
+Of these <code class="literal">and</code> and <code class="literal">or</code>
+are special forms that only evaluate as many of the sub-expressions as needed.
+</p>
+<pre class="programlisting">
+(if (not (and (&gt;= i 0) (&lt;= i 9)))
+    (display "error"))
+</pre>
+<p>
+</p>
+<p>
+ You can use <code class="literal">cond</code> form as an alternative to
+<code class="literal">if</code>:</p>
+<pre class="programlisting">
+(cond ((&gt; 3 3) ’greater)
+      ((&lt; 3 3) ’less)
+      (else ’equal))       ⇒ equal
+</pre>
+</div>
+<div class="navfooter">
+<p>
+        Previous sibling: <a accesskey="p" href="index.html#Introduction">Introduction</a></p>
+<p>
+        Next sibling: <a accesskey="n" href="Numbers.html">Numbers</a></p>
+<p>
+        Previous page: <a accesskey="n" href="index.html#Introduction">Introduction</a></p>
+<p>
+        Next page: <a accesskey="n" href="Numbers.html">Numbers</a></p>
+</div>
+</body>
+</html>

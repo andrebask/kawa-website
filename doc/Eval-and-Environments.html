@@ -1,0 +1,399 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Kawa: Eval and Environments</title>
+<link rel="stylesheet" title="Kawa (navbar: fixed, left)" href="style/kawa-l.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Kawa (navbar: fixed, right)" href="style/kawa-r.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Single column, top navigation" href="style/kawa-1col.css" type="text/css" media="handheld, screen, print, projection, tv">
+<script language="JavaScript" type="text/javascript" src="style/utils.js"></script><meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="toc.html" title="Kawa: The Kawa Scheme language">
+<link rel="up" href="Documentation.html" title="Kawa: Documentation">
+<link rel="prev" href="Data-structures.html" title="Kawa: Data structures">
+<link rel="next" href="Debugging.html" title="Kawa: Debugging">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF" onload="javascript:onLoadHandler();" onunload="javascript:onUnloadHandler();">
+<div class="navcol">
+<div class="logo"><a href="index.html"><img src="style/kawa-logo.png"></a></div>
+<div class="navbar">
+<ul>
+<li><a href="toc.html">Table of Contents</a></li>
+<li><a href="tutorial/index.html">Tutorial</a></li>
+<li><a href="news.html">News: Recent changes</a></li>
+</ul>
+<div class="toc"><ul>
+<li><a href="index.html">The Kawa Scheme language</a></li>
+<li><a href="Installation.html">Getting and installing Kawa</a></li>
+<li><a href="Features.html">Features</a></li>
+<li>
+<a href="Documentation.html">Documentation</a><ul>
+<li><a href="Running.html">Usage Reference</a></li>
+<li><a href="Syntax.html">Syntax</a></li>
+<li><a href="Program-structure.html">Program structure</a></li>
+<li><a href="Multiple-values.html">Multiple values</a></li>
+<li><a href="Symbols-and-namespaces.html">Symbols and namespaces</a></li>
+<li><a href="Procedures.html">Procedures</a></li>
+<li><a href="Numbers.html">Numbers</a></li>
+<li><a href="Characters-and-text.html">Characters and text</a></li>
+<li><a href="Data-structures.html">Data structures</a></li>
+<li>
+<b class="toc"><a href="Eval-and-Environments.html">Eval and Environments</a></b><ul>
+<li><b class="toc"><a href="Eval-and-Environments.html#Locations">Locations</a></b></li>
+<li><b class="toc"><a href="Eval-and-Environments.html#Parameter-objects">Parameter objects</a></b></li>
+</ul>
+</li>
+<li><a href="Debugging.html">Debugging</a></li>
+<li><a href="Input-Output.html">Input, output, files</a></li>
+<li><a href="Types.html">Types</a></li>
+<li><a href="Objects-Classes-and-Modules.html">Object, Classes and Modules</a></li>
+<li><a href="XML-tools.html">Working with XML and HTML</a></li>
+<li><a href="Miscellaneous.html">Miscellaneous topics</a></li>
+</ul>
+</li>
+<li><a href="Development.html">Development</a></li>
+<li><a href="Community.html">The Kawa Community</a></li>
+<li><a href="About.html">About</a></li>
+<li><a href="Overall-Index.html">Index</a></li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Eval-and-Environments"></a>Eval and Environments</h2></div></div></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp46918608"></a><code class="function">eval</code><em class="replaceable"><code> expression</code></em> [<em class="replaceable"><code>environment</code></em>]</p>
+<div class="blockquote"><blockquote class="blockquote">
+<p><code class="literal">eval</code> evaluates <em class="replaceable"><code>expression</code></em> in the environment indicated
+by <em class="replaceable"><code>environment</code></em>.
+</p>
+<p>The default for <em class="replaceable"><code>environment</code></em> is the result
+of <code class="literal">(interaction-environment)</code>.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp46925680"></a><code class="function">null-environment</code><em class="replaceable"><code> version</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>This procedure returns an environment that contains no variable bindings,
+but contains (syntactic) bindings for all the syntactic keywords.
+</p>
+<p>The effect of assigning to a variable in this environment (such
+as <code class="literal">let</code>) is undefined.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp46930480"></a><code class="function">scheme-report-environment</code><em class="replaceable"><code> version</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The <em class="replaceable"><code>version</code></em> must be an exact non-negative inetger corresponding to
+a version of one of the Revised<em class="replaceable"><code>version</code></em> Reports on Scheme.
+The procedure returns an environment that contains exactly the set of
+bindings specified in the corresponding report.
+</p>
+<p>This implementation supports <em class="replaceable"><code>version</code></em> that is 4 or 5.
+</p>
+<p>The effect of assigning to a variable in this environment (such
+as <code class="literal">car</code>) is undefined.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp46937152"></a><code class="function">interaction-environment</code></p>
+<div class="blockquote"><blockquote class="blockquote"><p>This procedure return an environment that contains implementation-defined
+bindings, as well as top-level user bindings.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp46940496"></a><code class="function">environment-bound?</code><em class="replaceable"><code> environment</code></em><em class="replaceable"><code> symbol</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Return true <code class="literal">#t</code> if there is a binding for <em class="replaceable"><code>symbol</code></em>
+in <em class="replaceable"><code>environment</code></em>;  otherwise returns <code class="literal">#f</code>.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp46946560"></a><code class="function">fluid-let</code> ((<em class="replaceable"><code>variable</code></em><em class="replaceable"><code> init</code></em>)<em class="replaceable"><code> ...</code></em>)<em class="replaceable"><code> body</code></em><em class="replaceable"><code> ...</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Evaluate the <em class="replaceable"><code>init</code></em> expressions.
+Then modify the dynamic bindings for the <em class="replaceable"><code>variables</code></em> to the
+values of the <em class="replaceable"><code>init</code></em> expressions, and evaluate the <em class="replaceable"><code>body</code></em> expressions.
+Return the result of the last expression in <em class="replaceable"><code>body</code></em>.
+Before returning, restore the original bindings.
+The temporary bindings are only visible in the current thread, and its
+descendent threads.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp46954080"></a><code class="function">base-uri</code> [<em class="replaceable"><code>node</code></em>]</p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>If <em class="replaceable"><code>node</code></em> is specified, returns the base-URI property
+of the <em class="replaceable"><code>node</code></em>.  If the <em class="replaceable"><code>node</code></em> does not have the base-URI
+property, returns <code class="literal">#f</code>.
+(The XQuery version returns the empty sequence in that case.)
+</p>
+<p>In the zero-argument case, returns the "base URI" of the current context.
+By default the base URI is the current working directory (as a URL).
+While a source file is <code class="literal">load</code>ed, the base URI is temporarily
+set to the URL of the document.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp46961536"></a><code class="function">load</code><em class="replaceable"><code> path</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>The <em class="replaceable"><code>path</code></em> can be an (absolute) URL or a filename
+of a source file, which is read and evaluated line-by-line.
+The <em class="replaceable"><code>path</code></em> can also be a fully-qualified class name.
+(Mostly acts like the <code class="literal">-f</code> command-line option,
+but with different error handling.)
+Since <code class="literal">load</code> is a run-time function it doesn't know
+about the enclosing lexical environment, and the latter
+can't know about definitions introduced by <code class="literal">load</code>.
+For those reasons it is highly recommended that you use instead use
+<code class="literal"><a class="link" href="Objects-Classes-and-Modules.html#require">require</a></code> or <code class="literal"><a class="link" href="Syntax.html#include">include</a></code>.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp46971056"></a><code class="function">load-relative</code><em class="replaceable"><code> path</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Same as <code class="literal">load</code>, except that <em class="replaceable"><code>path</code></em> is a
+URI that is relative to the context's current base URI.
+Since <code class="literal">load-relative</code> is a run-time function it doesn't work well
+with Kawa's orientation towards compilation.
+It is highly recommended that you use instead use <a class="link" href="Syntax.html#include-relative">include-relative</a>.
+</p></blockquote></div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Locations"></a>Locations</h3></div></div></div>
+<p>A <em class="firstterm">location</em> is a place where a value can be stored.
+An <em class="firstterm">lvalue</em> is an expression that refers to a location.
+(The name "lvalue" refers to the fact that the left operand
+of <code class="literal">set!</code> is an lvalue.)
+The only kind of lvalue in standard Scheme is a <em class="firstterm">variable</em>.
+Kawa also allows <em class="firstterm">computed lvalues</em>.  These are procedure
+calls used in "lvalue context", such as the left operand of <code class="literal">set!</code>.
+</p>
+<p>You can only use procedures that have an associated <em class="firstterm">setter</em>.
+In that case, <code class="literal">(set! (f arg ...) value)</code>
+is equivalent to <code class="literal">((setter f) arg ... value)</code>
+Currently, only a few procedures have associated <code class="literal">setter</code>s,
+and only builtin procedures written in Java can have <code class="literal">setter</code>s.
+</p>
+<p>For example:
+</p>
+<pre class="screen">(set! (car x) 10)
+</pre>
+<p>is equivalent to:
+</p>
+<pre class="screen">((setter car) x 10)
+</pre>
+<p>which is equivalent to:
+</p>
+<pre class="screen">(set-car! x 10)
+</pre>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp46989376"></a><code class="function">setter</code><em class="replaceable"><code> procedure</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Gets the "setter procedure" associated with a "getter procedure".
+Equivalent to <code class="literal">(procedure-property <em class="replaceable"><code>procedure</code></em> 'setter)</code>.
+By convention, a setter procedure takes the same parameters as
+the "getter" procedure, plus an extra parameter that is the
+new value to be stored in the location specified by the parameters.
+The expectation is that following
+<code class="literal">((setter <em class="replaceable"><code>proc</code></em>) <em class="replaceable"><code>args</code></em> ... <em class="replaceable"><code>value</code></em>)</code> then
+the value of <code class="literal">(<em class="replaceable"><code>proc</code></em> <em class="replaceable"><code>args</code></em> ...)</code> will be <em class="replaceable"><code>value</code></em>.
+</p>
+<p>The <code class="literal">setter</code> of <code class="literal">setter</code> can be used to set the
+<code class="literal">setter</code> property.
+For example the Scheme prologue effectively does the following:
+</p>
+<pre class="screen">(set! (setter vector-set) vector-set!)
+</pre>
+</blockquote></div>
+</div>
+<p>Kawa also gives you access to locations as first-class values:
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp47002448"></a><code class="function">location</code><em class="replaceable"><code> lvalue</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Returns a location object for the given <em class="replaceable"><code>lvalue</code></em>.
+You can get its value (by applying it, as if it were a procedure),
+and you can set its value (by using <code class="literal">set!</code> on the application).
+The <em class="replaceable"><code>lvalue</code></em> can be a local or global variable, or a procedure
+call using a procedure that has a <code class="literal">setter</code>.
+</p>
+<pre class="screen">(define x 100)
+(define lx (location x))
+(set! (lx) (cons 1 2)) ;; set x to (1 . 2)
+(lx)  ;; returns (1 . 2)
+(define lc (location (car x)))
+(set! (lc) (+ 10 (lc)))
+;; x is now (11 . 2)
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp47009216"></a><code class="function">define-alias</code><em class="replaceable"><code> variable</code></em><em class="replaceable"><code> lvalue</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Define <em class="replaceable"><code>variable</code></em> as an alias for <em class="replaceable"><code>lvalue</code></em>.
+In other words, makes it so that <code class="literal">(location <em class="replaceable"><code>variable</code></em>)</code>
+is equivalent to <code class="literal">(location <em class="replaceable"><code>lvalue</code></em>)</code>.
+This works both top-level and inside a function.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp47016240"></a><code class="function">define-private-alias</code><em class="replaceable"><code> variable</code></em><em class="replaceable"><code> lvalue</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Same as <code class="literal">define-alias</code>, but the <em class="replaceable"><code>variable</code></em>
+is local to the current module.
+</p></blockquote></div>
+</div>
+<p>Some people might find it helpful to think of a location
+as a settable <em class="firstterm">thunk</em>.  Others may find it useful to
+think of the <code class="literal">location</code> syntax as similar to the C ‘<code class="literal">&amp;</code>’ operator;
+for the ‘<code class="literal">*</code>’ indirection operator, Kawa uses procedure application.
+</p>
+<p>You can use <code class="literal">define-alias</code> to define a shorter type synonym,
+similar to Java's  <code class="literal">import TypeName</code> (single-type-import) declaration:
+</p>
+<pre class="screen">(define-alias StrBuf java.lang.StringBuffer)
+</pre>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Parameter-objects"></a>Parameter objects</h3></div></div></div>
+<p>A parameter object is a procedure that is bound to a location,
+and may optionally have a conversion procedure.
+The procedure accepts zero or one argument.
+When the procedure is called with zero arguments,
+the content of the location is returned.
+On a call with one argument the content of the location
+is updated with the result of applying the parameter object's conversion
+procedure to the argument.
+</p>
+<p>Parameter objects are created with the <code class="literal">make-parameter</code> procedure
+which takes one or two arguments. The second argument is a one
+argument conversion procedure. If only one argument is passed to
+make-parameter the identity function is used as a conversion
+procedure.
+A new location is created and asociated with the
+parameter object. The initial content of the location is the
+result of applying the conversion procedure to the first argument of
+make-parameter.
+</p>
+<p>Note that the conversion procedure can be used for guaranteeing the
+type of the parameter object's binding and/or to perform some
+conversion of the value.
+</p>
+<p>The <code class="literal">parameterize</code> special form, when given a parameter object
+and a value, binds the parameter
+object to a new location for the dynamic extent of its body.
+The initial content of the location is the result of
+applying the parameter object's conversion procedure to the value. The
+<code class="literal">parameterize</code> special form behaves analogously to <code class="literal">let</code>
+when binding more than one parameter object (that is the order of
+evaluation is unspecified and the new bindings are only visible in the
+body of the parameterize special form).
+</p>
+<p>When a new thread is created using <code class="literal">future</code> or <code class="literal">runnable</code>
+then the child thread inherits initial values from its parent.
+Once the child is running, changing the value in the child does not
+affect the value in the parent or vice versa.
+(In the past this was not the case: The child would share a location
+with the parent except within a <code class="literal">parameterize</code>.
+This was changed to avoid unsafe and inefficient coupling between threads.)
+</p>
+<p>Note that <code class="literal">parameterize</code> and <code class="literal">fluid-let</code> have similar
+binding and sharing behavior.
+The difference is that <code class="literal">fluid-let</code> modifies locations
+accessed by name, while <code class="literal">make-parameter</code> and <code class="literal">parameterize</code>
+create anonymous locations accessed by calling a parameter procedure.
+</p>
+<p>The R5RS procedures <code class="literal">current-input-port</code> and <code class="literal">current-output-port</code>
+are parameter objects.
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp47043168"></a><code class="function">make-parameter</code><em class="replaceable"><code> init</code></em> [<em class="replaceable"><code>converter</code></em>]</p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Returns a new parameter object which is bound in the global dynamic
+environment to a location containing the value returned by the call
+<code class="literal">(<em class="replaceable"><code>converter</code></em> <em class="replaceable"><code>init</code></em>)</code>. If the conversion procedure
+converter is not specified the identity function is used instead.
+</p>
+<p>The parameter object is a procedure which accepts zero or one
+argument. When it is called with no argument, the content of the
+location bound to this parameter object in the current dynamic
+environment is returned. When it is called with one argument, the
+content of the location is set to the result of the call
+<code class="literal">(<em class="replaceable"><code>converter</code></em> <em class="replaceable"><code>arg</code></em>)</code>, where <em class="replaceable"><code>arg</code></em> is the argument
+passed to the parameter object, and an unspecified value is returned.
+</p>
+<pre class="screen">(define radix
+  (make-parameter 10))
+
+(define write-shared
+  (make-parameter
+    #f
+    (lambda (x)
+      (if (boolean? x)
+          x
+          (error "only booleans are accepted by write-shared")))))
+
+(radix)           ⇒  10
+(radix 2)
+(radix)           ⇒  2
+(write-shared 0)  gives an error
+
+(define prompt
+  (make-parameter
+    123
+    (lambda (x)
+      (if (string? x)
+          x
+          (with-output-to-string (lambda () (write x)))))))
+
+(prompt)       ⇒  "123"
+(prompt "&gt;")
+(prompt)       ⇒  "&gt;"
+</pre>
+</blockquote></div>
+</div>
+<p><a name="parameterize-syntax"></a>
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp47054416"></a><code class="function">parameterize</code> ((<em class="replaceable"><code>expr1</code></em><em class="replaceable"><code> expr2</code></em>)<em class="replaceable"><code> ...</code></em>)<em class="replaceable"><code> <a class="link" href="Syntax.html#meta-body"><em class="replaceable"><code>body</code></em></a></code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The expressions <em class="replaceable"><code>expr1</code></em> and <em class="replaceable"><code>expr2</code></em> are evaluated in an
+unspecified order. The value of the <em class="replaceable"><code>expr1</code></em> expressions must be
+parameter objects. For each <em class="replaceable"><code>expr1</code></em> expression and in an
+unspecified order, the local dynamic environment is extended with a
+binding of the parameter object <em class="replaceable"><code>expr1</code></em> to a new location whose
+content is the result of the call <code class="literal">(<em class="replaceable"><code>converter</code></em> <em class="replaceable"><code>val</code></em>)</code>,
+where <em class="replaceable"><code>val</code></em> is the value of <em class="replaceable"><code>expr2</code></em> and <em class="replaceable"><code>converter</code></em> is the
+conversion procedure of the parameter object. The resulting dynamic
+environment is then used for the evaluation of <em class="replaceable"><code>body</code></em> (which
+refers to the R5RS grammar nonterminal of that name). The result(s) of
+the parameterize form are the result(s) of the <em class="replaceable"><code>body</code></em>.
+</p>
+<pre class="screen">(radix)                                              ⇒  2
+(parameterize ((radix 16)) (radix))                  ⇒  16
+(radix)                                              ⇒  2
+
+(define (f n) (number-&gt;string n (radix)))
+
+(f 10)                                               ⇒  "1010"
+(parameterize ((radix 8)) (f 10))                    ⇒  "12"
+(parameterize ((radix 8) (prompt (f 10))) (prompt))  ⇒  "1010"
+</pre>
+</blockquote></div>
+</div>
+</div>
+</div>
+<div class="navfooter">
+<ul>
+<li><b class="toc"><a href="Eval-and-Environments.html#Locations">Locations</a></b></li>
+<li><b class="toc"><a href="Eval-and-Environments.html#Parameter-objects">Parameter objects</a></b></li>
+</ul>
+<p>
+          Up: <a accesskey="u" href="Documentation.html">Documentation</a></p>
+<p>
+        Previous: <a accesskey="p" href="Data-structures.html">Data structures</a></p>
+<p>
+        Next: <a accesskey="n" href="Debugging.html">Debugging</a></p>
+</div>
+</body>
+</html>

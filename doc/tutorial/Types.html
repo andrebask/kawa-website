@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Kawa Tutorial: Types and declarations</title>
+<link rel="stylesheet" title="Kawa (navbar: fixed, left)" href="../style/kawa-l.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Kawa (navbar: fixed, right)" href="../style/kawa-r.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Single column, top navigation" href="../style/top-navbar.css" media="screen, print, projection, tv">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Kawa Tutorial: Kawa Scheme Tutorial">
+<link rel="up" href="index.html" title="Kawa Tutorial: Kawa Scheme Tutorial">
+<link rel="prev" href="Sequences.html" title="Kawa Tutorial: Lists and sequences">
+<link rel="next" href="Classes.html" title="Kawa Tutorial: Classes">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF" onload="javascript:onLoadHandler();" onunload="javascript:onUnloadHandler();">
+<div class="navcol">
+<div class="logo"><a href="../index.html"><img src="../style/kawa-logo.png"></a></div>
+<div class="navbar">
+<ul>
+<li><a href="../api/index.html">JavaDoc API</a></li>
+<li><a href="../Getting-Kawa.html">Download</a></li>
+</ul>
+<div class="toc"><ul>
+<li><a href="index.html">Kawa Scheme Tutorial</a></li>
+<li><ul>
+<li><a href="index.html#Introduction">Introduction</a></li>
+<li><a href="Booleans.html">Booleans</a></li>
+<li><a href="Numbers.html">Numbers</a></li>
+<li><a href="Functions.html">Functions</a></li>
+<li><a href="Variables.html">Variables</a></li>
+<li><a href="Sequences.html">Lists and sequences</a></li>
+<li><b class="toc"><a href="Types.html">Types and declarations</a></b></li>
+<li><a href="Classes.html">Classes</a></li>
+</ul></li>
+</ul></div>
+</div>
+</div>
+<div class="sect1" title="Kawa Tutorial: Types and declarations">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Types"></a>Types and declarations</h2></div></div></div>
+<p>
+A <em class="firstterm">type</em> is a named value for a set
+of objects with related properties.
+For example <code class="literal">vector</code> is the type for standard Scheme vectors.
+You can use a type to specify that a variable can only have
+values of the specified types:
+</p>
+<pre class="programlisting">
+#|kawa:5|# (define v ::vector #(3 4 5))
+#|kawa:6|# v
+#(3 4 5)
+#|kawa:7|# (set! v 12)
+/dev/stdin:7:1: warning - cannot convert literal (of type gnu.math.IntNum) to vector
+Value (12) for variable 'v' has wrong type (gnu.math.IntNum) (gnu.math.IntNum cannot be cast to gnu.lists.FVector)
+	at atInteractiveLevel$7.run(stdin:7)
+	at gnu.expr.ModuleExp.evalModule(ModuleExp.java:302)
+	at kawa.Shell.run(Shell.java:275)
+	at kawa.Shell.run(Shell.java:186)
+	at kawa.Shell.run(Shell.java:167)
+	at kawa.repl.main(repl.java:870)
+Caused by: java.lang.ClassCastException: gnu.math.IntNum cannot be cast to gnu.lists.FVector
+	... 6 more
+</pre>
+<p>
+Using a type specification catches errors, and matches your programs
+more readable.  It also can allow the Kawa compiler to generate code
+that runs faster.</p>
+<p>
+You can use a type to check that a value is an instance of the type,
+using either the <code class="literal">instance?</code> function:
+</p>
+<pre class="programlisting">
+(instance? #(3 4 5) vector) ⇒ #t
+(instance? '(3 4 5) vector) ⇒ #f
+</pre>
+<p>
+As a convenience, you can use a type-name followed by a <span class="quote">“<span class="quote"><code class="literal">?</code></span>”</span>:</p>
+<pre class="programlisting">
+(<em class="replaceable"><code>type</code></em>? <em class="replaceable"><code>val</code></em>) == (instance? <em class="replaceable"><code>val</code></em> <em class="replaceable"><code>type</code></em>)
+</pre>
+<p>
+You can <span class="quote">“<span class="quote">call</span>”</span> a type as if it were a function.
+That constructs a new instance of the type.</p>
+<pre class="programlisting">
+((EXAMPLE NEEDED))
+</pre>
+<p>
+A fully-qualified Java class is a type name.
+So are the names of Java primitive types.
+So are Java array types. ((EXAMPLES NEEDED))</p>
+<p>
+A type is true run-time value:
+</p>
+<pre class="programlisting">
+(define mytypes (list vector list string))
+(instance? #(3 4 5) (car mytypes) ⇒ #t
+</pre>
+<p>
+The <code class="literal">define-alias</code> form is useful for defining shorter names
+for types, like a generalization of Java's <code class="literal">import</code> statement:
+</p>
+<pre class="programlisting">
+(define-alias jframe javax.swing.JFrame)
+</pre>
+</div>
+<div class="navfooter">
+<p>
+        Previous sibling: <a accesskey="p" href="Sequences.html">Lists and sequences</a></p>
+<p>
+        Next sibling: <a accesskey="n" href="Classes.html">Classes</a></p>
+<p>
+        Previous page: <a accesskey="n" href="Sequences.html">Lists and sequences</a></p>
+<p>
+        Next page: <a accesskey="n" href="Classes.html">Classes</a></p>
+</div>
+</body>
+</html>

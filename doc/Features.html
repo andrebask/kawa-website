@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Kawa: Features</title>
+<link rel="stylesheet" title="Kawa (navbar: fixed, left)" href="style/kawa-l.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Kawa (navbar: fixed, right)" href="style/kawa-r.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Single column, top navigation" href="style/kawa-1col.css" type="text/css" media="handheld, screen, print, projection, tv">
+<script language="JavaScript" type="text/javascript" src="style/utils.js"></script><meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="toc.html" title="Kawa: The Kawa Scheme language">
+<link rel="up" href="toc.html" title="Kawa: The Kawa Scheme language">
+<link rel="prev" href="Source-distribution.html" title="Kawa: Installing and using the source distribution">
+<link rel="next" href="Implemented-SRFIs.html" title="Kawa: Implemented SRFIs">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF" onload="javascript:onLoadHandler();" onunload="javascript:onUnloadHandler();">
+<div class="navcol">
+<div class="logo"><a href="index.html"><img src="style/kawa-logo.png"></a></div>
+<div class="navbar">
+<ul>
+<li><a href="toc.html">Table of Contents</a></li>
+<li><a href="tutorial/index.html">Tutorial</a></li>
+<li><a href="news.html">News: Recent changes</a></li>
+</ul>
+<div class="toc"><ul>
+<li><a href="index.html">The Kawa Scheme language</a></li>
+<li><a href="Installation.html">Getting and installing Kawa</a></li>
+<li>
+<b class="toc"><a href="Features.html">Features</a></b><ul>
+<li><a href="Implemented-SRFIs.html">Implemented SRFIs</a></li>
+<li><a href="Compatibility.html">Compatibility with standards</a></li>
+</ul>
+</li>
+<li><a href="Documentation.html">Documentation</a></li>
+<li><a href="Development.html">Development</a></li>
+<li><a href="Community.html">The Kawa Community</a></li>
+<li><a href="About.html">About</a></li>
+<li><a href="Overall-Index.html">Index</a></li>
+</ul></div>
+</div>
+</div>
+<div class="chapter">
+<div class="titlepage"><div><div><h1 class="title">
+<a name="Features"></a>Features</h1></div></div></div>
+<p>Kawa is a mostly-compatible implementatation of
+the Scheme programming language,
+which has history going back to 1975, is standardized,
+has been the base for much programming language research,
+and has dozens of implementations.
+</p>
+<p>Kawa runs on top of the Java platform.  The implementation
+is written in Java and Kawa itself, without native code.
+Scheme programs have full and convenient
+access to the huge set of Java libraries.
+</p>
+<p>Kawa programs <a class="ulink" href="http://per.bothner.com/blog/2010/Kawa-in-shootout/" target="_top">are fast</a>.
+A sophisticated compiler, type inference, and optional type declarations
+means you can write programs that run roughly as fast as Java programs,
+and much faster than other “scripting languages”.
+</p>
+<p>Kawa uses Unicode internally, and uses the Java facilities to convert
+files using other character encodings.
+</p>
+<p>Kawa provides the usual read-eval-print loop, as well as batch modes.
+</p>
+<p>Kawa provides a framework for implementing other programming languages,
+and comes with incomplete support for CommonLisp, Emacs Lisp, and
+EcmaScript, and the
+draft <a class="ulink" href="http://www.gnu.org/software/qexo/" target="_top">XML Query language</a>.
+</p>
+<p>Kawa has builtin pretty-printer support, and fancy formatting.
+</p>
+<p>Kawa supports class-definition facilities, and separately-compiled modules.
+</p>
+<p>Kawa can be <a class="link" href="Objects-Classes-and-Modules.html#Evaluating-Scheme-expressions-from-Java" title="Kawa: Evaluating Scheme expressions from Java">embedded as a scripting language in Java programs</a>.
+</p>
+<p>Kawa has convenient syntax for
+<a class="link" href="Objects-Classes-and-Modules.html#Allocating-objects" title="Kawa: Allocating objects">allocating and initializing objects</a>.
+</p>
+<p>Kawa has some special handling to ease
+<a class="link" href="Miscellaneous.html#Building-JavaFX-applications" title="Kawa: Building JavaFX applications">JavaFX programming</a>.
+</p>
+<p>You can <a class="link" href="Miscellaneous.html#Building-for-Android" title="Kawa: Building for Android">run Kawa programs on Android</a>,
+and there is special handing to make <a class="link" href="Miscellaneous.html#Android-view-construction" title="Kawa: Android view construction">constructuing View objects</a> easier.
+</p>
+<p>Kawa makes it easy to write
+<a class="link" href="XML-tools.html#Server-side-scripts" title="Kawa: Web page scripts">web page scripts</a> running
+running on <a class="link" href="XML-tools.html#Self-configuring-page-scripts" title="Kawa: Self-configuring web page scripts">self-configuring web servers</a>
+and optionally using <a class="xref" href="XML-tools.html#XML-literals" title="Kawa: XML literals">the section called “XML literals”</a>.
+</p>
+<p>Kawa implements the full numeric tower, including infinite-precision
+rational numbers and complex numbers.  It also supports <a class="xref" href="Numbers.html#Quantities" title="Kawa: Quantities and Units">the section called “Quantities and Units”</a>
+with units, such as <code class="literal">3cm</code>.
+</p>
+<p>Kawa supports <a class="xref" href="Program-structure.html#Lazy-evaluation" title="Kawa: Lazy evaluation">the section called “Lazy evaluation”</a>, with convenient implicit forcing.
+</p>
+<p>You can optionally declare the types of variables.
+</p>
+<p>You can conveniently access Java objects, methods, fields, and classes.
+</p>
+</div>
+<div class="navfooter">
+<ul>
+<li><b class="toc"><a href="Implemented-SRFIs.html">Implemented SRFIs</a></b></li>
+<li><b class="toc"><a href="Compatibility.html">Compatibility with standards</a></b></li>
+</ul>
+<p>
+        Previous: <a accesskey="p" href="Installation.html">Getting and installing Kawa</a></p>
+<p>
+        Next: <a accesskey="n" href="Documentation.html">Documentation</a></p>
+</div>
+</body>
+</html>

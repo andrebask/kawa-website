@@ -1,0 +1,57 @@
+ <!DOCTYPE html> 
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="kawa.css" type="text/css" media="all">
+        <script type="text/javascript">
+            function link (page){
+                sessionStorage.setItem('link', page);    
+            }            
+            function setLinks (){
+                var content = document.getElementById('content');
+                var as = content.getElementsByTagName('a');
+                for (var i = 0; i < as.length; i++){
+                    as[i].setAttribute('onclick', "link('doc/" + as[i].getAttribute('href') + "');");
+                    as[i].setAttribute('href', "kawa.html");
+                }
+            }
+            document.addEventListener("DOMContentLoaded", setLinks, false);
+        </script>
+    </head>
+    <body>
+        <div class="header">
+            <a href="index.html"><img class="logo" src="kawa-logo.png"/></a>
+            <h1><a href="index.html">The Kawa Scheme Language</a></h1>
+        </div> 
+        <div id="content">
+            <div class="topbar">
+                <a href="Features.html">Features</a>
+                <a href="Installation.html">Downloads</a>
+                <a href="tutorial/index.html">Getting Started</a>
+                <a href="Documentation.html">Documentation</a>
+                <a href="Development.html">Development</a>
+                <a href="Community.html">Community</a>
+                <a href="About.html">About</a>
+            </div>   
+            <div class="topbody">            
+                <p>Kawa is a programming language  for the Java platform.
+                It is an implementation of <a class="ulink" href="http://www.schemers.org/" target="_top">Scheme</a>, which,
+                is in the Lisp family of programming languages.
+                Kawa has many <a class="link" href="Features.html" title="Kawa: Features">useful features</a>, including convenient integration with Java.
+                It can be used as a “scripting language”, but includes a compiler and all the benefits of a “real” programming language, including optional static typing, so Kawa programs can be as efficient as Java.
+                </p>
+                <p>Kawa is also a useful <a class="link" href="Framework.html" title="Kawa: The Kawa language framework">framework</a> for implementing other programming languages on the Java platform. It has has many useful utility classes.
+                </p>
+                <p>The (quite incomplete) <a class="ulink" href="tutorial/index.html" target="_top">Kawa tutorial</a> can
+                be useful to get stated; it also also links to some other more in-depth (but not Kawa-specific) Scheme tutorials.
+                </p>
+                <p>For copyright information on the software and documentation, see <a class="link" href="License.html" title="Kawa: License">License</a>.
+                </p>
+                <p>Various people and orgnizations <a class="link" href="Acknowledgements.html" title="Kawa: Acknowledgements and thanks">have contributed to Kawa</a>.
+                </p>
+                <p>This package has nothing to do with the defunct Kawa commercial Java IDE.
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Kawa: Getting Kawa</title>
+<link rel="stylesheet" title="Kawa (navbar: fixed, left)" href="style/kawa-l.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Kawa (navbar: fixed, right)" href="style/kawa-r.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Single column, top navigation" href="style/kawa-1col.css" type="text/css" media="handheld, screen, print, projection, tv">
+<script language="JavaScript" type="text/javascript" src="style/utils.js"></script><meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="toc.html" title="Kawa: The Kawa Scheme language">
+<link rel="up" href="Installation.html" title="Kawa: Getting and installing Kawa">
+<link rel="prev" href="Installation.html" title="Kawa: Getting and installing Kawa">
+<link rel="next" href="Running-Java.html" title="Kawa: Getting and running Java">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF" onload="javascript:onLoadHandler();" onunload="javascript:onUnloadHandler();">
+<div class="navcol">
+<div class="logo"><a href="index.html"><img src="style/kawa-logo.png"></a></div>
+<div class="navbar">
+<ul>
+<li><a href="toc.html">Table of Contents</a></li>
+<li><a href="tutorial/index.html">Tutorial</a></li>
+<li><a href="news.html">News: Recent changes</a></li>
+</ul>
+<div class="toc"><ul>
+<li><a href="index.html">The Kawa Scheme language</a></li>
+<li>
+<a href="Installation.html">Getting and installing Kawa</a><ul>
+<li>
+<b class="toc"><a href="Getting-Kawa.html">Getting Kawa</a></b><ul><li><b class="toc"><a href="Getting-Kawa.html#Getting-the-development-sources-using-SVN">Getting the development sources using SVN</a></b></li></ul>
+</li>
+<li><a href="Running-Java.html">Getting and running Java</a></li>
+<li><a href="Binary-distribution.html">Installing and using the binary distribution</a></li>
+<li><a href="Source-distribution.html">Installing and using the source distribution</a></li>
+</ul>
+</li>
+<li><a href="Features.html">Features</a></li>
+<li><a href="Documentation.html">Documentation</a></li>
+<li><a href="Development.html">Development</a></li>
+<li><a href="Community.html">The Kawa Community</a></li>
+<li><a href="About.html">About</a></li>
+<li><a href="Overall-Index.html">Index</a></li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Getting-Kawa"></a>Getting Kawa</h2></div></div></div>
+<p>You can compile Kawa from the source distribution.
+Alternatively, you can install the pre-compiled binary distribution.
+</p>
+<p>You can get Kawa sources and binaries from the Kawa ftp site
+<a class="ulink" href="ftp://ftp.gnu.org/pub/gnu/kawa/" target="_top">ftp://ftp.gnu.org/pub/gnu/kawa/</a>,
+or from a <a class="ulink" href="http://www.gnu.org/order/ftp.html" target="_top">mirror site</a>.
+</p>
+<p>The latest release of the Kawa source code is
+<a class="ulink" href="ftp://ftp.gnu.org/pub/gnu/kawa/kawa-1.14.1.tar.gz" target="_top">ftp://ftp.gnu.org/pub/gnu/kawa/kawa-1.14.1.tar.gz</a>.
+(To unpack <code class="literal">.tar.gz</code> files Windows users can use
+<a class="ulink" href="http://www.7-zip.org/" target="_top">7-Zip</a>, which is Free Software.)
+</p>
+<p>A ready-to-run <code class="literal">.jar</code> archive of the pre-compiled classes is in
+<a class="ulink" href="ftp://ftp.gnu.org/pub/gnu/kawa/kawa-1.14.1.jar" target="_top">ftp://ftp.gnu.org/pub/gnu/kawa/kawa-1.14.1.jar</a>.
+</p>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Getting-the-development-sources-using-SVN"></a>Getting the development sources using SVN</h3></div></div></div>
+<p>The Kawa sources are managed using a
+<a class="ulink" href="http://subversion.apache.org/" target="_top">Subversion (svn)</a> repository.
+If you want the very latest version grab
+<a class="ulink" href="http://subversion.apache.org/download/" target="_top">an svn client</a>,
+and then check out the source using this command:
+</p>
+<pre class="screen">svn -q checkout svn://sourceware.org/svn/kawa/trunk kawa
+</pre>
+<p>Some corporate firewalls may block outgoing Subversion
+connections.  If that case you should be able to access the
+Kawa Subversion repository using HTTP.  (If you need
+to use an HTTP proxy, you can edit
+<code class="literal">http-proxy-host</code> and <code class="literal">http-proxy-port</code>
+in <code class="literal">~/.subversion/servers</code> as described
+<a class="ulink" href="http://subversion.apache.org/faq.html#proxy" target="_top">here</a>.)
+Use this command instead:
+</p>
+<pre class="screen">svn -q checkout http://sourceware.org/svn/kawa/trunk kawa
+</pre>
+<p>Once you have it checked out, you can keep it up-to-date with <code class="literal">svn update</code>.
+</p>
+<p>You can also
+<a class="ulink" href="http://sourceware.org/viewvc/kawa/" target="_top">browse the svn archive</a> via viewvc.
+</p>
+</div>
+</div>
+<div class="navfooter">
+<ul><li><b class="toc"><a href="Getting-Kawa.html#Getting-the-development-sources-using-SVN">Getting the development sources using SVN</a></b></li></ul>
+<p>
+          Up: <a accesskey="u" href="Installation.html">Getting and installing Kawa</a></p>
+<p>
+        Next: <a accesskey="n" href="Running-Java.html">Getting and running Java</a></p>
+</div>
+</body>
+</html>
