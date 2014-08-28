@@ -1,0 +1,1228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Kawa: Program structure</title>
+<link rel="stylesheet" title="Kawa (navbar: fixed, left)" href="style/kawa-l.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Kawa (navbar: fixed, right)" href="style/kawa-r.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Single column, top navigation" href="style/kawa-1col.css" type="text/css" media="handheld, screen, print, projection, tv">
+<script language="JavaScript" type="text/javascript" src="style/utils.js"></script><meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="toc.html" title="Kawa: The Kawa Scheme language">
+<link rel="up" href="Documentation.html" title="Kawa: Documentation">
+<link rel="prev" href="Syntax.html" title="Kawa: Syntax">
+<link rel="next" href="Multiple-values.html" title="Kawa: Multiple values">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF" onload="javascript:onLoadHandler();" onunload="javascript:onUnloadHandler();">
+<div class="navcol">
+<div class="logo"><a href="index.html"><img src="style/kawa-logo.png"></a></div>
+<div class="navbar">
+<ul>
+<li><a href="toc.html">Table of Contents</a></li>
+<li><a href="tutorial/index.html">Tutorial</a></li>
+<li><a href="news.html">News: Recent changes</a></li>
+</ul>
+<div class="toc"><ul>
+<li><a href="index.html">The Kawa Scheme language</a></li>
+<li><a href="Installation.html">Getting and installing Kawa</a></li>
+<li><a href="Features.html">Features</a></li>
+<li>
+<a href="Documentation.html">Documentation</a><ul>
+<li><a href="Running.html">Usage Reference</a></li>
+<li><a href="Syntax.html">Syntax</a></li>
+<li>
+<b class="toc"><a href="Program-structure.html">Program structure</a></b><ul>
+<li><b class="toc"><a href="Program-structure.html#Boolean-values">Boolean values</a></b></li>
+<li><b class="toc"><a href="Program-structure.html#Conditionals">Conditionals</a></b></li>
+<li><b class="toc"><a href="Program-structure.html#Definitions">Definitions</a></b></li>
+<li><b class="toc"><a href="Program-structure.html#Local-binding-constructs">Local binding constructs</a></b></li>
+<li><b class="toc"><a href="Program-structure.html#Lazy-evaluation">Lazy evaluation</a></b></li>
+<li><b class="toc"><a href="Program-structure.html#Threads">Threads</a></b></li>
+<li><b class="toc"><a href="Program-structure.html#Exceptions">Exception handling</a></b></li>
+</ul>
+</li>
+<li><a href="Multiple-values.html">Multiple values</a></li>
+<li><a href="Symbols-and-namespaces.html">Symbols and namespaces</a></li>
+<li><a href="Procedures.html">Procedures</a></li>
+<li><a href="Numbers.html">Numbers</a></li>
+<li><a href="Characters-and-text.html">Characters and text</a></li>
+<li><a href="Data-structures.html">Data structures</a></li>
+<li><a href="Eval-and-Environments.html">Eval and Environments</a></li>
+<li><a href="Debugging.html">Debugging</a></li>
+<li><a href="Input-Output.html">Input, output, files</a></li>
+<li><a href="Types.html">Types</a></li>
+<li><a href="Objects-Classes-and-Modules.html">Object, Classes and Modules</a></li>
+<li><a href="XML-tools.html">Working with XML and HTML</a></li>
+<li><a href="Miscellaneous.html">Miscellaneous topics</a></li>
+</ul>
+</li>
+<li><a href="Development.html">Development</a></li>
+<li><a href="Community.html">The Kawa Community</a></li>
+<li><a href="About.html">About</a></li>
+<li><a href="Overall-Index.html">Index</a></li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Program-structure"></a>Program structure</h2></div></div></div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Boolean-values"></a>Boolean values</h3></div></div></div>
+<p>The standard boolean objects for true and false are written as <code class="literal">#t</code> and <code class="literal">#f</code>.
+Alternatively, they may be written <code class="literal">#true</code> and <code class="literal">#false</code>,
+respectively.
+</p>
+<div class="literallayout"><p><a class="indexterm" name="idp43075680"></a><a name="meta-boolean"></a><em class="replaceable"><code>boolean</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>#t</strong></span></code> | <code class="literal"><span class="bold"><strong>#f</strong></span></code> | <code class="literal"><span class="bold"><strong>#true</strong></span></code> | <code class="literal"><span class="bold"><strong>#false</strong></span></code><br>
+</p></div>
+<p>What really matters,
+though, are the objects that the Scheme conditional expressions (<code class="literal">if</code>,
+<code class="literal">cond</code>, <code class="literal">and</code>, <code class="literal">or</code>, <code class="literal">when</code>, <code class="literal">unless</code>, <code class="literal">do</code>)
+treat as true or
+false. The phrase “a true value” (or sometimes just “true”)
+means any object treated as true by the conditional expressions, and the phrase “a false value” (or “false”) means any
+object treated as false by the conditional expressions.
+</p>
+<p>Of all the Scheme values, only <code class="literal">#f</code> counts as false in conditional
+expressions. All other Scheme values, including <code class="literal">#t</code>,
+count as true.  A <em class="replaceable"><code>test-expression</code></em> is an expression evaluated
+in this manner for whether it is true or false.
+</p>
+<p><span class="emphasis"><em>Note:</em></span> There are plans to also treat as false
+the Java values <code class="literal">#!null</code>, and also all <code class="literal">java.lang.Boolean</code>
+instances for which <code class="literal">booleanValue()</code>
+return <code class="literal">false</code> (in addition to the special <code class="literal">Boolean:FALSE</code>
+instance which is already false).  However, this is not yet implemented.
+</p>
+<p><span class="emphasis"><em>Note:</em></span> Unlike some other dialects of Lisp, Scheme distinguishes
+<code class="literal">#f</code> and the empty list from each other and from the symbol
+<code class="literal">nil</code>.
+</p>
+<p>Boolean constants evaluate to themselves, so they do not
+need to be quoted in programs.
+</p>
+<pre class="screen">#t       ⇒  #t
+#true    ⇒  #t
+#f       ⇒  #f
+#false   ⇒  #f
+'#f      ⇒  #f
+</pre>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43099552"></a><code class="function">boolean</code></p>
+<div class="blockquote"><blockquote class="blockquote"><p>The type of boolean values.
+As a type conversion, a true value is converted to <code class="literal">#t</code>,
+while a false value is converted to <code class="literal">#f</code>.
+Represented as a primitive Java <code class="literal">boolean</code>
+or <code class="literal">kava.lang.Boolean</code> when converted to an object.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43105712"></a><code class="function">boolean?</code><em class="replaceable"><code> obj</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The <code class="literal">boolean?</code> predicate returns <code class="literal">#t</code> if <em class="replaceable"><code>obj</code></em>
+is either <code class="literal">#t</code> or <code class="literal">#f</code>, and returns <code class="literal">#f</code> otherwise.
+</p>
+<pre class="screen">(boolean? #f)   ⇒  #t
+(boolean? 0)    ⇒  #f
+(boolean? '())  ⇒  #f
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43113744"></a><code class="function">not</code><em class="replaceable"><code> obj</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The not procedure returns <code class="literal">#t</code> if <em class="replaceable"><code>obj</code></em> is false,
+and returns <code class="literal">#f</code> otherwise.
+</p>
+<pre class="screen">(not #t)         ⇒  #f
+(not 3)          ⇒  #f
+(not (list 3))   ⇒  #f
+(not #f)         ⇒  #t
+(not ’())        ⇒  #f
+(not (list))     ⇒  #f
+(not ’nil)       ⇒  #f
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43119872"></a><code class="function">boolean=?</code><em class="replaceable"><code> boolean1</code></em><em class="replaceable"><code> boolean2</code></em><em class="replaceable"><code> boolean3</code></em><em class="replaceable"><code> ...</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Returns <code class="literal">#t</code> if all the arguments are booleans and all are <code class="literal">#t</code>
+or all are <code class="literal">#f</code>.
+</p></blockquote></div>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Conditionals"></a>Conditionals</h3></div></div></div>
+<div class="literallayout"><p><a class="indexterm" name="idp43127424"></a><a name="meta-test-expression"></a><em class="replaceable"><code>test-expression</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a><br>
+<a class="indexterm" name="idp43131024"></a><a name="meta-consequent"></a><em class="replaceable"><code>consequent</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a><br>
+<a class="indexterm" name="idp43134624"></a><a name="meta-alternate"></a><em class="replaceable"><code>alternate</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a><br>
+</p></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43139376"></a><code class="function">if</code><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-test-expression"><em class="replaceable"><code>test-expression</code></em></a></code></em><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-consequent"><em class="replaceable"><code>consequent</code></em></a></code></em><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-alternate"><em class="replaceable"><code>alternate</code></em></a></code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp43145088"></a><code class="function">if</code><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-test-expression"><em class="replaceable"><code>test-expression</code></em></a></code></em><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-consequent"><em class="replaceable"><code>consequent</code></em></a></code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>An <code class="literal">if</code> expression is evaluated as follows:
+first, <em class="replaceable"><code>test-expression</code></em> is
+evaluated.  If it yields a true value, then <em class="replaceable"><code>consequent</code></em> is
+evaluated and its values are returned.  Otherwise <em class="replaceable"><code>alternate</code></em> is
+evaluated and its values are returned.  If <em class="replaceable"><code>test</code></em> yields <code class="literal">#f</code>
+and no <em class="replaceable"><code>alternate</code></em> is specified, then the result of the expression
+is unspecified.
+</p>
+<pre class="screen">(if (&gt; 3 2) 'yes 'no)          ⇒ yes
+(if (&gt; 2 3) 'yes 'no)          ⇒ no
+(if (&gt; 3 2)
+    (- 3 2)
+    (+ 3 2))                   ⇒ 1
+(if #f #f)                     ⇒ unspecified
+</pre>
+<p>The <em class="replaceable"><code>consequent</code></em> and <em class="replaceable"><code>alternate</code></em> expressions are in tail
+context if the <code class="literal">if</code> expression itself is.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43157312"></a><code class="function">cond</code><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-cond-clause"><em class="replaceable"><code>cond-clause</code></em></a></code></em><em class="replaceable"><code>^+</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp43160928"></a><code class="function">cond</code><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-cond-clause"><em class="replaceable"><code>cond-clause</code></em></a></code></em><em class="replaceable"><code>^*</code></em><em class="replaceable"><code> <code class="literal"><span class="bold"><strong>(else</strong></span></code></code></em> <em class="replaceable"><code>expression</code></em><em class="replaceable"><code>…</code></em><em class="replaceable"><code><code class="literal"><span class="bold"><strong>)</strong></span></code></code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<div class="literallayout"><p><a class="indexterm" name="idp43167760"></a><a name="meta-cond-clause"></a><em class="replaceable"><code>cond-clause</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>(</strong></span></code><a class="link" href="Program-structure.html#meta-test-expression"><em class="replaceable"><code>test-expression</code></em></a> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a>^*<code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+    | <code class="literal"><span class="bold"><strong>(</strong></span></code><em class="replaceable"><code>test</code></em> <code class="literal"><span class="bold"><strong>=&gt;</strong></span></code> <em class="replaceable"><code>expression</code></em><code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+</p></div>
+<p>A <code class="literal">cond</code> expression is evaluated by evaluating the <em class="replaceable"><code>test-expression</code></em>s
+of successive <em class="replaceable"><code>cond-clause</code></em>s in order until one of them
+evaluates to a true value.  When a <em class="replaceable"><code>test-expression</code></em> evaluates to a true
+value, then the remaining <em class="replaceable"><code>expression</code></em>s in its <em class="replaceable"><code>cond-clause</code></em>
+are evaluated in order, and the results of the last <em class="replaceable"><code>expression</code></em> in
+the <em class="replaceable"><code>cond-clause</code></em> are returned as the results of the entire
+<code class="literal">cond</code> expression.
+If the selected <em class="replaceable"><code>cond-clause</code></em> contains only the <em class="replaceable"><code>test-expression</code></em> and no
+<em class="replaceable"><code>expression</code></em>s, then the value of the <em class="replaceable"><code>test-expression</code></em> is returned as the
+result.  If the selected <em class="replaceable"><code>cond-clause</code></em> uses the <code class="literal">=&gt;</code> alternate
+form, then the <em class="replaceable"><code>expression</code></em> is evaluated.  Its value must be a
+procedure.  This procedure should accept one argument; it is called on
+the value of the <em class="replaceable"><code>test-expression</code></em> and the values returned by this procedure
+are returned by the <code class="literal">cond</code> expression.
+</p>
+<p>If all <em class="replaceable"><code>test-expression</code></em>s evaluate to <code class="literal">#f</code>, and there is no <code class="literal">else</code>
+clause, then the conditional expression returns unspecified values; if
+there is an <code class="literal">else</code> clause, then its <em class="replaceable"><code>expression</code></em>s are
+evaluated, and the values of the last one are returned.
+</p>
+<pre class="screen">(cond ((&gt; 3 2) 'greater)
+      ((&lt; 3 2) 'less))         ⇒ greater
+
+(cond ((&gt; 3 3) 'greater)
+      ((&lt; 3 3) 'less)
+      (else 'equal))           ⇒ equal
+
+(cond ('(1 2 3) =&gt; cadr)
+      (else #f))               ⇒ 2
+</pre>
+<p>For a <em class="replaceable"><code>cond-clause</code></em> of one of the following forms:
+</p>
+<pre class="screen">(<em class="replaceable"><code>test</code></em> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a>^*)
+(else <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a>^*)
+</pre>
+<p>the last <em class="replaceable"><code>expression</code></em> is in tail context if the <code class="literal">cond</code> form
+itself is.  For a <em class="replaceable"><code>cond clause</code></em> of the form:
+</p>
+<pre class="screen">(<em class="replaceable"><code>test</code></em> =&gt; <em class="replaceable"><code>expression</code></em>)
+</pre>
+<p>the (implied) call to the procedure that results from the evaluation of
+<em class="replaceable"><code>expression</code></em> is in a tail context if the <code class="literal">cond</code> form itself
+is.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43203616"></a><code class="function">case</code><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-case-key"><em class="replaceable"><code>case-key</code></em></a></code></em><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-case-clause"><em class="replaceable"><code>case-clause</code></em></a></code></em><em class="replaceable"><code>^+</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp43208512"></a><code class="function">case</code><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-case-key"><em class="replaceable"><code>case-key</code></em></a></code></em><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-case-clause"><em class="replaceable"><code>case-clause</code></em></a></code></em><em class="replaceable"><code>^*</code></em><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-case-else-clause"><em class="replaceable"><code>case-else-clause</code></em></a></code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<div class="literallayout"><p><a class="indexterm" name="idp43214656"></a><a name="meta-case-key"></a><em class="replaceable"><code>case-key</code></em> <code class="literal">::=</code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a><br>
+<a class="indexterm" name="idp43218208"></a><a name="meta-case-clause"></a><em class="replaceable"><code>case-clause</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>((</strong></span></code><a class="link" href="Syntax.html#meta-datum"><em class="replaceable"><code>datum</code></em></a>^*<code class="literal"><span class="bold"><strong>)</strong></span></code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a>^+<code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+    | <code class="literal"><span class="bold"><strong>((</strong></span></code><a class="link" href="Syntax.html#meta-datum"><em class="replaceable"><code>datum</code></em></a>^*<code class="literal"><span class="bold"><strong>)</strong></span></code> <code class="literal"><span class="bold"><strong>=&gt;</strong></span></code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a><code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+<a class="indexterm" name="idp43231664"></a><a name="meta-case-else-clause"></a><em class="replaceable"><code>case-else-clause</code></em> <code class="literal">::=</code> <code class="literal"><span class="bold"><strong>(else</strong></span></code>  <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a>^+<code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+    | <code class="literal"><span class="bold"><strong>(else =&gt;</strong></span></code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a><code class="literal"><span class="bold"><strong>)</strong></span></code><br>
+</p></div>
+<p>Each <em class="replaceable"><code>datum</code></em> is an external representation of some object.
+Each <em class="replaceable"><code>datum</code></em> in the entire <code class="literal">case</code> expression should be distinct.
+</p>
+<p>A <code class="literal">case</code> expression is evaluated as follows.
+</p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><p>The <em class="replaceable"><code>case-key</code></em> is evaluated and its result is compared using
+<code class="literal">eqv?</code> against the data represented by the <em class="replaceable"><code>datum</code></em>s of
+each <em class="replaceable"><code>case-clause</code></em> in turn, proceeding in order from left to
+right through the set of clauses.
+</p></li>
+<li class="listitem"><p>If the result of evaluating <em class="replaceable"><code>case-key</code></em> is equivalent to a datum of a
+<em class="replaceable"><code>case-clause</code></em>, the corresponding <em class="replaceable"><code>expression</code></em>s are evaluated
+from left to right and the results of the last expression in the
+<em class="replaceable"><code>case-clause</code></em> are returned as the results of the <code class="literal">case</code>
+expression.  Otherwise, the comparison process continues.
+</p></li>
+<li class="listitem"><p>If the result of evaluating <em class="replaceable"><code>key</code></em> is different from every datum in
+each set, then if there is an <em class="replaceable"><code>case-else-clause</code></em> its expressions are
+evaluated and the results of the last are the results of the <code class="literal">case</code>
+expression; otherwise the result of <code class="literal">case</code> expression is unspecified.
+</p></li>
+</ol></div>
+<p>If the selected <em class="replaceable"><code>case-clause</code></em> or <em class="replaceable"><code>case-else-clause</code></em>
+uses the <code class="literal">=&gt;</code> alternate
+form, then the <em class="replaceable"><code>expression</code></em> is evaluated. It is an error if
+its value is not a procedure accepting one argument. This
+procedure is then called on the value of the <em class="replaceable"><code>key</code></em> and the
+values returned by this procedure are returned by the <code class="literal">case</code>
+expression.
+</p>
+<pre class="screen">(case (* 2 3)
+  ((2 3 5 7) 'prime)
+  ((1 4 6 8 9) 'composite))    ⇒ composite
+(case (car '(c d))
+  ((a) 'a)
+  ((b) 'b))                    ⇒ unspecified
+(case (car '(c d))
+  ((a e i o u) 'vowel)
+  ((w y) 'semivowel)
+  (else =&gt; (lambda (x) x)))    ⇒ c
+</pre>
+<p>The last <em class="replaceable"><code>expression</code></em> of a <em class="replaceable"><code>case clause</code></em> is in tail context if
+the <code class="literal">case</code> expression itself is.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43262112"></a><code class="function">and</code><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-test-expression"><em class="replaceable"><code>test-expression</code></em></a></code></em><em class="replaceable"><code> …</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>If there are no <em class="replaceable"><code>test-expression</code></em>s, <code class="literal">#t</code> is returned.  Otherwise, the
+<em class="replaceable"><code>test-expression</code></em> are evaluated from left to right until a
+<em class="replaceable"><code>test-expression</code></em> returns <code class="literal">#f</code> or the last <em class="replaceable"><code>test-expression</code></em> is reached.  In the
+former case, the <code class="literal">and</code> expression returns <code class="literal">#f</code> without
+evaluating the remaining expressions.  In the latter case, the last
+expression is evaluated and its values are returned.
+</p>
+<pre class="screen">(and (= 2 2) (&gt; 2 1))          ⇒  #t
+(and (= 2 2) (&lt; 2 1))          ⇒  #f
+(and 1 2 'c '(f g))            ⇒  (f g)
+(and)                          ⇒  #t
+</pre>
+<p>The <code class="literal">and</code> keyword could be defined in terms of <code class="literal">if</code> using
+<code class="literal">syntax-rules</code> as follows:
+</p>
+<pre class="screen">(define-syntax and
+  (syntax-rules ()
+    ((and) #t)
+    ((and test) test)
+    ((and test1 test2 ...)
+     (if test1 (and test2 ...) #t))))
+</pre>
+<p>The last <em class="replaceable"><code>test-expression</code></em> is in tail context if the <code class="literal">and</code>
+expression itself is.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43277280"></a><code class="function">or</code><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-test-expression"><em class="replaceable"><code>test-expression</code></em></a></code></em><em class="replaceable"><code> …</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>If there are no <em class="replaceable"><code>test-expression</code></em>s, <code class="literal">#f</code> is returned.  Otherwise, the
+<em class="replaceable"><code>test-expression</code></em>s are evaluated from left to right until a
+<em class="replaceable"><code>test-expression</code></em> returns a true value <em class="replaceable"><code>val</code></em> or the last
+<em class="replaceable"><code>test-expression</code></em> is
+reached.  In the former case, the <code class="literal">or</code> expression returns <em class="replaceable"><code>val</code></em>
+without evaluating the remaining expressions.  In the latter case, the
+last expression is evaluated and its values are returned.
+</p>
+<pre class="screen">(or (= 2 2) (&gt; 2 1))           ⇒ #t
+(or (= 2 2) (&lt; 2 1))           ⇒ #t
+(or #f #f #f)                  ⇒ #f
+(or '(b c) (/ 3 0))            ⇒ (b c)
+</pre>
+<p>The <code class="literal">or</code> keyword could be defined in terms of <code class="literal">if</code> using
+<code class="literal">syntax-rules</code> as follows:
+</p>
+<pre class="screen">(define-syntax or
+  (syntax-rules ()
+    ((or) #f)
+    ((or test) test)
+    ((or test1 test2 ...)
+     (let ((x test1))
+       (if x x (or test2 ...))))))
+</pre>
+<p>The last <em class="replaceable"><code>test-expression</code></em> is in tail context if the <code class="literal">or</code>
+expression itself is.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43291904"></a><code class="function">when</code><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-test-expression"><em class="replaceable"><code>test-expression</code></em></a></code></em><em class="replaceable"><code> form...</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>If <em class="replaceable"><code>test-expression</code></em> is true, evaluate each <em class="replaceable"><code>form</code></em> in order,
+returning the value of the last one.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43297328"></a><code class="function">unless</code><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-test-expression"><em class="replaceable"><code>test-expression</code></em></a></code></em><em class="replaceable"><code> form...</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>If <em class="replaceable"><code>test-expression</code></em> is false, evaluate each <em class="replaceable"><code>form</code></em> in order,
+returning the value of the last one.
+</p></blockquote></div>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Definitions"></a>Definitions</h3></div></div></div>
+<div class="informalfigure"><p class="synopsis"><a class="indexterm" name="idp43304304"></a><code class="function">define</code><em class="replaceable"><code> name</code></em> [<em class="replaceable"><code><code class="literal"><span class="bold"><strong>::</strong></span></code></code></em><em class="replaceable"><code> <a class="link" href="Types.html#meta-type"><em class="replaceable"><code>type</code></em></a></code></em>]<em class="replaceable"><code> value</code></em></p></div>
+<p>In addition to <code class="literal">define</code> (which can take an optional type specifier),
+Kawa has some extra definition forms.
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43311216"></a><code class="function">define-private</code><em class="replaceable"><code> name</code></em> [<em class="replaceable"><code><code class="literal"><span class="bold"><strong>::</strong></span></code></code></em><em class="replaceable"><code> <a class="link" href="Types.html#meta-type"><em class="replaceable"><code>type</code></em></a></code></em>]<em class="replaceable"><code> value</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp43316448"></a><code class="function">define-private</code> (<em class="replaceable"><code>name</code></em><em class="replaceable"><code> formals</code></em>)<em class="replaceable"><code> body</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Same as <code class="literal">define</code>, except that <code class="literal">name</code> is not exported.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43322240"></a><code class="function">define-constant</code><em class="replaceable"><code> name</code></em> [<em class="replaceable"><code><code class="literal"><span class="bold"><strong>::</strong></span></code></code></em><em class="replaceable"><code> <a class="link" href="Types.html#meta-type"><em class="replaceable"><code>type</code></em></a></code></em>]<em class="replaceable"><code> value</code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp43327472"></a><code class="function">define-early-constant</code><em class="replaceable"><code> name</code></em> [<em class="replaceable"><code>::</code></em><em class="replaceable"><code> type</code></em>]<em class="replaceable"><code> value</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Defines <em class="replaceable"><code>name</code></em> to have the given <em class="replaceable"><code>value</code></em>.
+The value is readonly, and you cannot assign to it.
+(This is not fully enforced.)
+</p>
+<p>If <code class="literal">define-early-constant</code> is used
+<span class="emphasis"><em>or</em></span> the <em class="replaceable"><code>value</code></em> is a compile-time constant,
+then the compiler will create a <code class="literal">final</code> field with
+the given name and type, and evaluate <em class="replaceable"><code>value</code></em>
+in the module's class initializer (if the definition
+is static) or constructor (if the definition is non-static),
+before other definitions and expressions.
+Othewise, the <em class="replaceable"><code>value</code></em> is evaluated in the module body
+where it appears.
+</p>
+<p>If the <em class="replaceable"><code>value</code></em> is a compile-time constant,
+then the definition defaults to being static.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43337728"></a><code class="function">define-variable</code><em class="replaceable"><code> name</code></em> [<em class="replaceable"><code>init</code></em>]</p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>If <em class="replaceable"><code>init</code></em> is specified and <em class="replaceable"><code>name</code></em> does not have a global variable
+binding, then <em class="replaceable"><code>init</code></em> is evaluated, and <em class="replaceable"><code>name</code></em> bound to the result.
+Otherwise, the value bound to <em class="replaceable"><code>name</code></em> does not change.
+(Note that <em class="replaceable"><code>init</code></em> is not evaluated
+if <em class="replaceable"><code>name</code></em> does have a global variable binding.)
+</p>
+<p>Also, declares to the compiler that <em class="replaceable"><code>name</code></em> will be looked up
+in the dynamic environment. This can be useful for shutting up
+warnings from <code class="literal">--warn-undefined-variable</code>.
+</p>
+<p>This is similar to the Common Lisp <code class="literal">defvar</code> form.
+However, the Kawa version is (currently) only allowed at module level.
+</p>
+</blockquote></div>
+</div>
+<p>For <code class="literal">define-namespace</code> and <code class="literal">define-private-namespace</code>
+see <a class="xref" href="Symbols-and-namespaces.html#Namespaces" title="Kawa: Namespaces and compound symbols">the section called “Namespaces and compound symbols”</a>.
+</p>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Local-binding-constructs"></a>Local binding constructs</h3></div></div></div>
+<p>The binding constructs <code class="literal">let</code>, <code class="literal">let*</code>, <code class="literal">letrec</code>,
+and <code class="literal">letrec*</code> give Scheme a block structure, like Algol 60.
+The syntax of these four constructs
+is identical, but they differ in the regions they establish
+for their variable bindings. In a <code class="literal">let</code> expression, the initial
+values are computed before any of the variables become
+bound; in a <code class="literal">let*</code> expression, the bindings and evaluations
+are performed sequentially; while in <code class="literal">letrec</code> and <code class="literal">letrec*</code>
+expressions, all the bindings are in effect while their initial
+values are being computed, thus allowing mutually recursive definitions.
+
+
+
+
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43359888"></a><code class="function">let</code><em class="replaceable"><code> <code class="literal"><span class="bold"><strong>((</strong></span></code></code></em><em class="replaceable"><code>variable</code></em> [<em class="replaceable"><code><code class="literal"><span class="bold"><strong>::</strong></span></code></code></em><em class="replaceable"><code> <a class="link" href="Types.html#meta-type"><em class="replaceable"><code>type</code></em></a></code></em>]<em class="replaceable"><code> init</code></em><em class="replaceable"><code><code class="literal"><span class="bold"><strong>)</strong></span></code></code></em><em class="replaceable"><code> ...</code></em><em class="replaceable"><code><code class="literal"><span class="bold"><strong>)</strong></span></code></code></em><em class="replaceable"><code> <a class="link" href="Syntax.html#meta-body"><em class="replaceable"><code>body</code></em></a></code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Declare new local variables with the given <em class="replaceable"><code>name</code></em>, initial value
+<em class="replaceable"><code>init</code></em>, and optional type specification <em class="replaceable"><code>type</code></em>.
+The <em class="replaceable"><code>init</code></em>s are evaluated in the current environment (in left-to-right
+onder), the <em class="replaceable"><code>variable</code></em>s are bound to fresh locations holding the results,
+the <em class="replaceable"><code>body</code></em> is evaluated in the extended environment, and the values of
+the last expression of body are returned.
+Each binding of a variable has <em class="replaceable"><code>body</code></em> as its region.
+If <em class="replaceable"><code>type</code></em> is specified, then after the expression <em class="replaceable"><code>init</code></em> is evaluated,
+the result coerced to <em class="replaceable"><code>type</code></em>, and then assigned to the variable.
+If <em class="replaceable"><code>type</code></em> is not specified, it defaults to <code class="literal">Object</code>.
+</p>
+<pre class="screen">(let ((x 2) (y 3))
+  (* x y)) ⇒ 6
+</pre>
+<pre class="screen">(let ((x 2) (y 3))
+  (let ((x 7)
+        (z (+ x y)))
+    (* z x)))   ⇒ 35
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43378096"></a><code class="function">let*</code><em class="replaceable"><code> <code class="literal"><span class="bold"><strong>((</strong></span></code></code></em><em class="replaceable"><code>variable</code></em> [<em class="replaceable"><code><code class="literal"><span class="bold"><strong>::</strong></span></code></code></em><em class="replaceable"><code> <a class="link" href="Types.html#meta-type"><em class="replaceable"><code>type</code></em></a></code></em>]<em class="replaceable"><code> init</code></em><em class="replaceable"><code><code class="literal"><span class="bold"><strong>)</strong></span></code></code></em><em class="replaceable"><code> ...</code></em><em class="replaceable"><code><code class="literal"><span class="bold"><strong>)</strong></span></code></code></em><em class="replaceable"><code> <a class="link" href="Syntax.html#meta-body"><em class="replaceable"><code>body</code></em></a></code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The <code class="literal">let*</code> binding construct is similar to <code class="literal">let</code>,
+but the bindings are performed sequentially from left to
+right, and the region of a <em class="replaceable"><code>variable</code></em>
+is that part of the <code class="literal">let*</code> expression to the right of
+the binding. Thus the second binding is done in an environment
+in which the first binding is visible, and so on.
+The <em class="replaceable"><code>variable</code></em>s need not be distinct.
+</p>
+<pre class="screen">(let ((x 2) (y 3))
+  (let* ((x 7)
+         (z (+ x y)))
+    (* z x)))  ⇒ 70
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43393040"></a><code class="function">letrec</code><em class="replaceable"><code> <code class="literal"><span class="bold"><strong>((</strong></span></code></code></em><em class="replaceable"><code>variable</code></em> [<em class="replaceable"><code><code class="literal"><span class="bold"><strong>::</strong></span></code></code></em><em class="replaceable"><code> <a class="link" href="Types.html#meta-type"><em class="replaceable"><code>type</code></em></a></code></em>]<em class="replaceable"><code> init</code></em><em class="replaceable"><code><code class="literal"><span class="bold"><strong>)</strong></span></code></code></em><em class="replaceable"><code> ...</code></em><em class="replaceable"><code><code class="literal"><span class="bold"><strong>)</strong></span></code></code></em><em class="replaceable"><code> <a class="link" href="Syntax.html#meta-body"><em class="replaceable"><code>body</code></em></a></code></em></p>
+<p class="synopsis"><a class="indexterm" name="idp43402912"></a><code class="function">letrec*</code><em class="replaceable"><code> <code class="literal"><span class="bold"><strong>((</strong></span></code></code></em><em class="replaceable"><code>variable</code></em> [<em class="replaceable"><code><code class="literal"><span class="bold"><strong>::</strong></span></code></code></em><em class="replaceable"><code> <a class="link" href="Types.html#meta-type"><em class="replaceable"><code>type</code></em></a></code></em>]<em class="replaceable"><code> init</code></em><em class="replaceable"><code><code class="literal"><span class="bold"><strong>)</strong></span></code></code></em><em class="replaceable"><code> ...</code></em><em class="replaceable"><code><code class="literal"><span class="bold"><strong>)</strong></span></code></code></em><em class="replaceable"><code> <a class="link" href="Syntax.html#meta-body"><em class="replaceable"><code>body</code></em></a></code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The <em class="replaceable"><code>variable</code></em>s are bound to fresh locations,
+each <em class="replaceable"><code>variable</code></em> is assigned in left-to-right order
+to the result of the corresponding <em class="replaceable"><code>init</code></em>,
+the <em class="replaceable"><code>body</code></em> is evaluated in the resulting environment,
+and the values of the last expression in body are returned.
+Despite the left-to-right evaluation and assignment order, each binding of a
+<em class="replaceable"><code>variable</code></em> has the entire <code class="literal">letrec</code> or <code class="literal">letrec*</code>
+expression as its region,
+making it possible to define mutually recursive procedures.
+</p>
+<p>In Kawa <code class="literal">letrec</code> is defined as the same as <code class="literal">letrec*</code>.
+In standard Scheme the order of evaluation of the <em class="replaceable"><code>init</code></em>s
+is undefined, as is the order of assignments.
+If the order matters, you should use <code class="literal">letrec*</code>.
+</p>
+<p>If it is not possible to evaluate each <em class="replaceable"><code>init</code></em> without assigning
+or referring to the value of the corresponding <em class="replaceable"><code>variable</code></em>
+or the variables that follow it , it is an error.
+</p>
+<pre class="screen">(letrec ((even?
+          (lambda (n)
+            (if (zero? n)
+                #t
+                (odd? (- n 1)))))
+         (odd?
+          (lambda (n)
+            (if (zero? n)
+                #f
+                (even? (- n 1))))))
+  (even? 88))
+     ⇒ #t
+</pre>
+</blockquote></div>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Lazy-evaluation"></a>Lazy evaluation</h3></div></div></div>
+<p><em class="firstterm">Lazy evaluation</em> (or call-by-need) delays evaluating an expression until it
+is actually needed; when it is evaluated, the result is saved so
+repeated evaluation is not needed.
+<a class="ulink" href="http://en.wikipedia.org/wiki/Lazy_evaluation" target="_top">Lazy evaluation</a>
+is a technique that can make some algorithms easier to express compactly
+or much more efficiently, or both.  It is the normal evaluation mechanism
+for strict functional (side-effect-free) languages such as
+<a class="ulink" href="http://www.haskell.org" target="_top">Haskell</a>.
+However, automatic lazy evaluation is awkward to combine with side-effects
+such as input-output.  It can also be difficult to implement
+lazy evaluation efficiently, as it requires more book-keeping.
+</p>
+<p>Kawa, like other Schemes, uses “eager evaluation” - an expression
+is normally evaluated immediately, unless it is wrapped in a special form.
+Standard Scheme has some basic building blocks for “manual”
+lazy evaluation, using an explicit <code class="literal">delay</code> operator to
+indicate that an expression is to be evaluated lazily,
+yielding a <em class="firstterm">promise</em>,
+and a <code class="literal">force</code> function to force evaluation of a promise.
+This functionality is enhanced in
+<a class="ulink" href="http://srfi.schemers.org/srfi-45/srfi-45.html" target="_top">SRFI 45</a>,
+in R7RS-draft (based on SRFI 45),
+and <a class="ulink" href="http://srfi.schemers.org/srfi-41/srfi-41.html" target="_top">SRFI 41</a> (lazy lists aka streams).
+</p>
+<p>Kawa makes lazy evaluation easier to use, by <em class="firstterm">implicit forcing</em>:
+The promise is automatically evaluated (forced) when used in a
+context that requires a normal value, such as arithmetic needing a number.
+Kawa enhances lazy evaluation in other ways, including
+support for safe multi-threaded programming.
+</p>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Delayed-evaluation"></a>Delayed evaluation</h4></div></div></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43433408"></a><code class="function">delay</code><em class="replaceable"><code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a></code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The <code class="literal">delay</code> construct is used together with the procedure
+<code class="literal">force</code> to implement <span class="emphasis"><em>lazy evaluation</em></span> or <span class="emphasis"><em>call by need</em></span>.
+</p>
+<p><code class="literal">(delay <em class="replaceable"><code>expression</code></em>)</code> returns an object called a
+<span class="emphasis"><em>promise</em></span> which at some point in the future may be asked (by the
+<code class="literal">force</code> procedure) to evaluate <em class="replaceable"><code>expression</code></em>, and deliver the
+resulting value.  The effect of <em class="replaceable"><code>expression</code></em> returning multiple
+values is unspecified.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43443632"></a><code class="function">lazy</code><em class="replaceable"><code> <a class="link" href="Syntax.html#meta-expression"><em class="replaceable"><code>expression</code></em></a></code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>The <code class="literal">lazy</code> construct is similar to delay, but it is expected
+that its argument evaluates to a promise.
+(Kawa treats a non-promise value as if it were a forced promise.)
+The returned
+promise, when forced, will evaluate to whatever the original
+promise would have evaluated to if it had been forced.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43448912"></a><code class="function">eager</code><em class="replaceable"><code> obj</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Returns a promise that when forced will return <em class="replaceable"><code>obj</code></em>.
+It is similar to <code class="literal">delay</code>, but does not delay its argument;
+it is a procedure rather than syntax.
+</p>
+<p>As a Kawa optimization, if the <em class="replaceable"><code>obj</code></em> is not a promise
+(does not implement <code class="literal">gnu.mapping.Lazy</code>), it is returned as-is.
+(This is because Kawa generally minimizes the difference
+bwteen a value and forced promise evaluating to the value.)
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43455376"></a><code class="function">force</code><em class="replaceable"><code> promise</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The <code class="literal">force</code> procedure forces the value of <em class="replaceable"><code>promise</code></em>.
+As a Kawa extension, if the <em class="replaceable"><code>promise</code></em> is not a promise (a value that
+does not implement <code class="literal">gnu.mapping.Lazy</code>) then the argument is returned unchanged.
+If no value has been computed for the promise, then a value is computed and
+returned.  The value of the promise is cached (or “memoized”) so that
+if it is forced a second time, the previously computed value is
+returned.
+</p>
+<pre class="screen">(force (delay (+ 1 2)))                ⇒  3
+
+(let ((p (delay (+ 1 2))))
+  (list (force p) (force p)))          ⇒  (3 3)
+
+(define integers
+  (letrec ((next
+            (lambda (n)
+              (cons n (delay (next (+ n 1)))))))
+    (next 0)))
+(define head
+  (lambda (stream) (car (force stream))))
+(define tail
+  (lambda (stream) (cdr (force stream))))
+
+(head (tail (tail integers)))          ⇒  2
+</pre>
+<p>The following example is a mechanical transformation of
+a lazy stream-filtering algorithm into Scheme. Each call
+to a constructor is wrapped in <code class="literal">delay</code>, and each argument
+passed to a deconstructor is wrapped in <code class="literal">force</code>. The use
+of <code class="literal">(lazy ...)</code> instead of <code class="literal">(delay (force ...))</code> around
+the body of the procedure ensures that an ever-growing
+sequence of pending promises does not exhaust the heap.
+</p>
+<pre class="screen">(define (stream-filter p? s)
+  (lazy
+   (if (null? (force s))
+       (delay ’())
+       (let ((h (car (force s)))
+             (t (cdr (force s))))
+         (if (p? h)
+             (delay (cons h (stream-filter p? t)))
+             (stream-filter p? t))))))
+
+(head (tail (tail (stream-filter odd? integers))))
+    ⇒ 5
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43467200"></a><code class="function">force*</code><em class="replaceable"><code> promise</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Does <code class="literal">force</code> as many times as necessary to produce a non-promise.
+(A non-promise is a value that does not implement <code class="literal">gnu.mapping.Lazy</code>,
+or if it does implement <code class="literal">gnu.mapping.Lazy</code> then forcing the value
+using the <code class="literal">getValue</code> method yields the receiver.)
+</p>
+<p>The <code class="literal">force*</code> function is a Kawa extension.
+Kawa will add implicit calls to <code class="literal">force*</code>
+in most contexts that need it, but you can also call it explicitly.
+</p>
+</blockquote></div>
+</div>
+<p>The following examples are not intended to illustrate good
+programming style, as <code class="literal">delay</code>, <code class="literal">lazy</code>, and <code class="literal">force</code> are mainly
+intended for programs written in the functional style.
+However, they do illustrate the property that only one value is
+computed for a promise, no matter how many times it is
+forced.
+</p>
+<pre class="screen">(define count 0)
+(define p
+  (delay (begin (set! count (+ count 1))
+                (if (&gt; count x)
+                    count
+                    (force p)))))
+(define x 5)
+p                  ⇒ <span class="emphasis"><em>a promise</em></span>
+(force p)          ⇒ 6
+p                  ⇒ <span class="emphasis"><em>a promise, still</em></span>
+(begin (set! x 10)
+       (force p))  ⇒ 6
+</pre>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Implicit-forcing"></a>Implicit forcing</h4></div></div></div>
+<p>If you pass a promise as an argument to a function like <code class="literal">sqrt</code>
+if must first be forced to a number.  In general, Kawa does this
+automatically (implicitly) as needed, depending on the context.
+For example:
+</p>
+<pre class="screen">(+ (delay (* 3 7)) 13)   ⇒ 34
+</pre>
+<p>Other functions,
+like <code class="literal">cons</code> have no problems with promises, and automatic forcing
+would be undesirable.
+</p>
+<p>Generally, implicit forcing happens for arguments that require a
+specific type, and does not happen for arguments that work on
+<span class="emphasis"><em>any</em></span> type (or <code class="literal">Object</code>).
+</p>
+<p>Implicit forcing happens for:
+</p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>arguments to arithmetic functions;
+</p></li>
+<li class="listitem"><p>the sequence and the index in indexing operations, like <code class="literal">string-ref</code>;
+</p></li>
+<li class="listitem"><p>the operands to <code class="literal">eqv?</code> and <code class="literal">equal?</code> are forced,
+though the operands to <code class="literal">eq?</code> are not;
+</p></li>
+<li class="listitem"><p>port operands to port functions;
+</p></li>
+<li class="listitem"><p>the value to be emitted by a <code class="literal">display</code> but <span class="emphasis"><em>not</em></span> the
+value to be emitted by a <code class="literal">write</code>;
+</p></li>
+<li class="listitem"><p>the function in an application.
+</p></li>
+</ul></div>
+<p>Type membership tests, such as the <code class="literal">instance?</code> operation,
+generally do not force their values.
+</p>
+<p>The exact behavior for when implicit forcing is a work-in-progress:
+There are certainly places where implicit forcing doesn't happen while
+it should; there are also likely to be places where implicit forcing
+happens while it is undesirable.
+</p>
+<p>Most Scheme implementations are such that a forced promise behaves differently
+from its forced value, but some Scheme implementions are such that there is no
+means by which a promise can be operationally distingished
+from its forced value.
+Kawa is a hybrid: Kawa tries to minimize the difference between
+a forced promise and its forced value, and may freely optimize
+and replace a forced promise with its value.
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Blank-promises"></a>Blank promises</h4></div></div></div>
+<p>A <em class="firstterm">blank promise</em> is a promise that doesn't (yet) have
+a value <span class="emphasis"><em>or</em></span> a rule for calculating the value.
+Forcing a blank promise will wait forever, until some
+other thread makes the promise non-blank.
+</p>
+<p>Blank promises are useful as a synchronization mechanism -
+you can use it to safely pass data from one thread (the producer)
+to another thread (the consumer).  Note that you can only
+pass one value for a given promise: To pass multiple values, you
+need multiple promises.
+</p>
+<pre class="screen">(define p (promise))
+(future ;; Consumer thread
+  (begin
+    (do-stuff)
+    (define v (force promise)) ; waits until promise-set-value!
+    (do-stuff-with v)))
+;; Producer thread
+... do stuff ...
+(promise-set-value! p (calculate-value))
+</pre>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43502256"></a><code class="function">promise</code></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Calling <code class="literal">promise</code> as a zero-argument constructor
+creates a new blank promise.
+</p>
+<p>This calls the constructor for <code class="literal">gnu.mapping.Promise</code>.
+You can also create a non-blank promise, by setting one
+of the <code class="literal">value</code>, <code class="literal">alias</code>, <code class="literal">thunk</code>, or <code class="literal">exception</code> properties.
+Doing so is equivalent to calling <code class="literal">promise-set-value!</code>,
+<code class="literal">promise-set-alias!</code>, <code class="literal">promise-set-thunk!</code>, or
+<code class="literal">promise-set-exception!</code> on the resulting promise.
+For example: <code class="literal">(delay exp)</code> is equivalent to:
+</p>
+<pre class="screen">(promise thunk: (lambda() exp))
+</pre>
+</blockquote></div>
+</div>
+<p>The following four procedures require that their first arguments
+be blank promises.  When the procedure returns, the promise is
+no longer blank, and cannot be changed.  This is because a
+promise is conceptually placeholder for a single “not-yet-known” value;
+it is not a location that can be assigned multiple times.
+The former enables clean and safe (“declarative") use of multiple threads;
+the latter is much trickier.
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43515600"></a><code class="function">promise-set-value!</code><em class="replaceable"><code> promise</code></em><em class="replaceable"><code> value</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Sets the value of the <em class="replaceable"><code>promise</code></em> to <em class="replaceable"><code>value</code></em>,
+which makes the <em class="replaceable"><code>promise</code></em> forced.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43520752"></a><code class="function">promise-set-exception!</code><em class="replaceable"><code> promise</code></em><em class="replaceable"><code> exception</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Associate <em class="replaceable"><code>exception</code></em> with the <em class="replaceable"><code>promise</code></em>.
+When the <em class="replaceable"><code>promise</code></em> is forced the <em class="replaceable"><code>exception</code></em> gets thrown.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43526352"></a><code class="function">promise-set-alias!</code><em class="replaceable"><code> promise</code></em><em class="replaceable"><code> other</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Bind the <em class="replaceable"><code>promise</code></em> to be an alias of <em class="replaceable"><code>other</code></em>.
+Forcing <em class="replaceable"><code>promise</code></em> will cause <em class="replaceable"><code>other</code></em> to be forced.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43531952"></a><code class="function">promise-set-thunk!</code><em class="replaceable"><code> promise</code></em><em class="replaceable"><code> thunk</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Associate <em class="replaceable"><code>thunk</code></em> (a zero-argument procedure) with the <em class="replaceable"><code>promise</code></em>.
+The first time the <em class="replaceable"><code>promise</code></em> is forced will causes the
+<em class="replaceable"><code>thunk</code></em> to be called, with the result (a value or an exception)
+saved for future calls.
+</p></blockquote></div>
+</div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Lazy-and-eager-types"></a>Lazy and eager types</h4></div></div></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43538720"></a><code class="function">promise</code>[<em class="replaceable"><code>T</code></em>]</p>
+<div class="blockquote"><blockquote class="blockquote"><p>This parameterized type is the type of promises that evaluate to
+an value of type <code class="literal">T</code>.
+It is equivalent to the Java interface <code class="literal">gnu.mapping.Lazy&lt;T&gt;</code>.
+The implementation class for promises is usually <code class="literal">gnu.mapping.Promise</code>,
+though there are other classes that implement <code class="literal">Lazy</code>,
+most notably <code class="literal">gnu.mapping.Future</code>, used for futures,
+which are promises evaluated in a separate thread.
+</p></blockquote></div>
+</div>
+<p>Note the distinction between the types <code class="literal">integer</code>
+(the type of actual (eager) integer values), and <code class="literal">promise[integer]</code>
+(the type of (lazy) promises that evaluate to integer).
+The two are compatible: if a <code class="literal">promise[integer]</code> value is provided
+in a context requiring an <code class="literal">integer</code> then it is automatically
+evaluated (forced).  If an <code class="literal">integer</code> value is provided
+in context requiring a <code class="literal">promise[integer]</code>, that conversion is basically
+a no-op (though the compiler may wrap the <code class="literal">integer</code>
+in a pre-forced promise).
+</p>
+<p>If a fully-lazy language there would be no distinction, or
+at least the promise type would be the default.  However, Kawa is
+mostly-eager language, so the eager type is the default.
+This makes efficient code-generation easier: If an expression
+has an eager type, then the compiler can generate code that
+works on its values directly, without having to check for laziness.
+</p>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Threads"></a>Threads</h3></div></div></div>
+<p>There is a very preliminary interface to create parallel threads.
+The interface is similar to the standard <code class="literal">delay</code>/<code class="literal">force</code>,
+where a thread is basically the same as a promise, except that
+evaluation may be in parallel.
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43556400"></a><code class="function">future</code><em class="replaceable"><code> expression</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Creates a new thread that evaluates <em class="replaceable"><code>expression</code></em>.
+</p>
+<p>(The result extends <code class="literal">java.lang.Thread</code> and
+implements <code class="literal">gnu.mapping.Lazy</code>.)
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43562176"></a><code class="function">force</code><em class="replaceable"><code> thread</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>The standard <code class="literal">force</code> function has generalized to also work
+on threads.  If waits for the thread's <em class="replaceable"><code>expression</code></em> to finish
+executing, and returns the result.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43566960"></a><code class="function">runnable</code><em class="replaceable"><code> function</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Creates a new <code class="literal">Runnable</code> instance from a function.
+Useful for passing to Java code that expects a <code class="literal">Runnable</code>.
+You can get the result (a value or a thrown exception) using the
+<code class="literal">getResult</code> method.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43572752"></a><code class="function">synchronized</code><em class="replaceable"><code> object</code></em><em class="replaceable"><code> form</code></em><em class="replaceable"><code> ...</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Synchronize on the given <em class="replaceable"><code>object</code></em>.  (This means getting an
+exclusive lock on the object, by acquiring its <em class="firstterm">monitor</em>.)
+Then execute the <em class="replaceable"><code>form</code></em>s while holding the lock.
+When the <em class="replaceable"><code>form</code></em>s finish (normally or abnormally by throwing
+an exception), the lock is released.
+Returns the result of the last <em class="replaceable"><code>form</code></em>.
+Equivalent to the Java <code class="literal">synchronized</code> statement,
+except that it may return a result.
+</p></blockquote></div>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Exceptions"></a>Exception handling</h3></div></div></div>
+<p>An <em class="firstterm">exception</em> is an object used to signal an error or
+other exceptional situation.  The program or run-time system
+can <em class="firstterm">throw</em> the exception when an error is discovered.
+An exception handler is a program construct that registers
+an action to handle exceptions when the handler is active.
+</p>
+<p>If an exception is thrown and not handled then the
+read-eval-print-loop will print a stack trace, and bring
+you back to the top level prompt.
+When not running interactively, an unhandled exception
+will normally cause Kawa to be exited.
+</p>
+<p>In the Scheme exception model (as of R6RS and R7RS)
+exception handlers are one-argument procedures that determine
+the action the program takes when an exceptional situation is signaled.
+The system implicitly maintains a
+current exception handler in the dynamic environment.
+The program raises an exception by invoking the current
+exception handler, passing it an object encapsulating information
+about the exception. Any procedure accepting
+one argument can serve as an exception handler and any
+object can be used to represent an exception.
+</p>
+<p>The Scheme exception model is implemented on top of the Java VM's
+native exception model where the only objects that
+can be thrown are instances of <code class="literal">java.lang.Throwable</code>.
+Kawa also provides direct access to this native model,
+as well as older Scheme exception models.
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43585936"></a><code class="function">with-exception-handler</code><em class="replaceable"><code> handler</code></em><em class="replaceable"><code> thunk</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>It is an error if <em class="replaceable"><code>handler</code></em> does not accept one argument.
+It is also an error if <em class="replaceable"><code>thunk</code></em> does not accept zero arguments.
+The <code class="literal">with-exception-handler</code> procedure returns the results
+of invoking <em class="replaceable"><code>thunk</code></em>. The <em class="replaceable"><code>handler</code></em> is installed as the current
+exception handler in the dynamic environment used for the
+invocation of <em class="replaceable"><code>thunk</code></em>.
+</p>
+<pre class="screen">(call-with-current-continuation
+  (lambda (k)
+   (with-exception-handler
+    (lambda (x)
+     (display "condition: ")
+     (write x)
+     (newline)
+     (k 'exception))
+    (lambda ()
+     (+ 1 (raise ’an-error))))))
+       ⇒ exception
+       <em class="wordasword">and prints</em> condition: an-error
+</pre>
+<pre class="screen">(with-exception-handler
+ (lambda (x)
+  (display "something went wrong\n"))
+ (lambda ()
+  (+ 1 (raise ’an-error))))
+    <em class="wordasword">prints</em> something went wrong
+</pre>
+<p>After printing, the second example then raises another exception.
+</p>
+<p><span class="emphasis"><em>Performance note:</em></span> The <em class="replaceable"><code>thunk</code></em> is inlined if it is a
+lambda expression.  However, the <em class="replaceable"><code>handler</code></em> cannot be inlined
+even if it is a lambda expression, because it could be called by
+<code class="literal">raise-continuable</code>.  Using the <code class="literal">guard</code> form is
+usually more efficient.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43599200"></a><code class="function">raise</code><em class="replaceable"><code> obj</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Raises an exception by invoking the current exception handler on <em class="replaceable"><code>obj</code></em>.
+The handler is called with the same dynamic
+environment as that of the call to raise, except that the
+current exception handler is the one that was in place when
+the handler being called was installed. If the handler returns,
+then <em class="replaceable"><code>obj</code></em> is re-raised in the same dynamic environment as the handler.
+</p>
+<p>If <em class="replaceable"><code>obj</code></em> is an instance of <code class="literal">java.lang.Throwable</code>,
+then <code class="literal">raise</code> has the same effect as <code class="literal">primitive-throw</code>.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43606816"></a><code class="function">raise-continuable</code><em class="replaceable"><code> obj</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Raises an exception by invoking the current exception handler on <em class="replaceable"><code>obj</code></em>.
+The handler is called with the same dynamic
+environment as the call to <code class="literal">raise-continuable</code>, except
+that: (1) the current exception handler is the one that was
+in place when the handler being called was installed, and
+(2) if the handler being called returns, then it will again
+become the current exception handler.
+If the handler returns, the values it returns become the values
+returned by the call to <code class="literal">raise-continuable</code>.
+</p>
+<pre class="screen">(with-exception-handler
+  (lambda (con)
+    (cond
+      ((string? con)
+       (display con))
+      (else
+       (display "a warning has been issued")))
+    42)
+  (lambda ()
+    (+ (raise-continuable "should be a number")
+       23)))
+      <em class="wordasword">prints:</em> should be a number
+      ⇒ 65
+</pre>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43613952"></a><code class="function">guard</code> <em class="replaceable"><code>variable</code></em><em class="replaceable"><code> <a class="link" href="Program-structure.html#meta-cond-clause"><em class="replaceable"><code>cond-clause</code></em></a></code></em><em class="replaceable"><code>^+</code></em><em class="replaceable"><code> <a class="link" href="Syntax.html#meta-body"><em class="replaceable"><code>body</code></em></a></code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>The <em class="replaceable"><code>body</code></em> is evaluated with an exception handler that binds
+the raised object to <em class="replaceable"><code>variable</code></em> and, within the scope of that binding,
+evaluates the clauses as if they were the clauses of a <code class="literal">cond</code> expression.
+That implicit <code class="literal">cond</code> expression is evaluated with
+the continuation and dynamic environment of the <code class="literal">guard</code>
+expression. If every cond-clause’s test evaluates to <code class="literal">#f</code>
+and there is no <code class="literal">else</code> clause, then <code class="literal">raise-continuable</code> is
+invoked on the raised object within the dynamic environment of the
+original call to <code class="literal">raise</code> or <code class="literal">raise-continuable</code>,
+except that the current exception handler is that of the
+<code class="literal">guard</code> expression.
+</p>
+<pre class="screen">(guard (condition
+         ((assq 'a condition) =&gt; cdr)
+         ((assq 'b condition)))
+  (raise (list (cons 'a 42))))
+      ⇒ 42
+</pre>
+<pre class="screen">(guard (condition
+         ((assq 'a condition) =&gt; cdr)
+         ((assq 'b condition)))
+  (raise (list (cons 'b 23))))
+      ⇒ (b . 23)
+</pre>
+<p><span class="emphasis"><em>Performance note:</em></span> Using <code class="literal">guard</code> is moderately efficient:
+there is some overhead compared to using native exception handling,
+but both the <em class="replaceable"><code>body</code></em> and the handlers in the <em class="replaceable"><code>cond-clause</code></em>
+are inlined.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43631888"></a><code class="function">dynamic-wind</code><em class="replaceable"><code> in-guard</code></em><em class="replaceable"><code> thunk</code></em><em class="replaceable"><code> out-guard</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>All three arguments must be 0-argument procedures.
+First calls <em class="replaceable"><code>in-guard</code></em>, then <em class="replaceable"><code>thunk</code></em>, then <em class="replaceable"><code>out-guard</code></em>.
+The result of the expression is that of <em class="replaceable"><code>thunk</code></em>.
+If <em class="replaceable"><code>thunk</code></em> is exited abnormally (by throwing an exception or
+invoking a continuation), <em class="replaceable"><code>out-guard</code></em> is called.
+</p>
+<p>If the continuation of the dynamic-wind is re-entered (which
+is not yet possible in Kawa), the <em class="replaceable"><code>in-guard</code></em> is called again.
+</p>
+<p>This function was added in R5RS.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43640128"></a><code class="function">read-error?</code><em class="replaceable"><code> obj</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Returns #t if <em class="replaceable"><code>obj</code></em> is an object raised by the <code class="literal">read</code> procedure.
+(That is if <em class="replaceable"><code>obj</code></em> is a <code class="literal">gnu.text.SyntaxException</code>.)
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43645936"></a><code class="function">file-error?</code><em class="replaceable"><code> obj</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Returns #t if <em class="replaceable"><code>obj</code></em> is an object raised by inability to open an input
+or output port on a file.
+(This includes <code class="literal">java.io.FileNotFoundException</code> as well
+as certain other exceptions.)
+</p></blockquote></div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Simple-error-objects"></a>Simple error objects</h4></div></div></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43651648"></a><code class="function">error</code><em class="replaceable"><code> message</code></em><em class="replaceable"><code> obj</code></em><em class="replaceable"><code> ...</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Raises an exception as if by calling <code class="literal">raise</code>
+on a newly allocated <em class="firstterm">simple error object</em>,
+which encapsulates the information provided by <em class="replaceable"><code>message</code></em>
+(which should a string), as well as any <em class="replaceable"><code>obj</code></em> arguments,
+known as the irritants.
+</p>
+<p>The string representation of a simple error object is as if calling
+<code class="literal">(format "#&lt;ERROR ~a~{ ~w~}&gt;" <em class="replaceable"><code>message</code></em> <em class="replaceable"><code>irritants</code></em>)</code>.
+(That is the <em class="replaceable"><code>message</code></em> is formatted as if with <code class="literal">display</code>
+while each irritant <em class="replaceable"><code>obj</code></em> is formatted as if with <code class="literal">write</code>.)
+</p>
+<p>This procedure is part of SRFI-23, and R7RS.
+It differs from (and is incompatible with) R6RS's <code class="literal">error</code> procedure.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43663456"></a><code class="function">error-object?</code><em class="replaceable"><code> obj</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Returns <code class="literal">#t</code> if <em class="replaceable"><code>obj</code></em> is a simple error object.
+Specifically, that <em class="replaceable"><code>obj</code></em> is an instance of <code class="literal">kawa.lang.NamedException</code>.
+Otherwise, it returns <code class="literal">#f</code>.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43669936"></a><code class="function">error-object-message</code><em class="replaceable"><code> error-object</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Returns the message encapsulated by error-object,
+which must be a simple error object.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43673520"></a><code class="function">error-object-irritants</code><em class="replaceable"><code> error-object</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Returns a list of the irritants (other arguments)
+encapsulated by error-object, which must be a simple error object.
+</p></blockquote></div>
+</div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Named-exceptions"></a>Named exceptions</h4></div></div></div>
+<p>These functions associate a symbol with exceptions
+and handlers: A handler catches an exception if the symbol matches.
+</p>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43678720"></a><code class="function">catch</code><em class="replaceable"><code> key</code></em><em class="replaceable"><code> thunk</code></em><em class="replaceable"><code> handler</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Invoke <em class="replaceable"><code>thunk</code></em> in the dynamic context of <em class="replaceable"><code>handler</code></em> for
+exceptions matching <em class="replaceable"><code>key</code></em>.  If thunk throws to the symbol <em class="replaceable"><code>key</code></em>,
+then <em class="replaceable"><code>handler</code></em> is invoked this way:
+</p>
+<pre class="screen">(handler key args ...)
+</pre>
+<p><em class="replaceable"><code>key</code></em> may be a symbol.  The <em class="replaceable"><code>thunk</code></em> takes no
+arguments.  If <em class="replaceable"><code>thunk</code></em> returns normally, that is the return value of
+<code class="literal">catch</code>.
+</p>
+<p>Handler is invoked outside the scope of its own <code class="literal">catch</code>.  If
+<em class="replaceable"><code>handler</code></em> again throws to the same key, a new handler from further
+up the call chain is invoked.
+</p>
+<p>If the key is <code class="literal">#t</code>, then a throw to <span class="emphasis"><em>any</em></span> symbol will match
+this call to <code class="literal">catch</code>.
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43691952"></a><code class="function">throw</code><em class="replaceable"><code> key</code></em><em class="replaceable"><code> arg</code></em><em class="replaceable"><code> ...</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Invoke the catch form matching <em class="replaceable"><code>key</code></em>, passing the <em class="replaceable"><code>arg</code></em>s to the
+current <em class="replaceable"><code>handler</code></em>.
+</p>
+<p>If the key is a symbol it will match catches of the same
+symbol or of <code class="literal">#t</code>.
+</p>
+<p>If there is no handler at all, an error is signaled.
+</p>
+</blockquote></div>
+</div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Native-exception-handling"></a>Native exception handling</h4></div></div></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43699968"></a><code class="function">primitive-throw</code><em class="replaceable"><code> exception</code></em></p>
+<div class="blockquote"><blockquote class="blockquote"><p>Throws the <em class="replaceable"><code>exception</code></em>, which must be an instance of a sub-class
+of <code class="literal">java.lang.Throwable</code>.
+</p></blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43704656"></a><code class="function">try-finally</code><em class="replaceable"><code> body</code></em><em class="replaceable"><code> handler</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Evaluate <em class="replaceable"><code>body</code></em>, and return its result.
+However, before it returns, evaluate <em class="replaceable"><code>handler</code></em>.
+Even if <em class="replaceable"><code>body</code></em> returns abnormally (by throwing an exception),
+<em class="replaceable"><code>handler</code></em> is evaluated.
+</p>
+<p>(This is implemented just like Java's <code class="literal">try</code>-<code class="literal">finally</code>.
+However, the current implementation does not duplicate the <em class="replaceable"><code>handler</code></em>.)
+</p>
+</blockquote></div>
+</div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp43712656"></a><code class="function">try-catch</code><em class="replaceable"><code> body</code></em><em class="replaceable"><code> handler</code></em><em class="replaceable"><code> ...</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Evaluate <em class="replaceable"><code>body</code></em>, in the context of the given <em class="replaceable"><code>handler</code></em> specifications.
+Each <em class="replaceable"><code>handler</code></em> has the form:
+</p>
+<pre class="screen"><em class="replaceable"><code>var</code></em> <em class="replaceable"><code>type</code></em> <em class="replaceable"><code>exp</code></em> ...
+</pre>
+<p>If an exception is thrown in <em class="replaceable"><code>body</code></em>, the first <em class="replaceable"><code>handler</code></em>
+is selected such that the thrown exception is an instance of
+the <em class="replaceable"><code>handler</code></em>'s <em class="replaceable"><code>type</code></em>. If no <em class="replaceable"><code>handler</code></em> is selected,
+the exception is propagated through the dynamic execution context
+until a matching <em class="replaceable"><code>handler</code></em> is found.  (If no matching <em class="replaceable"><code>handler</code></em>
+is found, then an error message is printed, and the computation terminated.)
+</p>
+<p>Once a <em class="replaceable"><code>handler</code></em> is selected,
+the <em class="replaceable"><code>var</code></em> is bound to the thrown exception, and the <em class="replaceable"><code>exp</code></em> in
+the <em class="replaceable"><code>handler</code></em> are executed.  The result of the <code class="literal">try-catch</code>
+is the result of <em class="replaceable"><code>body</code></em> if no exception is thrown, or the
+value of the last <em class="replaceable"><code>exp</code></em> in the selected <em class="replaceable"><code>handler</code></em> if an
+exception is thrown.
+</p>
+<p>(This is implemented just like Java's <code class="literal">try</code>-<code class="literal">catch</code>.)
+</p>
+</blockquote></div>
+</div>
+</div>
+</div>
+</div>
+<div class="navfooter">
+<ul>
+<li><b class="toc"><a href="Program-structure.html#Boolean-values">Boolean values</a></b></li>
+<li><b class="toc"><a href="Program-structure.html#Conditionals">Conditionals</a></b></li>
+<li><b class="toc"><a href="Program-structure.html#Definitions">Definitions</a></b></li>
+<li><b class="toc"><a href="Program-structure.html#Local-binding-constructs">Local binding constructs</a></b></li>
+<li><b class="toc"><a href="Program-structure.html#Lazy-evaluation">Lazy evaluation</a></b></li>
+<li><b class="toc"><a href="Program-structure.html#Threads">Threads</a></b></li>
+<li><b class="toc"><a href="Program-structure.html#Exceptions">Exception handling</a></b></li>
+</ul>
+<p>
+          Up: <a accesskey="u" href="Documentation.html">Documentation</a></p>
+<p>
+        Previous: <a accesskey="p" href="Syntax.html">Syntax</a></p>
+<p>
+        Next: <a accesskey="n" href="Multiple-values.html">Multiple values</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,1069 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Kawa: How to start up and run Kawa</title>
+<link rel="stylesheet" title="Kawa (navbar: fixed, left)" href="style/kawa-l.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Kawa (navbar: fixed, right)" href="style/kawa-r.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Single column, top navigation" href="style/kawa-1col.css" type="text/css" media="handheld, screen, print, projection, tv">
+<script language="JavaScript" type="text/javascript" src="style/utils.js"></script><meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="toc.html" title="Kawa: The Kawa Scheme language">
+<link rel="up" href="Documentation.html" title="Kawa: Documentation">
+<link rel="prev" href="Documentation.html" title="Kawa: Documentation">
+<link rel="next" href="Syntax.html" title="Kawa: Syntax">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF" onload="javascript:onLoadHandler();" onunload="javascript:onUnloadHandler();">
+<div class="navcol">
+<div class="logo"><a href="index.html"><img src="style/kawa-logo.png"></a></div>
+<div class="navbar">
+<ul>
+<li><a href="toc.html">Table of Contents</a></li>
+<li><a href="tutorial/index.html">Tutorial</a></li>
+<li><a href="news.html">News: Recent changes</a></li>
+</ul>
+<div class="toc"><ul>
+<li><a href="index.html">The Kawa Scheme language</a></li>
+<li><a href="Installation.html">Getting and installing Kawa</a></li>
+<li><a href="Features.html">Features</a></li>
+<li>
+<a href="Documentation.html">Documentation</a><ul>
+<li>
+<b class="toc"><a href="Running.html">Usage Reference</a></b><ul>
+<li><b class="toc"><a href="Running.html#Options">Command-line arguments</a></b></li>
+<li><b class="toc"><a href="Running.html#Scripts">Running Command Scripts</a></b></li>
+<li><b class="toc"><a href="Running.html#New-Window">Running a Command Interpreter in a new Window</a></b></li>
+<li><b class="toc"><a href="Running.html#Exiting">Exiting Kawa</a></b></li>
+<li><b class="toc"><a href="Running.html#Compiling">Compiling</a></b></li>
+</ul>
+</li>
+<li><a href="Syntax.html">Syntax</a></li>
+<li><a href="Program-structure.html">Program structure</a></li>
+<li><a href="Multiple-values.html">Multiple values</a></li>
+<li><a href="Symbols-and-namespaces.html">Symbols and namespaces</a></li>
+<li><a href="Procedures.html">Procedures</a></li>
+<li><a href="Numbers.html">Numbers</a></li>
+<li><a href="Characters-and-text.html">Characters and text</a></li>
+<li><a href="Data-structures.html">Data structures</a></li>
+<li><a href="Eval-and-Environments.html">Eval and Environments</a></li>
+<li><a href="Debugging.html">Debugging</a></li>
+<li><a href="Input-Output.html">Input, output, files</a></li>
+<li><a href="Types.html">Types</a></li>
+<li><a href="Objects-Classes-and-Modules.html">Object, Classes and Modules</a></li>
+<li><a href="XML-tools.html">Working with XML and HTML</a></li>
+<li><a href="Miscellaneous.html">Miscellaneous topics</a></li>
+</ul>
+</li>
+<li><a href="Development.html">Development</a></li>
+<li><a href="Community.html">The Kawa Community</a></li>
+<li><a href="About.html">About</a></li>
+<li><a href="Overall-Index.html">Index</a></li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Running"></a>How to start up and run Kawa</h2></div></div></div>
+<p>The easiest way to start up Kawa is to run the ‘<code class="literal">kawa</code>’ program.
+This finds your java interpreter, and sets up ‘<code class="literal">CLASSPATH</code>’ correctly.
+If you have installed Kawa such <code class="literal">$PREFIX/bin</code> is in your <code class="literal">$PATH</code>,
+just do:
+</p>
+<pre class="screen">kawa
+</pre>
+<p>However, ‘<code class="literal">kawa</code>’ only works if you have a Unix-like environment.
+On some platforms, ‘<code class="literal">kawa</code>’ is a program that uses the GNU
+‘<code class="literal">readline</code>’ library to provide input line editing.
+</p>
+<p>To run Kawa manually, you must start a Java Virtual Machine.
+How you do this depends on the Java implementation.
+For Sun's JDK s and some other implementations, you must have the
+Java evaluator (usually named <code class="literal">java</code>) in your <code class="literal">PATH</code>.
+You must also make sure that the <code class="literal">kawa/repl.class</code> file,
+the rest of the Kawa packages, and the standard Java
+packages can be found by searching CLASSPATH.
+See <a class="xref" href="Running-Java.html" title="Kawa: Getting and running Java">the section called “Getting and running Java”</a>.
+</p>
+<p>Then you do:
+</p>
+<pre class="screen">java kawa.repl
+</pre>
+<p>In either case, you will then get the ‘<code class="literal">#|kawa:1|#</code>’ prompt,
+which means you are
+in the Kawa read-eval-print-loop.  If you type a Scheme
+expression, Kawa will evaluate it.  Kawa will then print the
+result (if there is a non-"void" result).
+</p>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Options"></a>Command-line arguments</h3></div></div></div>
+<a class="indexterm" name="idp41435264"></a><p>You can pass various flags to Kawa, for example:
+</p>
+<pre class="screen">kawa -e '(display (+ 12 4))(newline)'
+</pre>
+<p>or:
+</p>
+<pre class="screen">java kawa.repl -e '(display (+ 12 4))(newline)'
+</pre>
+<p>Either causes Kawa to print ‘<code class="literal">16</code>’, and then exit.
+</p>
+<p>At startup, Kawa executes an init file from the user's home
+directory.
+The init file is named <code class="literal">.kawarc.scm</code> on Unix-like systems
+(those for which the file separator is <code class="literal">'/'</code>),
+and <code class="literal">kawarc.scm</code> on other systems.
+This is done before the read-eval-print loop
+or before the first <code class="literal">-f</code> or <code class="literal">-c</code> argument.  (It is not run
+for a <code class="literal">-e</code> command, to allow you to set options to override
+the defaults.)
+</p>
+<p>If there are no command-line arguments following the options,
+then Kawa enters an interactive read-eval-print loop,
+but only if none of the ‘<code class="literal">-c</code>’, ‘<code class="literal">-e</code>’, ‘<code class="literal">-f</code>’, ‘<code class="literal">-s</code>’,
+‘<code class="literal">-C</code>’, or ‘<code class="literal">--</code>’ options were specified.
+</p>
+<p>If there are command-line arguments after processing options,
+then the first remaining argument names either a
+file that is read and evaluated, or a compiled class.
+In the former case, the whole file is read and compiled as a module
+before being loaded (unlike the <code class="literal">-f</code> flag which reads and
+evaluates the file command by command.)
+If the argument is the fully-qualited name of a class,
+then the class is loaded, an instance allocated,
+and its <code class="literal">run</code> method invoked.  If the class was compiled from
+a Kawa Scheme module, then invoking <code class="literal">run</code> has the
+effect of evaluating the module body.
+</p>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="General-options"></a>General options</h4></div></div></div>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term"><code class="literal">-e <em class="replaceable"><code>expr</code></em></code></dt>
+<dd><p>Kawa evaluates <em class="replaceable"><code>expr</code></em>, which contains one or more Scheme expressions.
+Does not cause the <code class="literal">~/.kawarc.scm</code> init file to be run.
+</p></dd>
+<dt class="term"><code class="literal">-c <em class="replaceable"><code>expr</code></em></code></dt>
+<dd><p>Same as ‘<code class="literal">-e <em class="replaceable"><code>expr</code></em></code>’, except that it
+does cause the <code class="literal">~/.kawarc.scm</code> init file to be run.
+</p></dd>
+<dt class="term"><code class="literal">-f <em class="replaceable"><code>filename-or-url</code></em></code></dt>
+<dd><p>Kawa reads and evaluates expressions from the file named
+by <em class="replaceable"><code>filename-or-url</code></em>.  If the latter is ‘<code class="literal">-</code>’,
+standard input is read (with no prompting).  Otherwise,
+it is equivalent to evaluating ‘<code class="literal">(load "<em class="replaceable"><code>filename-or-url</code></em>")</code>’.
+The <em class="replaceable"><code>filename-or-url</code></em> is interpreted as a URL
+if it is absolute - it starts with a "URI scheme" like <code class="literal">http:</code>.
+</p></dd>
+<dt class="term"><code class="literal">-s</code></dt>
+<dt class="term"><code class="literal">--</code></dt>
+<dd><p>The remaining arguments (if any) are passed to ‘<code class="literal">command-line-arguments</code>’
+and (the <code class="literal">cdr</code> of) <code class="literal">(command-line</code>),
+and an interactive read-eval-print loop is started.
+This uses the same "console" as where you started up Kawa;
+use ‘<code class="literal">-w</code>’ to get a new window.
+</p></dd>
+<dt class="term"><code class="literal">--script <em class="replaceable"><code>filename-or-url</code></em></code></dt>
+<dt class="term"><code class="literal">--script<em class="replaceable"><code>N</code></em> <em class="replaceable"><code>filename-or-url</code></em></code></dt>
+<dd>
+<p>The global variable ‘<code class="literal">command-line-arguments</code>’ is set to the remaining
+arguments (if any).
+Kawa reads and evaluates expressions from the file named
+by <em class="replaceable"><code>filename-or-url</code></em>.
+If <code class="literal">script</code> is followed by an integer <em class="replaceable"><code>N</code></em>,
+then <em class="replaceable"><code>N</code></em> lines are skipped first.
+</p>
+<p>Skipping some initial lines is useful if you want to have a non-Kawa
+preamble before the actual Kawa code.
+One use for this is for Kawa shell scripts (see <a class="xref" href="Running.html#Scripts" title="Kawa: Running Command Scripts">the section called “Running Command Scripts”</a>).
+</p>
+</dd>
+<dt class="term"><code class="literal">-w</code></dt>
+<dd><p>Creates a new top-level window, and runs an interactive read-eval-print
+in the new window.  See <a class="xref" href="Running.html#New-Window" title="Kawa: Running a Command Interpreter in a new Window">the section called “Running a Command Interpreter in a new Window”</a>.
+Same as <code class="literal">-e (scheme-window #t)</code>.
+You can specify multiple ‘<code class="literal">-w</code>’ options, and also use ‘<code class="literal">-s</code>’.
+</p></dd>
+<dt class="term"><code class="literal">--help</code></dt>
+<dd><p>Prints out some help.
+</p></dd>
+<dt class="term"><code class="literal">--version</code></dt>
+<dd><p>Prints out the Kawa version number, and then exits.
+</p></dd>
+<dt class="term"><code class="literal">--server <em class="replaceable"><code>portnum</code></em></code></dt>
+<dd><p>Start a server listening from connections on the specified <em class="replaceable"><code>portnum</code></em>.
+Each connection using the Telnet protocol causes a new read-eval-print-loop
+to started.  This option allows you to connect using any
+Telnet client program to a remote "Kawa server".
+</p></dd>
+</dl></div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Options-for-language-selection"></a>Options for language selection</h4></div></div></div>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term"><code class="literal">--scheme</code></dt>
+<dd><p>Set the default language to Scheme.
+(This is the default unless you select another language,
+or you name a file with a known extension on the command-line.)
+</p></dd>
+<dt class="term"><code class="literal">--r5rs</code></dt>
+<dt class="term"><code class="literal">--r6rs</code></dt>
+<dt class="term"><code class="literal">--r7rs</code></dt>
+<dd><p>Provide better compatibility with the specified Scheme standards.
+(This is a work-in-progress.)
+For example <code class="literal">--r6rs</code> aims to disable Kawa extensions
+that conflict with R6RS.  It does not aim to disable all extensions,
+only incompatible extensions.
+So far these extensions disable the colon operator and keyword literals.
+Selecting <code class="literal">--r5rs</code> makes symbols by default
+case-insensitive.
+</p></dd>
+<dt class="term"><code class="literal">--elisp</code></dt>
+<dt class="term"><code class="literal">--emacs</code></dt>
+<dt class="term"><code class="literal">--emacs-lisp</code></dt>
+<dd><p>Set the default language to Emacs Lisp.
+(The implementation is quite incomplete.)
+</p></dd>
+<dt class="term"><code class="literal">--lisp</code></dt>
+<dt class="term"><code class="literal">--clisp</code></dt>
+<dt class="term"><code class="literal">--clisp</code></dt>
+<dt class="term"><code class="literal">--commonlisp</code></dt>
+<dt class="term"><code class="literal">--common-lisp</code></dt>
+<dd><p>Set the default language to CommonLisp.
+(The implementation is <span class="emphasis"><em>very</em></span> incomplete.)
+</p></dd>
+<dt class="term"><code class="literal">--krl</code></dt>
+<dd><p>Set the default language to KRL.  See <a class="xref" href="XML-tools.html#KRL" title="Kawa: KRL - The Kawa Report Language for generating XML/HTML">the section called “KRL - The Kawa Report Language for generating XML/HTML”</a>.
+</p></dd>
+<dt class="term"><code class="literal">--brl</code></dt>
+<dd><p>Set the default language to KRL, in BRL-compatibility mode.  See <a class="xref" href="XML-tools.html#KRL" title="Kawa: KRL - The Kawa Report Language for generating XML/HTML">the section called “KRL - The Kawa Report Language for generating XML/HTML”</a>.
+</p></dd>
+<dt class="term"><code class="literal">--xquery</code></dt>
+<dd><p>Set the default language to the draft XML Query language.
+See the <a class="ulink" href="http://www.gnu.org/software/qexo/" target="_top">Kawa-XQuery page</a>
+for more information.
+</p></dd>
+<dt class="term"><code class="literal">--xslt</code></dt>
+<dd><p>Set the default language to XSLT (XML Stylesheet Language Transformations).
+(The implementation is <span class="emphasis"><em>very</em></span> incomplete.)
+See the <a class="ulink" href="http://www.gnu.org/software/qexo/xslt.html" target="_top">Kawa-XSLT page</a>
+for more information.
+</p></dd>
+<dt class="term"><code class="literal">--pedantic</code></dt>
+<dd><p>Try to follow the approprate language specification to the letter,
+even in corner cases, and even if it means giving up some
+Kawa convenience features.  This flags so far only affects
+the XQuery parser, but that will hopefully change.
+</p></dd>
+</dl></div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Options-for-warnings-and-errors"></a>Options for warnings and errors</h4></div></div></div>
+<div class="variablelist">
+<a class="indexterm" name="idp41507360"></a><a class="indexterm" name="idp41508352"></a><a class="indexterm" name="idp41509776"></a><dl class="variablelist">
+<dt class="term"><code class="literal">--warn-undefined-variable</code></dt>
+<dd><p>Emit a warning if the code references a variable which is neither in
+lexical scope nor in the compile-time dynamic (global) environment.
+This is useful for catching typos.
+(A <code class="literal">define-variable</code> form can be used to silence warnings.
+It declares to the compiler that a variable is to be resolved dynamically.)
+This defaults to on;
+to turn it off use the <code class="literal">--no-warn-undefined-variable</code> flag.
+<a class="indexterm" name="idp41514192"></a></p></dd>
+<dt class="term"><code class="literal">--warn-unknown-member</code></dt>
+<dd><p>Emit a warning if the code references a named member (field or method)
+for which there is no match in the compile-time type of the receiver.
+This defaults to on;
+to turn it off use the <code class="literal">--no-warn-unknown-member</code> flag.
+<a class="indexterm" name="idp41517392"></a></p></dd>
+<dt class="term"><code class="literal">--warn-invoke-unknown-method</code></dt>
+<dd><p>Emit a warning if the <code class="literal">invoke</code> function calls a named method
+for which there is no matching method in the compile-time type of the receiver.
+This defaults to the value of <code class="literal">--warn-unknown-member</code>,
+to turn it off use the <code class="literal">--no-warn-invoke-unknown-method</code> flag.
+<a class="indexterm" name="idp41522160"></a></p></dd>
+<dt class="term"><code class="literal">--warn-unused</code></dt>
+<dd><p>Emit a warning if a variable is unused or code never executed. This defaults
+to on; to turn it off use the <code class="literal">--no-warn-unused</code> flag.
+<a class="indexterm" name="idp41525040"></a></p></dd>
+<dt class="term"><code class="literal">--warn-unreachable</code></dt>
+<dd><p>Emit a warning if the code can never be executed. This defaults to on;
+to turn it off use the <code class="literal">--no-warn-unreachable</code> flag.
+<a class="indexterm" name="idp41527904"></a></p></dd>
+<dt class="term"><code class="literal">--warn-void-used</code></dt>
+<dd><p>Emit a warning if an expression depends on an expression
+that is void (always has zero values), including call to <code class="literal">void</code>
+functions and method.  Also warn if an expression depends on a
+conditional (<code class="literal">if</code>) that has no “else” clause.
+Examples include using the value of <code class="literal">set-car!</code> as
+an argument to a function, or to initialize a variable.
+This defaults to on;
+to turn it off use the <code class="literal">--no-warn-void-used</code> flag.
+<a class="indexterm" name="idp41532784"></a></p></dd>
+<dt class="term"><code class="literal">--warn-as-error</code></dt>
+<dd><p>Treat a compilation warning as if it were an error and halt compilation.
+</p></dd>
+</dl>
+</div>
+<p>An option can be followed by a value, as
+in <code class="literal">--warn-invoke-unknown-method=no</code>.
+For boolean options, the values <code class="literal">yes</code>, <code class="literal">true</code>, <code class="literal">on</code>, or <code class="literal">1</code>
+enable the option, while <code class="literal">no</code>, <code class="literal">false</code>, <code class="literal">off</code>,
+or <code class="literal">0</code> disable it.
+You can also negate an option by prefixing it with <code class="literal">no-</code>:
+The option <code class="literal">--no-warn-unknown-member</code>
+is the same as <code class="literal">--warn-unknown-member=no</code>.
+</p>
+<p>These options can also be used in the module source, using
+<code class="literal">module-compile-options</code> or <code class="literal">with-compile-options</code>.
+(In that case they override the options on the command line.)
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Options-for-setting-variables"></a>Options for setting variables</h4></div></div></div>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term"><code class="literal"><em class="replaceable"><code>name</code></em>=<em class="replaceable"><code>value</code></em></code></dt>
+<dd><p>Set the global variable with the specified <em class="replaceable"><code>name</code></em> to the given <em class="replaceable"><code>value</code></em>.
+The type of the <em class="replaceable"><code>value</code></em> is currently unspecified; the plan is for it
+to be like XQuery's <em class="firstterm">untyped atomic</em> which can be coerced as needed.
+</p></dd>
+<dt class="term"><code class="literal">{<em class="replaceable"><code>namespace-uri</code></em>}<em class="replaceable"><code>local-name</code></em>=<em class="replaceable"><code>value</code></em></code></dt>
+<dd><p>Set the global variable with the specified namespace uri and
+namespace-local name to the given value.
+</p></dd>
+</dl></div>
+<p>These options are processed when invoking the <code class="literal">kawa</code>
+application (i.e. the <code class="literal">kawa.repl</code> application).
+If you want a Kawa application compiled with <code class="literal">--main</code>
+to process these these assignments, call the
+<code class="literal">process-command-line-assignments</code> utility function.
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Options-for-controlling-output-formatting"></a>Options for controlling output formatting</h4></div></div></div>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term"><code class="literal">--output-format <em class="replaceable"><code>format</code></em></code></dt>
+<dt class="term"><code class="literal">--format <em class="replaceable"><code>format</code></em></code></dt>
+<dd><p>Change the default output format to that specified by <em class="replaceable"><code>format</code></em>.
+See <a class="xref" href="Input-Output.html#Named-output-formats" title="Kawa: Named output formats">the section called “Named output formats”</a> for more information and a list.
+</p></dd>
+</dl></div>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term"><code class="literal">out:base=<em class="replaceable"><code>integer</code></em></code></dt>
+<dd><p>The number base (radix) to use by default when printing rational numbers.
+Must be an integer between 2 and 36, and the default is of course 10.
+For example the option <code class="literal">out:base=16</code> produces hexadecimal output.
+Equivalent to setting the <code class="literal">*print-base*</code> variable.
+</p></dd>
+<dt class="term"><code class="literal">out:radix=no|yes</code></dt>
+<dd><p>If true, prints an indicator of the radix used when printing rational numbers.
+The default is <code class="literal">no</code>.
+Equivalent to setting the <code class="literal">*print-radix*</code> variable.
+</p></dd>
+<dt class="term"><code class="literal">out:doctype-system=<em class="replaceable"><code>system-identifier</code></em></code></dt>
+<dd><p>If <code class="literal">out:doctype-system</code> is specified then a <code class="literal">DOCTYPE</code> declaration
+is written before writing a top-level XML element, using
+the specified <em class="replaceable"><code>system-identifier</code></em>.
+</p></dd>
+<dt class="term"><code class="literal">out:doctype-public=<em class="replaceable"><code>public-identifier</code></em></code></dt>
+<dd><p>Ignored unless  <code class="literal">out:doctype-system</code> is also specified,
+in which case the <em class="replaceable"><code>public-identifier</code></em> is written
+as the public identifiers of the <code class="literal">DOCTYPE</code> declaration.
+</p></dd>
+<dt class="term"><code class="literal">out:xml-indent=<em class="replaceable"><code>kind</code></em></code></dt>
+<dd><p>Controls whether extra line breaks and indentation are added
+when printing XML.
+If <em class="replaceable"><code>kind</code></em> is <code class="literal">always</code> or <code class="literal">yes</code> then newlines and
+appropriate indentation are added before and after each element.
+If <em class="replaceable"><code>kind</code></em> is <code class="literal">pretty</code> then the pretty-printer is used
+to only add new lines when an element otherwise won't fit on a single line.
+If <em class="replaceable"><code>kind</code></em> is <code class="literal">no</code> (the default) then no extra line breaks
+or indentation are added.
+</p></dd>
+<dt class="term"><code class="literal">out:line-length=<em class="replaceable"><code>columns</code></em></code></dt>
+<dt class="term"><code class="literal">out:right-margin=<em class="replaceable"><code>columns</code></em></code></dt>
+<dd><p>Specifies the maximum number of number of columns in a line
+when the pretty-printer decides where to break a line.
+(The two options are equivalent.)
+</p></dd>
+</dl></div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Options-for-compiling-and-optimizing"></a>Options for compiling and optimizing</h4></div></div></div>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term"><code class="literal">--target <em class="replaceable"><code>version</code></em></code></dt>
+<dd><p>The <em class="replaceable"><code>version</code></em> can be a JDK or Java specification version:
+<code class="literal">5</code>, <code class="literal">6</code>, or <code class="literal">7</code>.
+The JDK versions <code class="literal">1.5</code> and <code class="literal">1.6</code> are equivalent to <code class="literal">5</code>
+or <code class="literal">6</code>, respectively.
+Specify a JVM (classfile) version to target.  This is useful
+if (for example) you use Java 6, but want to create <code class="literal">.class</code> files
+that can run on Java 5.  In that case specify <code class="literal">--target 5</code>.
+</p></dd>
+</dl></div>
+<p>The following options control which calling conventions are used:
+</p>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term"><code class="literal">--full-tailcalls</code></dt>
+<dd><p>Use a calling convention that supports proper tail recursion.
+</p></dd>
+<dt class="term"><code class="literal">--no-full-tailcalls</code></dt>
+<dd><p>Use a calling convention that does not support proper tail recursion.
+Self-tail-recursion (i.e. a recursive call to the current function)
+is still implemented correctly, assuming that the called function
+is known at compile time.
+</p></dd>
+<dt class="term"><code class="literal">--no-inline</code></dt>
+<dd><p>Disable inlining of known functions and methods.
+The generated code runs slower, but you can more reliably trace procedures.
+Normally Kawa will assume that a procedure <code class="literal">fn</code>
+declared using a <code class="literal">(define (fn args) body)</code> form is constant,
+assuming it isn't modified in the current module.  However, it is
+possible some other module might modify the binding of <code class="literal">fn</code>.
+You can use the <code class="literal">--no-inline</code> to disable the assumption that <code class="literal">fn</code>
+is constant.
+</p></dd>
+</dl></div>
+<p>The default is currently <code class="literal">--no-full-tailcalls</code> because
+it is usually faster.
+It is also closer to the Java call model, so may be better for people
+primarily interested in using Kawa for scripting Java systems.
+</p>
+<p>Both calling conventions can co-exist:  Code compiled
+with <code class="literal">--full-tailcalls</code> can call code compiled
+with <code class="literal">--no-full-tailcalls</code> and vice versa.
+</p>
+<p>These options can also be used in the module source, using
+<code class="literal">module-compile-options</code> or <code class="literal">with-compile-options</code>.
+(In that case they override the options on the command line.)
+</p>
+<p>The options ‘<code class="literal">-C</code>’, ‘<code class="literal">-d</code>’, ‘<code class="literal">-T</code>’, ‘<code class="literal">-P</code>’, ‘<code class="literal">--main</code>’
+‘<code class="literal">--applet</code>’, and <code class="literal">--servlet</code> are used to compile a Scheme file;
+see <a class="xref" href="Running.html#Files-compilation" title="Kawa: Compiling to a set of .class files">the section called “Compiling to a set of .class files”</a>.
+The options ‘<code class="literal">--module-static</code>’, <code class="literal">--module-nonstatic</code>,
+<code class="literal">--no-module-static</code>, and <code class="literal">--module-static-run</code>
+control how a module is mapped to a Java class; see <a class="xref" href="Objects-Classes-and-Modules.html#static-or-non-modules">the section called “How a module becomes a class”</a>.
+The option ‘<code class="literal">--connect <em class="replaceable"><code>portnum</code></em></code>’ is only used by
+the ‘<code class="literal">kawa</code>’ front-end program.
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Options-for-debugging"></a>Options for debugging</h4></div></div></div>
+<p>The following options are useful if you want to debug or understand
+how Kawa works.
+</p>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term"><code class="literal">--debug-dump-zip</code></dt>
+<dd><p>Normally, when Kawa loads a source file, or evaluates a non-trivial expression,
+it generates new internal Java classes but does not write them out.  This
+option asks it to write out generated classes in a ‘<code class="literal">.zip</code>’ archive
+whose name has the prefix ‘<code class="literal">kawa-zip-dump-</code>’.
+</p></dd>
+<dt class="term"><code class="literal">--debug-print-expr</code></dt>
+<dd><p>Kawa translates source language forms into an internal <code class="literal">Expression</code>
+data structure.  This option causes that data structure to be written out
+in a readable format to the standard output.
+</p></dd>
+<dt class="term"><code class="literal">--debug-print-final-expr</code></dt>
+<dd><p>Similar to the previous option, but prints out the <code class="literal">Expression</code> after
+various transformations and optimizations have been done, and just before
+code generation.
+</p></dd>
+<dt class="term"><code class="literal">--debug-error-prints-stack-trace</code></dt>
+<dd><p>Prints a stack trace with any error found during compilation.
+</p></dd>
+<dt class="term"><code class="literal">--debug-warning-prints-stack-trace</code></dt>
+<dd><p>Prints a stack trace with any warning found during compilation.
+</p></dd>
+</dl></div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Options-for-web-servers"></a>Options for web servers</h4></div></div></div>
+<p>JDK 6 (or later) includes a complete web server library.
+</p>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term"><code class="literal">--http-auto-handler <em class="replaceable"><code>context-path</code></em> <em class="replaceable"><code>appdir</code></em></code></dt>
+<dd><p>Register a web application handler that uses files
+in the directory <em class="replaceable"><code>appdir</code></em> to handle HTTP (web) requests
+containing the given <em class="replaceable"><code>context-path</code></em>.  That is it handles
+requests that start with <code class="literal">http://localhost:<em class="replaceable"><code>port</code></em><em class="replaceable"><code>context-path</code></em></code>.
+(This assumes the <em class="replaceable"><code>context-path</code></em> starts with a <code class="literal">/</code>.)
+See <a class="xref" href="XML-tools.html#Self-configuring-page-scripts" title="Kawa: Self-configuring web page scripts">the section called “Self-configuring web page scripts”</a>.
+</p></dd>
+<dt class="term"><code class="literal">--http-start <em class="replaceable"><code>port</code></em></code></dt>
+<dd><p>Start the web server, listing on the specified <em class="replaceable"><code>port</code></em>.
+</p></dd>
+</dl></div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Options-for-the-JVM"></a>Options for the JVM</h4></div></div></div>
+<p>The <code class="literal">kawa</code> front-end can pass options to the <code class="literal">java</code> launcher,
+using <code class="literal">-J</code> or <code class="literal">-D</code> options.
+These must be given <span class="emphasis"><em>before</em></span> any other arguments.
+For example:
+</p>
+<pre class="screen">kawa -J-Xms48m -Dkawa.command.name=foo foo.scm --
+</pre>
+<p>is equivalent to (ignoring classpath issues):
+</p>
+<pre class="screen">java -Xms48m -Dkawa.command.name=foo kawa.repl foo.scm --
+</pre>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term"><code class="literal">-J<em class="replaceable"><code>jvm-option</code></em></code></dt>
+<dd><p>Passes the <em class="replaceable"><code>jvm-option</code></em> to the <code class="literal">java</code> command,
+before the class-name (<code class="literal">kawa.repl</code>) and Kawa options.
+</p></dd>
+<dt class="term"><code class="literal">-D<em class="replaceable"><code>variable-name</code></em>=<em class="replaceable"><code>variable-value</code></em></code></dt>
+<dd><p>Sets the JVM property <em class="replaceable"><code>variable-name</code></em> to <em class="replaceable"><code>variable-value</code></em>.
+Equivalent to <code class="literal">-J-D<em class="replaceable"><code>variable-name</code></em>=<em class="replaceable"><code>variable-value</code></em></code>.
+</p></dd>
+</dl></div>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Scripts"></a>Running Command Scripts</h3></div></div></div>
+<p>If you write a Kawa application it is convenient to be able
+to execute it directly (from the command line or clicking an icon, say),
+without have to explicitly run <code class="literal">kawa</code> or <code class="literal">java</code>.
+On Unix-like systems the easiest way to do this is to
+write a small shell script that runs your Kawa application.
+</p>
+<p>For modest-sized applications it is convenient if the shell script
+and the Kawa code can be in the same file.
+Unix-like systems support a mechanism where a <em class="firstterm">script</em> can
+specify a program that should execute it.  The convention
+is that the first line of the file should start with the two characters
+‘<code class="literal">#!</code>’ followed by the absolute path of the program that should
+process (interpret) the script.
+</p>
+<p>(Windows has <em class="firstterm">batch files</em>, which are similar.)
+</p>
+<p>This is convention works well for script languages that use ‘<code class="literal">#</code>’
+to indicate the start of a comment, since the interpreter will
+automatically ignore the line specifying the interpreter filename.
+Scheme, however uses ‘<code class="literal">#</code>’ as a multi-purpose prefix,
+and Kawa specifically uses ‘<code class="literal">#!</code>’ as a prefix for
+various <a class="xref" href="Symbols-and-namespaces.html#Special-named-constants" title="Kawa: Special named constants">the section called “Special named constants”</a> such as <code class="literal">#!optional</code>.
+</p>
+<p>Kawa does recognize the three-character sequence ‘<code class="literal">#!/</code>’ at the
+beginning of a file as special, and ignores it.
+Here is an example:
+</p>
+<pre class="screen">#!/usr/local/bin/kawa
+(format #t "The command-line was:~{ ~w~}~%" (command-line))
+</pre>
+<p>If you copy this text to a file named <code class="literal">/home/me/bin/scm-echo</code>,
+set the execute permission, and make sure it in your <code class="literal">PATH</code>,
+then you can execute it just by naming it on command line:
+</p>
+<pre class="screen">$ chmod +x /home/me/bin/scm-echo
+$ PATH=/home/me/bin:$PATH
+$ scm-env a b
+The command-line was: "/home/me/bin/scm-echo" "a" "b"
+</pre>
+<p>The system kernel will automatically execute <code class="literal">kawa</code>, passing it the
+filename as an argument.
+</p>
+<p>Note that the full path-name of the <code class="literal">kawa</code> interpreter
+must be hard-wired into the script.  This means you may have to edit
+the script depending on where Kawa is installed on your system.
+Another possible problem is that the interpreter must be an
+actual program, not a shell script. Depending on how you configure
+and install Kawa, <code class="literal">kawa</code> can be a real program or a script.
+You can avoid both problems by the <code class="literal">env</code> program, available on
+most modern Unix-like systems:
+</p>
+<pre class="screen">#!/usr/bin/env kawa
+(format #t "The command-line was:~{ ~w~}~%" (command-line))
+</pre>
+<p>This works the same way, but assumes <code class="literal">kawa</code> is in the
+command <code class="literal">PATH</code>.
+</p>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Setting-kawa-options-in-the-script"></a>Setting kawa options in the script</h4></div></div></div>
+<p>If you need to specify extra arguments to <code class="literal">kawa</code>,
+you can run arbitrary shell command inside Scheme block comments.
+Here is an example:
+</p>
+<pre class="screen">#!/bin/sh
+#|
+exec kawa out:base=16 out:radix=yes "$0" "$*"
+|#
+(format #t "The command-line is:~{ ~w~}.~%" (command-line))
+(display "It has ")
+(display (apply + (map string-length (command-line))))
+(display " characters.")
+(newline)
+</pre>
+<p>The trick is to hide the shell code from Kawa inside
+a <code class="literal">#|...|#</code> block-comment.  The start of the block comment
+is a line starting with a <code class="literal">#</code>, so it is treated as a comment by the shell.
+You can then invoke <code class="literal">kawa</code> (or <code class="literal">java</code> directly)
+as you prefer, setting up class-path and jars as needed,
+and passing whatever arguments you want.
+(The shell replaces the <code class="literal">"$0"</code> by the name the script, and
+replaces the <code class="literal">"$@"</code> by the remaining arguments passed to the script.)
+You need to make sure the shell finishes before it reaches
+the end of the block comment or the Scheme code, which would confuse it.
+The example uses <code class="literal">exec</code>, which tells the shell to <span class="emphasis"><em>replace</em></span>
+itself by <em class="replaceable"><code>kawa</code></em>;
+an alternative is to use the shell <code class="literal">exit</code> command.
+</p>
+<p>If you copy the above file to <code class="literal">/tmp/sch-echo</code> and make
+that file executate, you can run it directly:
+</p>
+<pre class="screen">$ /tmp/scm-echo "a b" "c d"
+The command-line is: "/tmp/scm-echo" "a b c d".
+It has #x14 characters.
+</pre>
+<p>When the Kawa reader sees the initial <code class="literal">#/</code> it sets
+the command name to the file name, so it can be used by a future
+call to <code class="literal">(command-name)</code>.  If you want to override
+this you can use the <code class="literal">-Dkawa.command.name=<em class="replaceable"><code>name</code></em></code> option.
+</p>
+<p>Using comments this way has the advantage that you have the
+option of running the script “manually” if you prefer:
+</p>
+<pre class="screen">$ kawa /tmp/scm-echo out:base=8 "x y"
+The command-line is: "/tmp/scm-echo" "out:base=8" "x y".
+It has 26 characters.
+</pre>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Other-ways-to-pass-options-using-meta-arg-or-%E2%80%93script"></a>Other ways to pass options using meta-arg or –script</h4></div></div></div>
+<p>An argument consisting of just a <code class="literal">\</code> (backslash)
+causes Kawa to read the <span class="emphasis"><em>second</em></span> line looking for
+options.  (Quotes and backslahes work like in the shell.)
+These replace the backslash in the command line.
+</p>
+<p>This is a less verbose mechanism, but it requires an
+absolute path to <code class="literal">kawa</code>, due to shell limitations.
+</p>
+<pre class="screen">#!/usr/bin/bin/kawa \
+  --scheme --full-tailcalls
+(format #t "The command-line is:~{ ~w~}.~%" (command-line))
+</pre>
+<p>In this case the efective command line received by Kawa will
+be <code class="literal">--scheme</code>, <code class="literal">--full-tailcalls</code>, followed by the
+script filename, followed by other arguments specified when
+running the script.
+</p>
+<p>The backslash used this way originated in
+<a class="ulink" href="http://www.scsh.net" target="_top">scsh</a> where it is called the <em class="firstterm">meta-arg</em>.
+(Unlike scsh, Kawa's <code class="literal">#!</code> is not a block comment,
+but a rest-of-line, though the backslash causes the following line
+to also be skipped.)
+</p>
+<p>An alternative method is to use the <code class="literal">--script2</code> option,
+which tells Kawa to execute the script after ignoring
+the initial two lines.  For example:
+</p>
+<pre class="screen">#!/bin/sh
+exec kawa --commonlisp out:base=16 --script2 "$0" "$@"
+(setq xx 20) (display xx) (newline)
+</pre>
+<p>This slightly more compact than using block-comments as shown earlier,
+but it has the disadvantage that you can't explicitly
+use <code class="literal">kawa</code> or <code class="literal">java</code> to run the script unless you
+make sure to pass it the <code class="literal">--script2</code> option.
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Scripts-for-compiled-code"></a>Scripts for compiled code</h4></div></div></div>
+<p>If you compile your Kawa application to class files (or better:
+a <code class="literal">jar</code> file), you probably still want to write a small
+shell script to set things up.  Here is one method:
+</p>
+<pre class="screen">#!/bin/sh
+export CLASSPATH=/my/path
+exec kawa -Dkawa.command.name="$0" foo "$@"
+</pre>
+<p>Using the <code class="literal">kawa</code> front-end is a convenience, since it automatically
+sets up the paths for the Kawa classes, and (if enabled) if
+provides readline support for the default input port.
+</p>
+<p>Setting the <code class="literal">kawa.command.name</code> property to <code class="literal">"$0"</code>
+(the filename used to invoke the script) enables
+<code class="literal">(command-line</code>) to use the script name as the command name.
+</p>
+<p>You can invoke <code class="literal">java</code> directly, which is necessary when
+running a <code class="literal">jar</code> file:
+</p>
+<pre class="screen">#!/bin/sh
+exec java -cp /path/to/kawa -Dkawa.command.name="$0" foo.jar "$@"
+</pre>
+<p>(It is in principle possible to compile a Kawa application to
+“a native executable”, for example using <code class="literal">gcj</code>.
+However, this is no longer supported, as gcj is no longer
+being actively developed.)
+</p>
+</div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="New-Window"></a>Running a Command Interpreter in a new Window</h3></div></div></div>
+<p>An alternative interface runs the Java read-eval-print-loop
+inside a new window. This is in some ways nicer.  One reason
+is that it provides better editing.
+(Mouse selection, arrow keys, and “standard” control keys should all work.)
+</p>
+<p>You can also create new windows.  They can either have different top-level
+environments or they can share environments.  To try it, do:
+</p>
+<pre class="screen">java kawa.repl -w
+</pre>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Exiting"></a>Exiting Kawa</h3></div></div></div>
+<p>Kawa normally keeps running as long as there is an active
+read-eval-print loop still awaiting input or there is an unfinished
+other computation (such as requested by a ‘<code class="literal">-e</code>’ of ‘<code class="literal">-f</code>’ option).
+</p>
+<p>To close a read-eval-print-loop, you can type the special
+literal <code class="literal">#!eof</code> at top level.  This is recognized as end-of-file.
+Unfortunately, due to thread-related complications, just typing
+an end-of-file character (normally ctrl/D until Unix), will not work.
+</p>
+<p>If the read-eval-print-loop
+is in a new window, you can select ‘<code class="literal">Close</code>’ from the ‘<code class="literal">File</code>’ menu.
+</p>
+<p>To exit the entire Kawa session, call the
+<code class="literal">exit</code> procedure (with 0 or 1 integer arguments).
+</p>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Compiling"></a>Compiling to byte-code or an executable</h3></div></div></div>
+<p>All Scheme functions and source files are invisibly compiled
+into internal Java byte-codes.
+(A traditional interpreter is used for macro-expansion.
+Kawa used to also interpret “simple” expressions in interactive mode,
+but always compiling makes things more consistent, and allows for
+better stack traces on errors.)
+</p>
+<p>To save speed when loading large Scheme source files, you probably
+want to pre-compile them and save them on your local disk.
+There are two ways to do this.
+</p>
+<p>You can compile a Scheme source file to a single archive file.
+You do this using the <code class="literal">compile-file</code> function.
+The result is a single file that you can move around and <code class="literal">load</code>
+just like the <code class="literal">.scm</code> source file.  You just specify the name
+of the archive file to the <code class="literal">load</code> procedure.
+Currently, the archive is a "zip" archive and has extension ".zip";
+a future release will probably use "Java Archive" (jar) files.
+The advantage of compiling to an archive is that it is simple
+and transparent.  A minor disadvantage is that it causes the
+Java "verifier" to be run when functions are loaded from it,
+which takes a little extra time.
+</p>
+<p>Alternatively, you can compile a Scheme source file to a
+collection of ‘<code class="literal">.class</code>’ files.
+You then use the standard Java class loading mechanism to load the code.
+The Java "verifier" does not need to get run, which makes
+loading a little faster.
+The compiled class files do have to be installed somewhere
+in the <code class="literal">CLASSPATH</code>.
+</p>
+<p>You can also compile your Scheme program to native code using GCJ.
+</p>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Files-compilation"></a>Compiling to a set of .class files</h4></div></div></div>
+<p>Invoking ‘<code class="literal">kawa</code>’ (or ‘<code class="literal">java kawa.repl</code>’) with
+the ‘<code class="literal">-C</code>’ flag will compile
+a ‘<code class="literal">.scm</code>’ source file into one or more ‘<code class="literal">.class</code>’ files:
+</p>
+<pre class="screen">kawa --main -C myprog.scm
+</pre>
+<p>You run it as follows:
+</p>
+<pre class="screen">kawa [-d <em class="replaceable"><code>outdirectory</code></em>] [-P <em class="replaceable"><code>prefix</code></em>] [-T <em class="replaceable"><code>topname</code></em>] [--main | --applet | --servlet] -C <em class="replaceable"><code>infile</code></em> ...
+</pre>
+<p>Note the ‘<code class="literal">-C</code>’ must come last, because ‘<code class="literal">Kawa</code>’ processes the
+arguments and options in order,
+</p>
+<p>Here:
+</p>
+<div class="variablelist"><dl class="variablelist">
+<dt class="term"><code class="literal">-C <em class="replaceable"><code>infile</code></em> ...</code></dt>
+<dd><p>The Scheme source files we want to compile.
+</p></dd>
+<dt class="term"><code class="literal">-d <em class="replaceable"><code>outdirectory</code></em></code></dt>
+<dd><p>The directory under which the resulting ‘<code class="literal">.class</code>’ files will be.
+The default is the current directory.
+</p></dd>
+<dt class="term"><code class="literal">-P <em class="replaceable"><code>prefix</code></em></code></dt>
+<dd><p>A string to prepend to the generated class names.
+The default is the empty string.
+</p></dd>
+<dt class="term"><code class="literal">-T <em class="replaceable"><code>topname</code></em></code></dt>
+<dd><p>The name of the "top" class - i.e. the one that contains the code
+for the top-level expressions and definitions.
+The default is generated from the <em class="replaceable"><code>infile</code></em> and <em class="replaceable"><code>prefix</code></em>.
+</p></dd>
+<dt class="term"><code class="literal">--main</code></dt>
+<dd><p>Generate a <code class="literal">main</code> method so that the resulting "top" class can
+be used as a stand-alone application. See <a class="xref" href="Running.html#Application-compilation" title="Kawa: Compiling to a standalone application">the section called “Compiling to a standalone application”</a>.
+</p></dd>
+<dt class="term"><code class="literal">--applet</code></dt>
+<dd><p>The resulting class inherits from <code class="literal">java.applet.Applet</code>,
+and can be used as an applet.  See <a class="xref" href="Running.html#Applet-compilation" title="Kawa: Compiling to an applet">the section called “Compiling to an applet”</a>.
+</p></dd>
+<dt class="term"><code class="literal">--servlet</code></dt>
+<dd><p>The resulting class implements <code class="literal">javax.servlet.http.HttpServlet</code>,
+and can be used as an servlet in a servlet container like Tomcat.
+</p></dd>
+</dl></div>
+<p>When you actually want to load the classes, the <em class="replaceable"><code>outdirectory</code></em>
+must be in your ‘<code class="literal">CLASSPATH</code>’.
+You can use the <code class="literal">require</code> syntax or the <code class="literal">load</code> function to load the code,
+by specifying the top-level class, either as a file name
+(relative to <em class="replaceable"><code>outdirectory</code></em>) or a class name.
+E.g. if you did:
+</p>
+<pre class="screen">kawa -d /usr/local/share/java -P my.lib. -T foo -C foosrc.scm
+</pre>
+<p>you can use either:
+</p>
+<pre class="screen">(require my.lib.foo)
+</pre>
+<p>or:
+</p>
+<pre class="screen">(load "my.lib.foo")
+</pre>
+<p>Using <code class="literal">require</code> is preferred as it imports the definitions
+from <code class="literal">my.lib.foo</code> into the compile-time environment,
+while <code class="literal">load</code> only imports the definitions into run-time environment.
+</p>
+<p>If you are compiling a Scheme source file (say ‘<code class="literal">foosrc.scm</code>’)
+that uses macros defined in some other file (say ‘<code class="literal">macs.scm</code>’),
+you need to make sure the definitions are visible to the compiler.
+One way to do that is with the ‘<code class="literal">-f</code>’:
+</p>
+<pre class="screen">kawa -f macs.scm -C foosrc.scm
+</pre>
+<p>Many of the options <a class="link" href="Running.html#Options" title="Kawa: Command-line arguments">described earlier</a> are
+relevant when compiling.  Commonly used options include language selection,
+the <code class="literal">--warn-xxx</code> options, and <code class="literal">--full-tailcalls</code>.
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Archive-compilation"></a>Compiling to an archive file</h4></div></div></div>
+<div class="informalfigure">
+<p class="synopsis"><a class="indexterm" name="idp41761248"></a><code class="function">compile-file</code><em class="replaceable"><code> source-file</code></em><em class="replaceable"><code> compiled-archive</code></em></p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>Compile the <em class="replaceable"><code>source-file</code></em>, producing a <code class="literal">.zip</code> archive
+<em class="replaceable"><code>compiled-file</code></em>.
+</p>
+<p>For example, to byte-compile a file ‘<code class="literal">foo.scm</code>’ do:
+</p>
+<pre class="screen">(compile-file "foo.scm" "foo")
+</pre>
+<p>This will create ‘<code class="literal">foo.zip</code>’, which contains
+byte-compiled JVM <code class="literal">.class</code> files.
+You can move this file around, without worrying about class paths.
+To load the compiled file, you can later <code class="literal">load</code> the
+named file, as in either <code class="literal">(load "foo")</code> or <code class="literal">(load "foo.zip")</code>.
+This should have the same effect as
+loading ‘<code class="literal">foo.scm</code>’, except you will get the faster byte-compiled versions.
+</p>
+</blockquote></div>
+</div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Compiling-using-Ant"></a>Compiling using Ant</h4></div></div></div>
+<a class="indexterm" name="idp41772240"></a><p>Many Java projects use <a class="ulink" href="http://ant.apache.org" target="_top">Ant</a>
+for building Java projects.  Kawa includes a <code class="literal">&lt;kawac&gt;</code>
+Ant ask that simplifies compiling Kawa sources files to classes.
+See the <code class="literal">build.xml</code> in the Kawa source distribution for examples.
+See the <a class="ulink" href="ant-kawac.html" target="_top"><code class="literal">kawac</code> task documentation</a> for details.
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Application-compilation"></a>Compiling to a standalone application</h4></div></div></div>
+<p>A Java application is a Java class with a special method
+(whose name is <code class="literal">main</code>).  The application can be invoked directly
+by naming it in the Java command.
+If you want to generate an application from a Scheme program,
+create a Scheme source file with the definitions you need, plus
+the top-level actions that you want the application to execute.
+</p>
+<p>For example, assuming your Scheme file is
+<code class="literal">MyProgram.scm</code>, you  have two ways at your disposal to
+compile this Scheme program to a standalone application:
+</p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<p>Compile
+in the regular way decribed in the previous section, but add the
+<code class="literal">--main</code> option.
+</p>
+<pre class="screen">kawa --main -C MyProgram.scm
+</pre>
+<p>The <code class="literal">--main</code> option will compile all Scheme programs
+received in arguments to standalone applications.
+</p>
+</li>
+<li class="listitem">
+<p>Compile
+in the regular way decribed in the previous section, but add the
+<code class="literal">main: #t</code> module compile option to your module.
+</p>
+<pre class="screen">;; MyProgram.scm
+(module-name &lt;myprogram&gt;)
+(module-compile-options main: #t)
+</pre>
+<pre class="screen">kawa -C MyProgram.scm
+</pre>
+<p>This way you can compile multiple Scheme programs at once, and
+still control which one(s) will compile to standalone application(s).
+</p>
+</li>
+</ol></div>
+<p>Both method will create a <code class="literal">MyProgram.class</code> which you can either
+<code class="literal">load</code> (as decribed in the previous section), or invoke as an application:
+</p>
+<pre class="screen">java MyProgram [<em class="replaceable"><code>args</code></em>]
+</pre>
+<p>Your Scheme program can access the command-line arguments <em class="replaceable"><code>args</code></em>
+by using the global variable ‘<code class="literal">command-line-arguments</code>’,
+or the R6RS function ‘<code class="literal">command-line</code>’.
+</p>
+<p>If there is no explicit <code class="literal">module-export</code> in a module compiled
+with <code class="literal">--main</code> then no names are exported.  (The default
+otherwise is for all names to be exported.)
+</p>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Applet-compilation"></a>Compiling to an applet</h4></div></div></div>
+<p>An applet is a Java class that inherits from <code class="literal">java.applet.Applet</code>.
+The applet can be downloaded and run in a Java-capable web-browser.
+To generate an applet from a Scheme program, write the Scheme
+program with appropriate definitions of the functions ‘<code class="literal">init</code>’,
+‘<code class="literal">start</code>’, ‘<code class="literal">stop</code>’ and ‘<code class="literal">destroy</code>’.  You must declare these
+as zero-argument functions with a <code class="literal">&lt;void&gt;</code> return-type.
+</p>
+<p>Here is an example, based on the scribble applet in Flanagan's
+"Java Examples in a Nutshell" (O'Reilly, 1997):
+</p>
+<pre class="screen">(define-private last-x 0)
+(define-private last-y 0)
+
+(define (init) :: void
+  (let ((applet (this)))
+    (applet:addMouseListener
+     (object (java.awt.event.MouseAdapter)
+	     ((mousePressed e)
+	      (set! last-x (e:getX))
+	      (set! last-y (e:getY)))))
+    (applet:addMouseMotionListener
+     (object (java.awt.event.MouseMotionAdapter)
+	     ((mouseDragged e)
+	      (let ((g (applet:getGraphics))
+		    (x (e:getX))
+		    (y (e:getY)))
+		(g:drawLine last-x last-y x y)
+		(set! last-x x)
+		(set! last-y y)))))))
+
+(define (start) :: void (format #t "called start.~%~!"))
+(define (stop) :: void (format #t "called stop.~%~!"))
+(define (destroy) :: void (format #t "called destroy.~%~!"))
+</pre>
+<p>You compile the program with the ‘<code class="literal">--applet</code>’ flag in addition to the
+normal ‘<code class="literal">-C</code>’ flag:
+</p>
+<pre class="screen">java kawa.repl --applet -C scribble.scm
+</pre>
+<p>You can then create a ‘<code class="literal">.jar</code>’ archive containing your applet:
+</p>
+<pre class="screen">jar cf scribble.jar scribble*.class
+</pre>
+<p>Finally, you create an ‘<code class="literal">.html</code>’ page referencing your applet
+and its support <code class="literal">jar</code>s:
+</p>
+<pre class="screen">&lt;html&gt;&lt;head&gt;&lt;title&gt;Scribble testapp&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;&lt;h1&gt;Scribble testapp&lt;/h1&gt;
+You can scribble here:
+&lt;br&gt;
+&lt;applet code="scribble.class" archive="scribble.jar, kawa-1.14.1.jar" width=200 height=200&gt;
+Sorry, Java is needed.&lt;/applet&gt;
+&lt;/body&gt;&lt;/html&gt;
+</pre>
+<p>The problem with using Kawa to write applets is that the Kawa <code class="literal">.jar</code>
+file is quite big, and may take a while to download over a network connection.
+Some possible solutions:
+</p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>Try to strip out of the Kawa <code class="literal">.jar</code> any classes your
+applet doesn't need.
+</p></li>
+<li class="listitem"><p>Java 2 provides a mechanism to install a <a class="ulink" href="http://java.sun.com/docs/books/tutorial/ext/basics/download.html" target="_top">download extension</a>.
+</p></li>
+<li class="listitem"><p>Consider some alternative to applets, such as
+<a class="ulink" href="http://java.sun.com/products/javawebstart/" target="_top">Java Web Start</a>.
+</p></li>
+</ul></div>
+</div>
+<div class="sect3">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Compiling-to-executable"></a>Compiling to a native executable</h4></div></div></div>
+<p><span class="emphasis"><em>Using GCJ with Kawa is no longer supported,
+as GCJ is no longer being actively maintained.</em></span>
+</p>
+<p>You can compile your Scheme program to native code using GCJ,
+as long as you have built Kawa using GCJ.
+</p>
+<p>First, you need to compile the Scheme code to a set of <code class="literal">.class</code> files;
+see <a class="xref" href="Running.html#Files-compilation" title="Kawa: Compiling to a set of .class files">the section called “Compiling to a set of .class files”</a>.
+</p>
+<pre class="screen">kawa --main -C myprog.scm
+</pre>
+<p>Then to create an executable <code class="literal">myprog</code> do:
+</p>
+<pre class="screen">gckawa --main=myprog myprog*.class -o myprog
+</pre>
+<p>The <code class="literal">gckawa</code> is a simple shell script that calls <code class="literal">gcj</code>.
+The reason for the wildcard in <code class="literal">myprog*.class</code> is that sometimes
+Kawa will generate some helper classes in addition to <code class="literal">myprog.class</code>.
+The <code class="literal">--main</code> option tell <code class="literal">gcj</code> which class contains
+the <code class="literal">main</code> method it should use.  The <code class="literal">-o</code> option names
+the resulting executable program.  The <code class="literal">-lkawa</code> option tells
+the linker it should link with the kawa shared library, and
+the <code class="literal">-L$PREFIX/bin</code> option tells the linker where it can
+find that library.
+</p>
+</div>
+</div>
+</div>
+<div class="navfooter">
+<ul>
+<li><b class="toc"><a href="Running.html#Options">Command-line arguments</a></b></li>
+<li><b class="toc"><a href="Running.html#Scripts">Running Command Scripts</a></b></li>
+<li><b class="toc"><a href="Running.html#New-Window">Running a Command Interpreter in a new Window</a></b></li>
+<li><b class="toc"><a href="Running.html#Exiting">Exiting Kawa</a></b></li>
+<li><b class="toc"><a href="Running.html#Compiling">Compiling</a></b></li>
+</ul>
+<p>
+          Up: <a accesskey="u" href="Documentation.html">Documentation</a></p>
+<p>
+        Next: <a accesskey="n" href="Syntax.html">Syntax</a></p>
+</div>
+</body>
+</html>

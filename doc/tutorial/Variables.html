@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Kawa Tutorial: Variables</title>
+<link rel="stylesheet" title="Kawa (navbar: fixed, left)" href="../style/kawa-l.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Kawa (navbar: fixed, right)" href="../style/kawa-r.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Single column, top navigation" href="../style/top-navbar.css" media="screen, print, projection, tv">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Kawa Tutorial: Kawa Scheme Tutorial">
+<link rel="up" href="index.html" title="Kawa Tutorial: Kawa Scheme Tutorial">
+<link rel="prev" href="Functions.html" title="Kawa Tutorial: Functions">
+<link rel="next" href="Sequences.html" title="Kawa Tutorial: Lists and sequences">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF" onload="javascript:onLoadHandler();" onunload="javascript:onUnloadHandler();">
+<div class="navcol">
+<div class="logo"><a href="../index.html"><img src="../style/kawa-logo.png"></a></div>
+<div class="navbar">
+<ul>
+<li><a href="../api/index.html">JavaDoc API</a></li>
+<li><a href="../Getting-Kawa.html">Download</a></li>
+</ul>
+<div class="toc"><ul>
+<li><a href="index.html">Kawa Scheme Tutorial</a></li>
+<li><ul>
+<li><a href="index.html#Introduction">Introduction</a></li>
+<li><a href="Booleans.html">Booleans</a></li>
+<li><a href="Numbers.html">Numbers</a></li>
+<li><a href="Functions.html">Functions</a></li>
+<li><b class="toc"><a href="Variables.html">Variables</a></b></li>
+<li><a href="Sequences.html">Lists and sequences</a></li>
+<li><a href="Types.html">Types and declarations</a></li>
+<li><a href="Classes.html">Classes</a></li>
+</ul></li>
+</ul></div>
+</div>
+</div>
+<div class="sect1" title="Kawa Tutorial: Variables">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Variables"></a>Variables</h2></div></div></div>
+<p>You can declare a variable using a <code class="literal">define</code> form.
+This takes a variable name, and an expression.  It declares a new
+variable with the given name, and assigned the value of the
+expression to the variable.</p>
+<pre class="programlisting">
+#|kawa:1|# (define binary-kilo 1024)
+#|kawa:2|# (define binary-mega (* binary-kilo binary-kilo))
+#|kawa:3|# binary-mega
+1048576
+</pre>
+<p>A <code class="literal">define</code> typed into the command-line
+defines a top-level variable.</p>
+<p>
+You can also declare local variables.  TODO.
+</p>
+</div>
+<div class="navfooter">
+<p>
+        Previous sibling: <a accesskey="p" href="Functions.html">Functions</a></p>
+<p>
+        Next sibling: <a accesskey="n" href="Sequences.html">Lists and sequences</a></p>
+<p>
+        Previous page: <a accesskey="n" href="Functions.html">Functions</a></p>
+<p>
+        Next page: <a accesskey="n" href="Sequences.html">Lists and sequences</a></p>
+</div>
+</body>
+</html>

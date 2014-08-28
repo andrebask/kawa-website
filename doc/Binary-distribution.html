@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Kawa: Installing and using the binary distribution</title>
+<link rel="stylesheet" title="Kawa (navbar: fixed, left)" href="style/kawa-l.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Kawa (navbar: fixed, right)" href="style/kawa-r.css" media="screen, print, projection, tv">
+<link rel="alternate stylesheet" title="Single column, top navigation" href="style/kawa-1col.css" type="text/css" media="handheld, screen, print, projection, tv">
+<script language="JavaScript" type="text/javascript" src="style/utils.js"></script><meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="toc.html" title="Kawa: The Kawa Scheme language">
+<link rel="up" href="Installation.html" title="Kawa: Getting and installing Kawa">
+<link rel="prev" href="Running-Java.html" title="Kawa: Getting and running Java">
+<link rel="next" href="Source-distribution.html" title="Kawa: Installing and using the source distribution">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF" onload="javascript:onLoadHandler();" onunload="javascript:onUnloadHandler();">
+<div class="navcol">
+<div class="logo"><a href="index.html"><img src="style/kawa-logo.png"></a></div>
+<div class="navbar">
+<ul>
+<li><a href="toc.html">Table of Contents</a></li>
+<li><a href="tutorial/index.html">Tutorial</a></li>
+<li><a href="news.html">News: Recent changes</a></li>
+</ul>
+<div class="toc"><ul>
+<li><a href="index.html">The Kawa Scheme language</a></li>
+<li>
+<a href="Installation.html">Getting and installing Kawa</a><ul>
+<li><a href="Getting-Kawa.html">Getting Kawa</a></li>
+<li><a href="Running-Java.html">Getting and running Java</a></li>
+<li><b class="toc"><a href="Binary-distribution.html">Installing and using the binary distribution</a></b></li>
+<li><a href="Source-distribution.html">Installing and using the source distribution</a></li>
+</ul>
+</li>
+<li><a href="Features.html">Features</a></li>
+<li><a href="Documentation.html">Documentation</a></li>
+<li><a href="Development.html">Development</a></li>
+<li><a href="Community.html">The Kawa Community</a></li>
+<li><a href="About.html">About</a></li>
+<li><a href="Overall-Index.html">Index</a></li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Binary-distribution"></a>Installing and using the binary distribution</h2></div></div></div>
+<p>The binary release includes only the binary compiled ‘<code class="literal">.class</code>’
+versions of the same ‘<code class="literal">.java</code>’ source files in the source release.
+It does not include any documentation, so you probably want the
+source release in addition to the binary release.  The purpose
+of the binary release is just to save you the time and trouble of
+compiling the sources.
+</p>
+<p>The binary release requires Java 7 or later.
+If you have an older Java implementation, or build for a mobile
+environment like Android,
+then you will need to get the source distribution.
+</p>
+<p>The binary release comes as a <code class="literal">.jar</code> archive
+‘<code class="literal">kawa-1.14.1.jar</code>’.
+Copy this archive to some suitable location,
+such as <code class="literal">/usr/local/lib/kawa.jar</code>.
+</p>
+<p>Then, before you can actually run Kawa, you need to set <code class="literal">CLASSPATH</code>
+so it includes the Kawa archive.  On Unix, using a Bourne-style shell:
+</p>
+<pre class="screen">CLASSPATH=/usr/local/lib/kawa.jar
+export CLASSPATH
+</pre>
+<p>On Windows you need to set <code class="literal">classpath</code> in a DOS console.
+For example:
+</p>
+<pre class="screen">set classpath=\kawa\kawa-1.14.1.jar
+</pre>
+<p>Then to run Kawa do:
+</p>
+<pre class="screen">java kawa.repl
+</pre>
+<p>To run Kawa in a fresh window, you can do:
+</p>
+<pre class="screen">java kawa.repl -w
+</pre>
+</div>
+<div class="navfooter">
+<p>
+          Up: <a accesskey="u" href="Installation.html">Getting and installing Kawa</a></p>
+<p>
+        Previous: <a accesskey="p" href="Running-Java.html">Getting and running Java</a></p>
+<p>
+        Next: <a accesskey="n" href="Source-distribution.html">Installing and using the source distribution</a></p>
+</div>
+</body>
+</html>
