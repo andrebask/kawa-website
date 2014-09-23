@@ -22,6 +22,10 @@ div.navcol {
   top: 0em; right: 0em; bottom: 0em;
  }
 
+div.chapter {
+    padding-left: 25%;
+}
+
 /* The child selectors are a hack to hide these rules from WinIE6,
    which gets confused by 'fixed' */
 body>div.navcol { 

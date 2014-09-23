@@ -204,7 +204,7 @@ div.navheader a {
   display: block;
   text-decoration: underline;
  }
-
+/*
 div.navcol *.logo { 
   font-size: xx-large
 }
@@ -213,7 +213,7 @@ div.logo {
   margin:0px auto;
   display: none;
 }
-div.logo img { border: none; padding: 10px }
+div.logo img { border: none; padding: 10px }*/
 
 code[class="literal"] strong { color: purple }
 p[class="synopsis"] code[class="function"] { color: purple }
