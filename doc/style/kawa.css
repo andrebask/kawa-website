@@ -70,7 +70,9 @@ address {
   font-style: italic }
 p {
   margin-top: 0.6ex;
-  margin-bottom: 0 }
+  margin-bottom: 0 ;
+  margin-left: 1ex;
+}
 dd {
   padding-left: 1.5em;
   margin-bottom: 0.2ex;
@@ -143,6 +145,7 @@ html {
 span.ignore { display: none }
 
 div.navcol { 
+	height: 100%;
 }
 
 /* Local navigation menu, along the left or right side */

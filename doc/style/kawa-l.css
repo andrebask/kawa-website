@@ -17,7 +17,8 @@ div.navcol {
   width: 25%;
   float: left;
   height: 100%;
-  top: 0em; right: 0em; bottom: 0em; left: 0em;
+  position: absolute;
+  top: 89px;
  }
 
 /* The child selectors are a hack to hide these rules from WinIE6,
