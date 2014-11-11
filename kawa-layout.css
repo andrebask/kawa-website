@@ -32,14 +32,9 @@
 
 body {
     width: 100%;
-	position: fixed;
     margin: 0 auto;
     background-color: #f3f5f6;
 	font-family: 'Open Sans',sans-serif;
-}
-
-.frame {
-    width: 100%;
 }
 
 .homebar {
@@ -49,6 +44,7 @@ body {
     padding-top: 10px;
     padding-right: 10px;
     padding-bottom: 5px;
+    left: 0;
 }
 
 .homebar a {
@@ -62,27 +58,36 @@ body {
     font-size: 12pt;
     padding: 0 0 0 10px;
     margin: 0 auto;
+    left: 0;
 }
 
 .homebody p {
     text-align: justify;
     width: 98%;
+    margin-left: 0;
 }
 
-.chapter {
-    padding-left: 25%;
-	width: 75%;
-}
-
-.navfooter {	
-	margin-left: 25%;
-	width: 75%;
+.homecontent {
+    padding-left: 0%;    
+    bottom: 3px;
+    top: 86px;
+    position: fixed;
+    overflow-y: auto;
 }
 
 .content {
-/*	height: 100%;*/
-    margin-top: 83px;
+    padding-left: 25.5%;
+	width: 74.5%;    
+    top: 83px;
+    bottom: 3px;
+    position: fixed;
+    overflow-y: scroll;
+}
+
+.content .navcol {
     position: absolute;
+    left: 0%;
+	width: 25%;
 }
 
 @font-face {
