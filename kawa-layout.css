@@ -72,16 +72,15 @@ body {
     bottom: 3px;
     top: 86px;
     position: fixed;
-    overflow-y: auto;
 }
 
 .content {
     padding-left: 25.5%;
 	width: 74.5%;    
-    top: 83px;
+    top: 90px;
     bottom: 3px;
     position: fixed;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .content .navcol {
