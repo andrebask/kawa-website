@@ -1,0 +1,93 @@
+.logo {
+    width: 80px;
+    float: left;
+    margin: 5px 30px 0px 5px; 
+}
+
+.header {
+    padding: 3px;
+	height: 83px;
+	width: 100%;
+    background-color: #ffffff;
+	position: fixed;
+	z-index: 1;
+}
+
+.header a {
+    color: black;
+    text-decoration: none;
+}
+
+.header h1 {
+    color: black;
+    text-decoration: none;
+	text-align: left;
+	font-variant: normal;
+}
+
+
+.header h1:first-line {
+	font-style: normal;
+}
+
+body {
+    width: 100%;
+	position: fixed;
+    margin: 0 auto;
+    background-color: #f3f5f6;
+	font-family: 'Open Sans',sans-serif;
+}
+
+.frame {
+    width: 100%;
+}
+
+.homebar {
+    background-color: #d0ecf6;
+    font-family: Dejavu sans;
+    font-size: 15pt;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+}
+
+.homebar a {
+    color: blue;
+    padding-left: 10px;
+    text-decoration: none;
+}
+
+.homebody {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12pt;
+    padding: 0 0 0 10px;
+    margin: 0 auto;
+}
+
+.homebody p {
+    text-align: justify;
+    width: 98%;
+}
+
+.chapter {
+    padding-left: 25%;
+	width: 75%;
+}
+
+.navfooter {	
+	margin-left: 25%;
+	width: 75%;
+}
+
+.content {
+/*	height: 100%;*/
+    margin-top: 83px;
+    position: absolute;
+}
+
+@font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Open Sans"), local("OpenSans"), url("doc/style/OpenSans.woff") format("woff");
+}
