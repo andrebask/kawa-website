@@ -11,18 +11,18 @@ div.navbar {
   background-color: d0ecf6;
   height: 100%;
   padding-top: 20px;
+  position: fixed;
+  width: 25%;
 }
 
 div.navcol { 
-  width: 25%;
   float: left;
   height: 100%;
-  position: absolute;
-  top: 89px;
+  margin-top: 7px;
  }
 
 /* The child selectors are a hack to hide these rules from WinIE6,
-   which gets confused by 'fixed' */
+   which gets confused by 'fixed' 
 body>div.navcol { 
   position: fixed ;
-}
+}*/
